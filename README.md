@@ -1,13 +1,13 @@
-# Project Name (replace here!)
+# Tanks!
 
 This is the template for the projects. Please copy the project description here. 
 You can use Markdown language to render it as formatted **HTML** file.
 
 # Group
-- Member 1
-- Member 2
-- Member 3
-- Member 4
+- Teemu Taivainen
+- Jaakko Pulkkinen
+- Otso Häkkänen
+- Janne Kantola
 
 # Repository organization
 Your project implementation should follow the skelaton organization in this repository.
