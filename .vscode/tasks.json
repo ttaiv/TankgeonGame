@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cmake",
+            "label": "Configure",
+            "command": "configure",
+            "problemMatcher": [],
+            "detail": "Configure project with CMake"
+        },
+        {
+            "type": "cmake",
+            "label": "Build",
+            "command": "build",
+            "dependsOn": [
+                "Configure"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Build project using CMake"
+        },
+        {
+            "type": "cmake",
+            "label": "Clean",
+            "command": "clean",
+            "problemMatcher": [],
+            "detail": "Clean project using CMake"
+        },
+        {
+            "label": "Valgrind",
+            "type": "shell",
+            "command": "valgrind",
+            "detail": "Run Valgrind memcheck tool",
+            "args": [
+                "--trace-children=yes",
+                "--leak-check=full",
+                "--show-leak-kinds=all",
+                "${command:cmake.launchTargetPath}"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "problemMatcher": [
+                {
+                    "owner": "cpp",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}/src"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+            ]
+        },
+    ]
+}
