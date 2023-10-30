@@ -1,7 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
+include(FetchContent)
 
 project(TanksGame VERSION 0.1.0)
 set(EXECUTABLE_NAME TanksGame)
+
+set(RAYLIB_VERSION 4.5.0)
+FetchContent_Declare(
+    raylib
+    DOWNLOAD_EXTRACT_TIMESTAMP OFF
+    URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
+)
+	
+set(BUILD_EXAMPLES OFF CACHE INTERNAL "") # Disable raylib examples
+
+# Get raylib
+FetchContent_MakeAvailable(raylib)
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -21,6 +34,7 @@ add_executable(${EXECUTABLE_NAME})
 target_sources(${EXECUTABLE_NAME} PUBLIC ${SOURCES})
 
 # Link libraries like this: target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} raylib)
 
 # Set the project include directories
 target_include_directories(${EXECUTABLE_NAME} PUBLIC ${CMAKE_SOURCE_DIR})
