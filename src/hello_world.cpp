@@ -1,35 +1,43 @@
+#include <iostream>
 #include "raylib.h"
- 
-int main(int argc, const char **argv) {
-    // Initialization
-    const int screenWidth = 1280;
-    const int screenHeight = 768;
-    const char *windowTitle = "Hello world!";
-    const char *message = "Hello world! It's great to be here.";
-    const int fontSize = 40;
-    const float msgSpacing = 1.0f;
- 
-    InitWindow(screenWidth, screenHeight, windowTitle);
- 
-    // NOTE: The following only works after calling InitWindow() (i.e,. RayLib is initialized)
-    const Font font = GetFontDefault();
-    const Vector2 msgSize = MeasureTextEx(font, message, fontSize, msgSpacing);
-    const Vector2 msgPos = Vector2{(screenWidth - msgSize.x) / 2, (screenHeight - msgSize.y) / 2};
- 
-    SetTargetFPS(60);
- 
-    // Main loop
-    while(!WindowShouldClose()) {
- 
-        // Update the display
-        BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawTextEx(font, message, msgPos, fontSize, msgSpacing, RED);
-        EndDrawing();
-    }
- 
-    // Cleanup
-    CloseWindow();
-     
-    return 0;
+
+using namespace std;
+
+int main () {
+
+  const int screenWidth = 800;
+  const int screenHeight = 600;
+  int ball_x = 100;
+  int ball_y = 100;
+  int ball_speed_x = 5;
+  int ball_speed_y = 5;
+  int ball_radius = 15;
+
+  cout << "Hello World" << endl;
+
+  InitWindow(screenWidth, screenHeight, "My first RAYLIB program!");
+  SetTargetFPS(60);
+
+  while (WindowShouldClose() == false){
+      BeginDrawing();
+      ClearBackground(BLACK);
+      ball_x += ball_speed_x;
+      ball_y += ball_speed_y;
+
+      if(ball_x + ball_radius >= screenWidth  || ball_x - ball_radius <= 0)
+      {
+          ball_speed_x *= -1;
+      }
+
+      if(ball_y + ball_radius >= screenHeight  || ball_y - ball_radius <= 0)
+      {
+          ball_speed_y *= -1;
+      }
+
+      DrawCircle(ball_x,ball_y,ball_radius, WHITE);
+      EndDrawing();
+  }
+
+  CloseWindow();
+  return 0;
 }

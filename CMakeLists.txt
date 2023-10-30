@@ -11,8 +11,9 @@ FetchContent_Declare(
     URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
 )
 	
-set(BUILD_EXAMPLES OFF CACHE INTERNAL "")
-	
+set(BUILD_EXAMPLES OFF CACHE INTERNAL "") # Disable raylib examples
+
+# Get raylib
 FetchContent_MakeAvailable(raylib)
 
 # Set the C++ standard to C++17
