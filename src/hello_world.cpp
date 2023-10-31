@@ -1,5 +1,5 @@
 #include <iostream>
-#include "raylib.h"
+#include "raylib-cpp.hpp"
 
 using namespace std;
 
