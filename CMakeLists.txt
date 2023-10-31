@@ -4,25 +4,24 @@ include(FetchContent)
 project(TanksGame VERSION 0.1.0)
 set(EXECUTABLE_NAME TanksGame)
 
-set(RAYLIB_VERSION 4.5.0)
-FetchContent_Declare(
-    raylib
-    DOWNLOAD_EXTRACT_TIMESTAMP OFF
-    URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
-)
-	
-set(BUILD_EXAMPLES OFF CACHE INTERNAL "") # Disable raylib examples
-
 # Get raylib
-FetchContent_MakeAvailable(raylib)
+find_package(raylib QUIET)
+if (NOT raylib_FOUND)
+    include(FetchContent)
+    FetchContent_Declare(
+        raylib
+        GIT_REPOSITORY https://github.com/raysan5/raylib.git
+        GIT_TAG 4.5.0
+    )
+    FetchContent_MakeAvailable(raylib)
+endif()
+
+set(BUILD_EXAMPLES OFF CACHE INTERNAL "") # Disable raylib examples
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
 # produce non-optimized code with debug symbols
 set(CMAKE_BUILD_TYPE Debug)
-
-# Find necessary libraries
-# Add libraries here like this: find_package(SDL2 REQUIRED)
 
 # Add source files and headers
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.hpp")
