@@ -1,43 +1,27 @@
 #include <iostream>
-#include "raylib.h"
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
-int main () {
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
-  const int screenWidth = 800;
-  const int screenHeight = 600;
-  int ball_x = 100;
-  int ball_y = 100;
-  int ball_speed_x = 5;
-  int ball_speed_y = 5;
-  int ball_radius = 15;
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
 
-  cout << "Hello World" << endl;
+        window.clear();
+        window.draw(shape);
+        window.display();
+    }
 
-  InitWindow(screenWidth, screenHeight, "My first RAYLIB program!");
-  SetTargetFPS(60);
-
-  while (WindowShouldClose() == false){
-      BeginDrawing();
-      ClearBackground(BLACK);
-      ball_x += ball_speed_x;
-      ball_y += ball_speed_y;
-
-      if(ball_x + ball_radius >= screenWidth  || ball_x - ball_radius <= 0)
-      {
-          ball_speed_x *= -1;
-      }
-
-      if(ball_y + ball_radius >= screenHeight  || ball_y - ball_radius <= 0)
-      {
-          ball_speed_y *= -1;
-      }
-
-      DrawCircle(ball_x,ball_y,ball_radius, WHITE);
-      EndDrawing();
-  }
-
-  CloseWindow();
-  return 0;
+    return 0;
 }
