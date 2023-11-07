@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include "PlayerTank.hpp"
 using namespace std;
 
 
@@ -31,17 +32,24 @@ int main()
 {
     int displayWidth = 600;
     int displayLength = 600;
-    sf::RenderWindow window(sf::VideoMode(displayWidth, displayLength), "SFML works!");
+
+    sf::RenderWindow window(sf::VideoMode(displayWidth, displayLength), "Tankgeon!");
     window.setFramerateLimit(60);
+
     sf::RectangleShape shape;
     shape.setOrigin(50,50);
     shape.setSize(sf::Vector2f(100,100));
     //shape.setFillColor(sf::Color::Green);
+
     sf::Vector2f pos(displayWidth/2,displayLength/2);
     int xSpeed = 2;
     int ySpeed = 5;
     shape.setPosition(pos);
     float rotOffset = cos(shape.getRotation() * 3.14 / 180) + sin(shape.getRotation() * 3.14 / 180);
+
+    PlayerTank player(sf::Vector2f(100, 100), 2);
+
+    // Game loop
     while (window.isOpen())
     {
         sf::Event event;
@@ -49,7 +57,7 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
+            // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {pos.x-=xSpeed; shape.setPosition(pos);}
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {pos.x+=xSpeed;shape.setPosition(pos);}
@@ -80,6 +88,7 @@ int main()
 
 
         window.clear();
+        player.Draw(window);
         window.draw(shape);
         window.display();
     }
