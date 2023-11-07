@@ -47,7 +47,7 @@ int main()
     shape.setPosition(pos);
     float rotOffset = cos(shape.getRotation() * 3.14 / 180) + sin(shape.getRotation() * 3.14 / 180);
 
-    PlayerTank player(sf::Vector2f(100, 100), 2);
+    PlayerTank player(sf::Vector2f(100, 100), sf::Vector2f(2, 2));
 
     // Game loop
     while (window.isOpen())
@@ -88,7 +88,7 @@ int main()
 
 
         window.clear();
-        player.Draw(window);
+        player.UpdatePosAndDraw(window);
         window.draw(shape);
         window.display();
     }
