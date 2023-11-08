@@ -1,32 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include "PlayerTank.hpp"
+#include "include/PlayerTank.hpp"
 using namespace std;
-
-
-float rotateToMouse(sf::RectangleShape shape,sf::RenderWindow &window ) 
-{
-    sf::Vector2f curPos = shape.getPosition();
-    sf::Vector2i position = sf::Mouse::getPosition(window);
-
-    // now we have both the sprite position and the cursor
-    // position lets do the calculation so our sprite will
-    // face the position of the mouse
-    const float PI = 3.14159265;
-
-    float dx = curPos.x - position.x;
-    float dy = curPos.y - position.y;
-
-    return (atan2(dy, dx)) * 180 / PI +180;
-}
-/*void shoot(sf::Vector2f playerPos){
-    sf::RectangleShape shape;
-    shape.setSize(sf::Vector2f(10,10));
-    sf::Vector2f curPos = shape.getPosition();
-    
-}*/
-
 
 int main()
 {
@@ -64,7 +40,6 @@ int main()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {pos.y-=ySpeed;shape.setPosition(pos);}
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {pos.y+=ySpeed;shape.setPosition(pos);}
         shape.setPosition(pos);
-        shape.setRotation(rotateToMouse(shape,window));
         /*pos.x +=xSpeed;
         pos.y +=ySpeed;
         shape.setPosition(pos);
@@ -88,7 +63,7 @@ int main()
 
 
         window.clear();
-        player.UpdatePosAndDraw(window);
+        player.UpdateAndDraw(window);
         window.draw(shape);
         window.display();
     }
