@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include <vector>
+#include "Projectile.hpp"
 
 class PlayerTank {
   public:
@@ -8,8 +10,8 @@ class PlayerTank {
 
     void UpdatePosAndRotation(sf::RenderWindow &window);
     void Draw(sf::RenderWindow &window) const ;
-    void UpdateAndDraw(sf::RenderWindow &window);
-    void Shoot();
+    void UpdateAndDraw(sf::RenderWindow &window, std::vector<Projectile> &projectiles);
+    void Shoot(std::vector<Projectile> &projectiles);
 
   private:
     sf::Vector2f pos_;

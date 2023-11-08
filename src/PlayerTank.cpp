@@ -28,8 +28,11 @@ void PlayerTank::Draw(sf::RenderWindow &window) const {
   window.draw(tank_shape_);
 }
 
-void PlayerTank::UpdateAndDraw(sf::RenderWindow &window) {
+void PlayerTank::UpdateAndDraw(sf::RenderWindow &window, std::vector<Projectile> &projectiles) {
   UpdatePosAndRotation(window);
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    Shoot(projectiles);
+  }
   Draw(window);
 }
 
@@ -44,3 +47,7 @@ float PlayerTank::GetRotationAngle(sf::RenderWindow &window) {
   return (atan2(dy, dx)) * 180 / M_PI + 180;
 }
 
+void PlayerTank::Shoot(std::vector<Projectile> &projectiles) {
+  Projectile new_projectile(pos_, sf::Vector2f(3, 3));
+  projectiles.push_back(new_projectile);
+}
