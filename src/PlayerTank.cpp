@@ -44,3 +44,9 @@ float PlayerTank::GetRotationAngle(sf::RenderWindow &window) {
   return (atan2(dy, dx)) * 180 / M_PI + 180;
 }
 
+void PlayerTank::Shoot() {
+  if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    
+  }
+}
+
