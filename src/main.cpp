@@ -23,9 +23,9 @@ int main()
         window.close();
       // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
     }
-  window.clear();
-  player.UpdateAndDraw(window);
-  window.display();
+    window.clear();
+    player.UpdateAndDraw(window);
+    window.display();
   }
   return 0;
 }
