@@ -12,9 +12,9 @@ class PlayerTank {
     void Shoot();
 
   private:
-    sf::Vector2f pos;
-    sf::Vector2f speed;
-    sf::RectangleShape tankShape;
+    sf::Vector2f pos_;
+    sf::Vector2f speed_;
+    sf::RectangleShape tank_shape_;
     /**
      * @brief Get new rotation angle for tank shape using mouse position
      * 
