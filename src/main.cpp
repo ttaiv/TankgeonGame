@@ -1,7 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <math.h>
+#include <vector>
 #include "include/PlayerTank.hpp"
+#include "include/Projectile.hpp"
 using namespace std;
 
 int main() 
@@ -12,6 +13,7 @@ int main()
   window.setFramerateLimit(60);
 
   PlayerTank player(sf::Vector2f(100, 100), sf::Vector2f(3, 3));
+  std::vector<Projectile> projectiles;
 
   // Game loop
   while (window.isOpen())
@@ -23,8 +25,17 @@ int main()
         window.close();
       // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
     }
+
     window.clear();
-    player.UpdateAndDraw(window);
+    player.Update(window, projectiles);
+    player.Draw(window);
+    
+    // Note iterating over by reference!
+    for (auto &proj: projectiles) {
+      proj.Update();
+      proj.Draw(window);
+    }
+
     window.display();
   }
   return 0;
