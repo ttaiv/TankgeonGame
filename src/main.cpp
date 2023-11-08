@@ -25,10 +25,12 @@ int main()
         window.close();
       // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
     }
-    window.clear();
 
-    player.UpdateAndDraw(window, projectiles);
+    window.clear();
+    player.Update(window, projectiles);
+    player.Draw(window);
     
+    // Note iterating over by reference!
     for (auto &proj: projectiles) {
       proj.Update();
       proj.Draw(window);
