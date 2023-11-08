@@ -1,34 +1,46 @@
-#include "PlayerTank.hpp"
+#include "include/PlayerTank.hpp"
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed) 
-  : pos(initial_pos), speed(initial_speed) {
-      tankShape.setOrigin(50, 50);
-      tankShape.setSize(sf::Vector2f(100,100));
-      tankShape.setPosition(pos);
+  : pos_(initial_pos), speed_(initial_speed) {
+      tank_shape_.setOrigin(50, 50);
+      tank_shape_.setSize(sf::Vector2f(100,100));
+      tank_shape_.setPosition(pos_);
   }
 
-void PlayerTank::UpdatePos() {
+void PlayerTank::UpdatePosAndRotation(sf::RenderWindow &window) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    pos.x -= speed.x; 
+    pos_.x -= speed_.x; 
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    pos.x += speed.x; 
+    pos_.x += speed_.x; 
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    pos.y -= speed.y; 
+    pos_.y -= speed_.y; 
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    pos.y += speed.y; 
+    pos_.y += speed_.y; 
   }
-  tankShape.setPosition(pos);
+  tank_shape_.setPosition(pos_);
+  tank_shape_.setRotation(GetRotationAngle(window));
 }
 
 void PlayerTank::Draw(sf::RenderWindow &window) const {
-  window.draw(tankShape);
+  window.draw(tank_shape_);
 }
 
-void PlayerTank::UpdatePosAndDraw(sf::RenderWindow &window) {
-  UpdatePos();
+void PlayerTank::UpdateAndDraw(sf::RenderWindow &window) {
+  UpdatePosAndRotation(window);
   Draw(window);
+}
+
+float PlayerTank::GetRotationAngle(sf::RenderWindow &window) { 
+  sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
+  // We have both the sprite position and the cursor
+  // position lets do the calculation so our sprite will
+  // face the position of the mouse
+  float dx = pos_.x - mouse_position.x;
+  float dy = pos_.y - mouse_position.y;
+
+  return (atan2(dy, dx)) * 180 / M_PI + 180;
 }
 
