@@ -10,7 +10,11 @@ int main()
 {
   int displayWidth = 600;
   int displayLength = 600;
-  sf::RenderWindow window(sf::VideoMode(displayWidth, displayLength), "Tankgeon!");
+  sf::RenderWindow window;
+  //sf::RenderWindow window(sf::VideoMode(displayWidth, displayLength), "Tankgeon!");
+  window.setFramerateLimit(60);
+  window.create(sf::VideoMode::getFullscreenModes()[0],"full screen");
+  window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
 
   PlayerTank player(sf::Vector2f(100, 100), sf::Vector2f(3, 3));
