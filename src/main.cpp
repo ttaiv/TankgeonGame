@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "include/EnemyTank.hpp"
 #include "include/PlayerTank.hpp"
 #include "include/Projectile.hpp"
 #include "include/Wall.hpp"
@@ -17,7 +18,7 @@ int main()
   window.create(sf::VideoMode::getFullscreenModes()[0],"full screen");
   window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
-
+  EnemyTank enemy(sf::Vector2f(200, 200), sf::Vector2f(0, 0));
   PlayerTank player(sf::Vector2f(100, 100), sf::Vector2f(3, 3));
   std::vector<Projectile> projectiles;
 
@@ -71,6 +72,8 @@ int main()
     window.clear();
     player.Update(window, projectiles);
     player.Draw(window);
+    enemy.Update(projectiles, player.GetShape());
+    enemy.Draw(window);
 
     for (auto &w: walls) {
       w.Draw(window);
@@ -79,6 +82,7 @@ int main()
     for (auto &s: spikes) {
       s.Draw(window);
     }
+
     
     // Note iterating over by reference!
     for (auto &proj: projectiles) {

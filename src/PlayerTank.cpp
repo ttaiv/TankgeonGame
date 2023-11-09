@@ -1,11 +1,8 @@
 #include "include/PlayerTank.hpp"
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed) 
-  : speed_(initial_speed), cooldown_timer_(0) {
-      tank_shape_.setOrigin(50, 50);
-      tank_shape_.setSize(sf::Vector2f(100,100));
-      tank_shape_.setPosition(initial_pos);
-  }
+  : Tank(initial_pos, initial_speed) {}
+  
 
 void PlayerTank::UpdateShape(float rotation_angle) {
   sf::Vector2f current_pos = tank_shape_.getPosition();
@@ -25,9 +22,6 @@ void PlayerTank::UpdateShape(float rotation_angle) {
   tank_shape_.setRotation(rotation_angle);
 }
 
-void PlayerTank::Draw(sf::RenderWindow &window) const {
-  window.draw(tank_shape_);
-}
 
 void PlayerTank::Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) {
   UpdateShape(GetRotationAngle(window) * 180 / M_PI + 180);
@@ -49,7 +43,4 @@ float PlayerTank::GetRotationAngle(sf::RenderWindow &window) {
   return atan2(dy, dx);
 }
 
-void PlayerTank::Shoot(std::vector<Projectile> &projectiles, float angle) {
-  Projectile new_projectile(tank_shape_.getPosition(), 3, angle);
-  projectiles.push_back(new_projectile);
-}
+
