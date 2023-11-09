@@ -18,7 +18,7 @@ class Wall: public Obstacle
      *  
      * @return false 
      */
-    virtual bool IsProjectilePassable();
+    virtual bool IsProjectilePassable() override;
     
     
     /**
@@ -26,7 +26,7 @@ class Wall: public Obstacle
      * 
      * @return false 
      */
-    virtual bool IsTankPassable();
+    virtual bool IsTankPassable() override;
 
     /**
      * @brief Draws a wall to window given as a parameter.
