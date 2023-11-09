@@ -3,9 +3,9 @@
 EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {}
 
-void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
+void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank) {
   float angle = GetAngleToPlayer(player_tank);
-  UpdateShape(angle, walls, spikes);
+  UpdateShape(angle);
   if (cooldown_timer_ > 30) {
     cooldown_timer_ = 0;
     Shoot(projectiles, angle);
@@ -17,8 +17,8 @@ void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape 
  * 
  * @param rotation_angle 
  */
-void EnemyTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
-  tank_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
+void EnemyTank::UpdateShape(float rotation_angle) {
+  turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
 }
 float EnemyTank::GetAngleToPlayer(sf::RectangleShape player_tank) { 
   sf::Vector2f player_position = player_tank.getPosition();

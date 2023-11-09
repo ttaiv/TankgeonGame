@@ -3,13 +3,12 @@
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {}
   
-
 /**
  * @brief Updates tank chassis and turret angles based on inputs. Gets angle to mouse as parameter.
  * 
  * @param rotation_angle 
  */
-void PlayerTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
+void PlayerTank::UpdateShape(float rotation_angle) {
   sf::Vector2f current_pos = tank_shape_.getPosition();
   float current_tank_rotation = tank_shape_.getRotation();
   float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
@@ -21,46 +20,27 @@ void PlayerTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std
     sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad + M_PI), speed_scaler_ * sin(current_tank_rotation_rad + M_PI));
     current_pos += speed; 
   }
-
-  bool colision = false;
-  
-  for (Wall &wall : walls) {
-    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
-    sf::FloatRect new_bounds = tank_shape_.getGlobalBounds();
-    new_bounds.left = current_pos.x;
-    new_bounds.top = current_pos.y;
-    if (new_bounds.intersects(wall_bounds)) {
-      colision = true;
-      break;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    current_tank_rotation += 2;
   }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+    current_tank_rotation -= 2;
   }
 
-  for (Spike &spike : spikes) {
-    sf::FloatRect spike_bounds = spike.GetGlobalBounds();
-    sf::FloatRect new_bounds = tank_shape_.getGlobalBounds();
-    new_bounds.left = current_pos.x;
-    new_bounds.top = current_pos.y;
-    if (new_bounds.intersects(spike_bounds)) {
-      colision = true;
-      break;
-  }
-  }
-
-  if (!colision){
-    tank_shape_.setPosition(current_pos);
-  }
-  tank_shape_.setRotation(rotation_angle);
+  tank_shape_.setPosition(current_pos);
+  tank_shape_.setRotation(current_tank_rotation);
+  turret_shape_.setRotation(rotation_angle);
+  turret_shape_.setPosition(current_pos);
 }
 
 
-void PlayerTank::Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
-  UpdateShape(GetTurretRotationAngle(window) * 180 / M_PI + 180, walls, spikes);
+void PlayerTank::Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) {
+  UpdateShape(GetTurretRotationAngle(window) * 180 / M_PI + 180);
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > 30) {
     cooldown_timer_ = 0;
     Shoot(projectiles, GetTurretRotationAngle(window));
   }
   ++cooldown_timer_;
-
 }
 
 float PlayerTank::GetTurretRotationAngle(sf::RenderWindow &window) { 

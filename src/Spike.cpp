@@ -15,7 +15,3 @@ bool Spike::IsProjectilePassable(){
 void Spike::Draw(sf::RenderWindow &window) const {
     window.draw(spikeShape_);
 }
-
-sf::FloatRect Spike::GetGlobalBounds() const {
-  return spikeShape_.getGlobalBounds();
-}
