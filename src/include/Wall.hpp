@@ -19,14 +19,6 @@ class Wall: public Obstacle
      * @return false 
      */
     virtual bool IsProjectilePassable() override;
-    
-    
-    /**
-     * @brief Tells that tank cannot pass a wall
-     * 
-     * @return false 
-     */
-    virtual bool IsTankPassable() override;
 
     /**
      * @brief Draws a wall to window given as a parameter.
