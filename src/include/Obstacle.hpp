@@ -14,11 +14,11 @@ class Obstacle {
     virtual bool IsProjectilePassable() = 0;
     
     /**
-     * @brief A pure virtual function that tells wether a tank can pass the obstacle. 
+     * @brief A pure virtual function that tells that a tank cant pass the obstacle. 
      * 
      * @return false 
      */
-    virtual bool IsTankPassable() = 0;
+    bool IsTankPassable() { return false; }
 
     /**
      * @brief A pure virtual function that draws the obstacle in the window given as a parameter.
