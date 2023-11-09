@@ -8,14 +8,14 @@
 class PlayerTank: public Tank {
   public:
     PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed);
-    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) override;
+    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles);
 
   private:
     /**
      * @brief Get new rotation angle for tank shape using mouse position
      * 
      * @param window
-     * @return the angle as float
+     * @return the angle as float in radians
      */
     float GetRotationAngle(sf::RenderWindow &window);
     void UpdateShape(float rotation_angle) override;

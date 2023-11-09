@@ -8,6 +8,7 @@ class Tank {
   public:
     Tank(sf::Vector2f initial_pos, sf::Vector2f initial_speed);
     
+    sf::RectangleShape GetShape() const;
 
     /**
      * @brief Draws the shape on the window
@@ -23,12 +24,12 @@ class Tank {
      * @param window 
      * @param projectiles 
      */
-    virtual void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) = 0;
+    //virtual void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) = 0;
     /**
      * @brief Shoots a projectile
      * 
      * @param projectiles 
-     * @param angle 
+     * @param angleAsRadians
      */
     void Shoot(std::vector<Projectile> &projectiles, float angle);
 
@@ -36,13 +37,7 @@ class Tank {
     sf::Vector2f speed_;
     sf::RectangleShape tank_shape_;
     int cooldown_timer_;
-     /**
-     * @brief Get new rotation angle for tank shape using mouse position
-     * 
-     * @param window
-     * @return the angle as float
-     */
-    float GetRotationAngle(sf::RenderWindow &window);
+
 
     /**
      * @brief Moves the tank around by updating the shape's position 
