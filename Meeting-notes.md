@@ -8,44 +8,45 @@ In each meeting, you are required to discuss:
 4. Deviations and changes to the project plan, if any
 
 
-# Meeting dd.mm.2021 HH::MM
+# Meeting 09.11.2023 12::45
 
 **Participants**: 
-1. Member 1
-2. Member 2
-3. Member 3
-4. Member 4 
+1. Teemu 
+2. Jaakko
+3. Janne
+4. Otso 
 
 ## Summary of works
-1. Member 1 
+1. Teemu
    
-   Implementing the class XX. Tested the class XX. 
-   Results are in `tests/<class-xx-tests>`. Resolved the identified problems.
+   Implemented player tank and projectile. Results merged in master and seem to be working
+   Finished CMake file and supressed known SFML valgrind-errors from output
 
-2. Member 2
+2. Jaakko & Janne
 
-   Same as above
+   Abstract class obstacle and derived classes spike and wall done and merged to master.
 
-3. ...
+3. Otso
+
+   Was able to run the code with a new laptop
 
 ## Challenges
 
-1. The integration of UI with the monsters requires an abstract interface.
-2. ...
+1. How to deal with collisions for tanks and projectiles
+2. How to handle controls for the player tank
 
 ## Actions
-1. Member 1 is going to look into defining an abstract interface for monsters 
-   to enable easy UI integration.
-2. Member 2 is going to work with Member 1 to use abstract interface in derived 
-   monster classes.
-3. Member 2 is going to test the interface.
-4. Member 3 is going to use ...
+1. Otso will implement abstract class Enemy tank and
+2. Janne will finish Spikes and tank collisions with walls 
+3. Teemu will implement projectile collisions with the walls
+4. Jaakko will investigate adding graphics 
 
 > Please reflect these action decisions in your git commit messages so that 
 > your group members and advisor can follow the progress.
 
 ## Project status 
-Short summary of current project status. 
+Tanks are moving, projectiles are flying, walls are walling, collisions still not colliding. 
+
 
 ### TODOs
 1. Member 1: Write an action.
