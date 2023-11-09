@@ -4,6 +4,7 @@
 #include "include/PlayerTank.hpp"
 #include "include/Projectile.hpp"
 #include "include/Wall.hpp"
+#include "include/Spike.hpp"
 using namespace std;
 
 int main() 
@@ -27,10 +28,10 @@ int main()
   unsigned int windowHeight = windowSize.y;
   
   float wallThickness = 40;
-  float gapSize = 200;
+  float gapSize = 1000;
   float gapCenterX = windowWidth / 2.0f;
   float halfGapSize = gapSize / 2.0f;
-  float wallHeight = 250;
+  float wallHeight = 600;
   float verticalWallYPosition = (windowHeight - wallHeight) / 2.0f;
 
   Wall topWall(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, 10));
@@ -39,14 +40,19 @@ int main()
   Wall rightWall(sf::Vector2f(windowWidth - 10, 0), sf::Vector2f(10, windowHeight));
   Wall leftVerticalWall(sf::Vector2f(gapCenterX - halfGapSize - wallThickness, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
   Wall rightVerticalWall(sf::Vector2f(gapCenterX + halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
+  Spike middleSpikes(sf::Vector2f(gapCenterX - 100, verticalWallYPosition + 50), sf::Vector2f(wallThickness + 200, wallHeight - 100));
+
+  
 
   vector<Wall> walls;
+  vector<Spike> spikes;
   walls.push_back(topWall);
   walls.push_back(bottomWall);
   walls.push_back(leftWall);
   walls.push_back(rightWall);
   walls.push_back(leftVerticalWall);
   walls.push_back(rightVerticalWall);
+  spikes.push_back(middleSpikes);
 
 //******************************************************************************************************************************
 
@@ -65,15 +71,19 @@ int main()
     window.clear();
     player.Update(window, projectiles);
     player.Draw(window);
+
+    for (auto &w: walls) {
+      w.Draw(window);
+    }
+
+    for (auto &s: spikes) {
+      s.Draw(window);
+    }
     
     // Note iterating over by reference!
     for (auto &proj: projectiles) {
       proj.Update();
       proj.Draw(window);
-    }
-
-    for (auto &w: walls) {
-      w.Draw(window);
     }
 
     window.display();
