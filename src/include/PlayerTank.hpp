@@ -17,6 +17,7 @@ class PlayerTank: public Tank {
      * @param window
      * @return the angle as float in radians
      */
-    float GetRotationAngle(sf::RenderWindow &window);
+    float GetTurretRotationAngle(sf::RenderWindow &window);
     void UpdateShape(float rotation_angle) override;
+
 };
