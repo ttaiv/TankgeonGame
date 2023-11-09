@@ -15,5 +15,5 @@ class Projectile: public Ordnance {
 
   private:
     sf::Vector2f speed_;
-    sf::RectangleShape projectile_shape_;
+    sf::CircleShape projectile_shape_;
 };
