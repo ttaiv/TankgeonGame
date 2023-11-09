@@ -8,6 +8,12 @@
 
 class Tank {
   public:
+    /**
+     * @brief Construct a new Tank object
+     * 
+     * @param initial position
+     * @param base speed of the tank
+     */
     Tank(sf::Vector2f initial_pos, float speed_scaler);
     
     sf::RectangleShape GetShape() const;
@@ -28,10 +34,10 @@ class Tank {
      */
     //virtual void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) = 0;
     /**
-     * @brief Shoots a projectile
+     * @brief Creates and shoots a new projectile
      * 
-     * @param projectiles 
-     * @param angleAsRadians
+     * @param vector of projectiles 
+     * @param angle as radians
      */
     void Shoot(std::vector<Projectile> &projectiles, float angle);
 
@@ -44,7 +50,10 @@ class Tank {
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 
-     * @param rotation_angle 
+     * @param rotation angle for shape as degrees
+     * @param vector containing level's walls
+     * @param vector containing level's spikes
+     *  
      */
     virtual void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) = 0;
 };

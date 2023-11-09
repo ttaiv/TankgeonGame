@@ -6,7 +6,7 @@ EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler)
 void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   float angle = GetAngleToPlayer(player_tank);
   UpdateShape(angle, walls, spikes);
-  if (cooldown_timer_ > 30) {
+  if (cooldown_timer_ > 150) {
     cooldown_timer_ = 0;
     Shoot(projectiles, angle);
   }
