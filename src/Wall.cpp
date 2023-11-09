@@ -19,3 +19,7 @@ bool Wall::IsTankPassable(){
 void Wall::Draw(sf::RenderWindow &window) const {
     window.draw(wallShape_);
 }
+
+sf::FloatRect Wall::GetGlobalBounds() const {
+  return wallShape_.getGlobalBounds();
+}

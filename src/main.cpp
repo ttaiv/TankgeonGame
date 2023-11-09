@@ -64,7 +64,7 @@ int main()
     
     // Note iterating over by reference!
     for (auto &proj: projectiles) {
-      proj.Update();
+      proj.Update(walls);
       proj.Draw(window);
     }
 

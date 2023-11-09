@@ -1,6 +1,5 @@
 #include "include/Projectile.hpp"
 #include <iostream>
-#include <math.h>
 
 Projectile::Projectile(sf::Vector2f initial_position, int speed_scaler, float angle) {
   projectile_shape_.setPosition(initial_position);
@@ -15,9 +14,22 @@ Projectile::Projectile(sf::Vector2f initial_position, int speed_scaler, float an
   speed_ = sf::Vector2f(speed_scaler * cos(angle + M_PI), speed_scaler * sin(angle + M_PI));
 }
 
-void Projectile::Update() {
-  sf::Vector2f newPos = projectile_shape_.getPosition() + speed_;
-  projectile_shape_.setPosition(newPos);
+void Projectile::Update(std::vector<Wall> &walls) {
+  sf::Vector2f current_pos = projectile_shape_.getPosition();
+  /*
+  for (Wall &wall : walls) {
+    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
+    if (current_pos.x >= wall_bounds.left || current_pos.x <= wall_bounds.left + wall_bounds.width) {
+      speed_.x = - speed_.x;
+      break;
+    }
+    else if (current_pos.y >= wall_bounds.top || current_pos.y <= wall_bounds.top + wall_bounds.height) {
+      speed_.y = - speed_.y;
+      break;
+    }
+  }
+  */
+  projectile_shape_.setPosition(current_pos + speed_);
 }
 
 void Projectile::Draw(sf::RenderWindow &window) const {
