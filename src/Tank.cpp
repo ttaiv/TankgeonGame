@@ -14,19 +14,8 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setFillColor(sf::Color::Green);
   }
 
-void TextureConstruct(sf::Vector2f pos){
-  sf::Texture textureNoPiippu;
-    if(!textureNoPiippu.loadFromFile("C://TankNoPiippu.png")){
-  std::cout << "No can do";
-  }
-  sf::Sprite tankNoPiippu;
-  tankNoPiippu.setTexture(textureNoPiippu);
-  tankNoPiippu.setPosition(pos);
-}
-
 
 void Tank::Draw(sf::RenderWindow &window) const {
-  TextureConstruct(tank_shape_.getPosition());
   window.draw(tank_shape_);
   window.draw(turret_shape_);
 }
