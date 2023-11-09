@@ -12,10 +12,6 @@ bool Wall::IsProjectilePassable(){
     return false;
 }
 
-bool Wall::IsTankPassable(){
-    return false;
-}
-
 void Wall::Draw(sf::RenderWindow &window) const {
     window.draw(wallShape_);
 }
