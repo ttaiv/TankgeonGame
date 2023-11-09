@@ -4,7 +4,7 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed)
   : Tank(initial_pos, initial_speed) {}
   
 
-void PlayerTank::UpdateShape(float rotation_angle) {
+void PlayerTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   sf::Vector2f current_pos = tank_shape_.getPosition();
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
     current_pos.x -= speed_.x; 
@@ -18,13 +18,40 @@ void PlayerTank::UpdateShape(float rotation_angle) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
     current_pos.y += speed_.y; 
   }
-  tank_shape_.setPosition(current_pos);
+
+  bool colision = false;
+  
+  for (Wall &wall : walls) {
+    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
+    sf::FloatRect new_bounds = tank_shape_.getGlobalBounds();
+    new_bounds.left = current_pos.x;
+    new_bounds.top = current_pos.y;
+    if (new_bounds.intersects(wall_bounds)) {
+      colision = true;
+      break;
+  }
+  }
+
+  for (Spike &spike : spikes) {
+    sf::FloatRect spike_bounds = spike.GetGlobalBounds();
+    sf::FloatRect new_bounds = tank_shape_.getGlobalBounds();
+    new_bounds.left = current_pos.x;
+    new_bounds.top = current_pos.y;
+    if (new_bounds.intersects(spike_bounds)) {
+      colision = true;
+      break;
+  }
+  }
+
+  if (!colision){
+    tank_shape_.setPosition(current_pos);
+  }
   tank_shape_.setRotation(rotation_angle);
 }
 
 
-void PlayerTank::Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) {
-  UpdateShape(GetRotationAngle(window) * 180 / M_PI + 180);
+void PlayerTank::Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
+  UpdateShape(GetRotationAngle(window) * 180 / M_PI + 180, walls, spikes);
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > 30) {
     cooldown_timer_ = 0;
     Shoot(projectiles, GetRotationAngle(window));

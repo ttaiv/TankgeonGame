@@ -26,6 +26,8 @@ class Spike: public Obstacle
      * @param window 
      */
     virtual void Draw(sf::RenderWindow &window) const override;
+
+    sf::FloatRect GetGlobalBounds() const;
     
   private:
     sf::Vector2f position_;
