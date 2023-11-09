@@ -24,5 +24,4 @@ class PlayerTank: public Tank {
     bool IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes) const;
     sf::Texture textureNoPiippu;
 
->>>>>>> src/include/PlayerTank.hpp
 };
