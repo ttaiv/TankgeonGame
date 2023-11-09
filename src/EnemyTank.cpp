@@ -22,6 +22,9 @@ void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape 
  */
 void EnemyTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
+  if (!goForward(walls, spikes)) {
+    turnRight();
+  }
 }
 float EnemyTank::GetAngleToPlayer(sf::RectangleShape player_tank) { 
   sf::Vector2f player_position = player_tank.getPosition();

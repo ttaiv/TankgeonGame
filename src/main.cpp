@@ -17,7 +17,7 @@ int main()
   window.create(sf::VideoMode::getFullscreenModes()[0],"Tankgeon!");
   window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
-  EnemyTank enemy(sf::Vector2f(200, 200), 0);
+  EnemyTank enemy(sf::Vector2f(200, 200), 3);
   PlayerTank player(sf::Vector2f(100, 100), 3);
   std::vector<Projectile> projectiles;
 

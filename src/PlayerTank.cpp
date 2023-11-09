@@ -15,31 +15,20 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler)
  * @param rotation_angle 
  */
 void PlayerTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
-  sf::Vector2f current_pos = tank_shape_.getPosition();
-  float current_tank_rotation = tank_shape_.getRotation();
-  float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad), speed_scaler_ * sin(current_tank_rotation_rad));
-    current_pos += speed; 
+    goForward(walls, spikes);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad + M_PI), speed_scaler_ * sin(current_tank_rotation_rad + M_PI));
-    current_pos += speed; 
+    goBack(walls, spikes);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    current_tank_rotation += 2;
+    turnLeft();
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    current_tank_rotation -= 2;
+    turnRight();
   }
 
-  tank_shape_.setRotation(current_tank_rotation);
   turret_shape_.setRotation(rotation_angle);
-
-  if (!IsCollided(current_pos, walls, spikes)){
-    tank_shape_.setPosition(current_pos);
-    turret_shape_.setPosition(current_pos);
-  }
 }
 
 

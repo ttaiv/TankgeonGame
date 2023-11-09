@@ -11,6 +11,7 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setOrigin(20,20);
       turret_shape_.setSize(sf::Vector2f(40,40));
       turret_shape_.setPosition(tank_shape_.getPosition());
+      turret_shape_.setFillColor(sf::Color::Green);
   }
 
 
@@ -50,3 +51,47 @@ bool Tank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vect
 
   return false;
 }
+
+bool Tank::goForward(std::vector<Wall> &walls, std::vector<Spike> &spikes) {
+  sf::Vector2f current_pos = tank_shape_.getPosition();
+  float current_tank_rotation = tank_shape_.getRotation();
+  float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
+  sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad), speed_scaler_ * sin(current_tank_rotation_rad));
+  current_pos += speed; 
+  if (!IsCollided(current_pos, walls, spikes)){
+    tank_shape_.setPosition(current_pos);
+    turret_shape_.setPosition(current_pos);
+    return true;
+  } 
+  else {
+    return false;
+  }
+}
+
+bool Tank::goBack(std::vector<Wall> &walls, std::vector<Spike> &spikes) {
+  sf::Vector2f current_pos = tank_shape_.getPosition();
+  float current_tank_rotation = tank_shape_.getRotation();
+  float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
+    sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad + M_PI), speed_scaler_ * sin(current_tank_rotation_rad + M_PI));
+    current_pos += speed; 
+  if (!IsCollided(current_pos, walls, spikes)){
+    tank_shape_.setPosition(current_pos);
+    turret_shape_.setPosition(current_pos);
+    return true;
+  } 
+  else {
+    return false;
+  }
+}
+void Tank::turnLeft() {
+  float current_tank_rotation = tank_shape_.getRotation();
+  current_tank_rotation += 2;
+  tank_shape_.setRotation(current_tank_rotation);
+}
+void Tank::turnRight() {
+  float current_tank_rotation = tank_shape_.getRotation();
+  current_tank_rotation -= 2;
+  tank_shape_.setRotation(current_tank_rotation);
+}
+
+
