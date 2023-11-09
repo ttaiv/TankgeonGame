@@ -3,8 +3,6 @@
 #include <math.h>
 #include <vector>
 #include "Projectile.hpp"
-#include "Wall.hpp"
-#include "Spike.hpp"
 
 class Tank {
   public:
@@ -46,5 +44,5 @@ class Tank {
      * 
      * @param rotation_angle 
      */
-    virtual void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) = 0;
+    virtual void UpdateShape(float rotation_angle) = 0;
 };
