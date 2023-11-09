@@ -34,7 +34,7 @@ bool Tank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vect
   tank_bounds.top = next_pos.y - tank_bounds.height / 2.0f;  
   
   for (Wall &wall : walls) {
-    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
+    sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
 
     if(tank_bounds.intersects(wall_bounds)) {
       return true;
