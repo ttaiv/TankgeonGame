@@ -10,16 +10,15 @@ using namespace std;
 
 int main() 
 {
-  /*int displayWidth = 600;
-  int displayLength = 600;*/ //useless in fullscreen
+
+  
   sf::RenderWindow window;
-  //sf::RenderWindow window(sf::VideoMode(displayWidth, displayLength), "Tankgeon!");
   window.setFramerateLimit(60);
-  window.create(sf::VideoMode::getFullscreenModes()[0],"full screen");
+  window.create(sf::VideoMode::getFullscreenModes()[0],"Tankgeon!");
   window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
-  EnemyTank enemy(sf::Vector2f(200, 200), sf::Vector2f(0, 0));
-  PlayerTank player(sf::Vector2f(100, 100), sf::Vector2f(3, 3));
+  EnemyTank enemy(sf::Vector2f(200, 200), 0);
+  PlayerTank player(sf::Vector2f(100, 100), 3);
   std::vector<Projectile> projectiles;
 
   //*** Temporary creation of the walls around the screen, these should probably be in the level class once implemented(?) ***
@@ -70,9 +69,9 @@ int main()
     }
 
     window.clear();
-    player.Update(window, projectiles);
+    player.Update(window, projectiles, walls, spikes);
     player.Draw(window);
-    enemy.Update(projectiles, player.GetShape());
+    enemy.Update(projectiles, player.GetShape(), walls, spikes);
     enemy.Draw(window);
 
     for (auto &w: walls) {
@@ -86,7 +85,7 @@ int main()
     
     // Note iterating over by reference!
     for (auto &proj: projectiles) {
-      proj.Update();
+      proj.Update(walls);
       proj.Draw(window);
     }
 

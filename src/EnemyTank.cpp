@@ -1,30 +1,33 @@
 #include "include/EnemyTank.hpp"
 
-EnemyTank::EnemyTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed) 
-  : Tank(initial_pos, initial_speed) {}
+EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler) 
+  : Tank(initial_pos, speed_scaler) {}
 
-void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank) {
+void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   float angle = GetAngleToPlayer(player_tank);
-  UpdateShape(angle);
+  UpdateShape(angle, walls, spikes);
   if (cooldown_timer_ > 30) {
     cooldown_timer_ = 0;
     Shoot(projectiles, angle);
   }
   ++cooldown_timer_;
+ 
 }
 /**
  * @brief Gives the rotation angle as radians, rotates the tank using degrees.
  * 
  * @param rotation_angle 
+ * 
+ * NOTE: "walls" ans "spikes" commented out temporarily as they are currently not used in this implementation.
  */
-void EnemyTank::UpdateShape(float rotation_angle) {
-  tank_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
+void EnemyTank::UpdateShape(float rotation_angle, std::vector<Wall> &/*walls*/, std::vector<Spike> &/*spikes*/) {
+  turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
 }
 float EnemyTank::GetAngleToPlayer(sf::RectangleShape player_tank) { 
   sf::Vector2f player_position = player_tank.getPosition();
 
-  float dx = tank_shape_.getPosition().x - player_position.x;
-  float dy = tank_shape_.getPosition().y - player_position.y;
+  float dx = turret_shape_.getPosition().x - player_position.x;
+  float dy = turret_shape_.getPosition().y - player_position.y;
 
   return atan2(dy, dx);
 }

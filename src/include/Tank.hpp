@@ -3,10 +3,12 @@
 #include <math.h>
 #include <vector>
 #include "Projectile.hpp"
+#include "Wall.hpp"
+#include "Spike.hpp"
 
 class Tank {
   public:
-    Tank(sf::Vector2f initial_pos, sf::Vector2f initial_speed);
+    Tank(sf::Vector2f initial_pos, float speed_scaler);
     
     sf::RectangleShape GetShape() const;
 
@@ -34,15 +36,15 @@ class Tank {
     void Shoot(std::vector<Projectile> &projectiles, float angle);
 
   protected:
-    sf::Vector2f speed_;
+    float speed_scaler_;
     sf::RectangleShape tank_shape_;
     int cooldown_timer_;
-
+    sf::RectangleShape turret_shape_;
 
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 
      * @param rotation_angle 
      */
-    virtual void UpdateShape(float rotation_angle) = 0;
+    virtual void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) = 0;
 };

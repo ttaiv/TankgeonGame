@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Wall.hpp"
 
 class Ordnance {
   public:
@@ -11,7 +12,7 @@ class Ordnance {
     void Draw(sf::RenderWindow &window) const ;
     void UpdateAndDraw(sf::RenderWindow &window);
 
-    virtual void Update() = 0;
+    virtual void Update(std::vector<Wall> &walls) = 0;
 
   private:
     bool is_active_;
