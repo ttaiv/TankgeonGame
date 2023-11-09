@@ -3,12 +3,14 @@
 #include <math.h>
 #include <vector>
 #include "Projectile.hpp"
+#include "Wall.hpp"
+#include "Spike.hpp"
 #include "Tank.hpp"
 
 class PlayerTank: public Tank {
   public:
-    PlayerTank(sf::Vector2f initial_pos, float speed_scaler);
-    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles);
+    PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed);
+    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles, std::vector<Wall> &walls, std::vector<Spike> &spikes);
 
   private:
     /**
@@ -18,6 +20,5 @@ class PlayerTank: public Tank {
      * @return the angle as float in radians
      */
     float GetTurretRotationAngle(sf::RenderWindow &window);
-    void UpdateShape(float rotation_angle) override;
-
+    void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) override;
 };
