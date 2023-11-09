@@ -3,20 +3,14 @@
 #include <math.h>
 #include <vector>
 #include "Projectile.hpp"
+#include "Tank.hpp"
 
-class PlayerTank {
+class PlayerTank: public Tank {
   public:
     PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed);
-
-    void UpdateShape(float rotation_angle);
-    void Draw(sf::RenderWindow &window) const ;
-    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles);
-    void Shoot(std::vector<Projectile> &projectiles, float angle);
+    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) override;
 
   private:
-    sf::Vector2f speed_;
-    sf::RectangleShape tank_shape_;
-    int cooldown_timer_;
     /**
      * @brief Get new rotation angle for tank shape using mouse position
      * 
@@ -24,5 +18,5 @@ class PlayerTank {
      * @return the angle as float
      */
     float GetRotationAngle(sf::RenderWindow &window);
-
+    void UpdateShape(float rotation_angle) override;
 };
