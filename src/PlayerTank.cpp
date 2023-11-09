@@ -3,7 +3,7 @@
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {
-      textureNoPiippu.loadFromFile("./src/Assets/TankNoPiippu.png");
+      textureNoPiippu.loadFromFile("./src/assets/TankNoPiippu.png");
       tank_shape_.setTexture(&textureNoPiippu);
   }
   

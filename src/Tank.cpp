@@ -36,4 +36,5 @@ void Tank::Shoot(std::vector<Projectile> &projectiles, float angle) {
   Projectile new_projectile(turret_shape_.getPosition(), 3, angle);
   projectiles.push_back(new_projectile);
 }
+
 sf::RectangleShape Tank::GetShape() const { return tank_shape_; }
