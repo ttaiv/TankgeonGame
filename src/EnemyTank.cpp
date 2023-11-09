@@ -1,7 +1,7 @@
 #include "include/EnemyTank.hpp"
 
-EnemyTank::EnemyTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed) 
-  : Tank(initial_pos, initial_speed) {}
+EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler) 
+  : Tank(initial_pos, speed_scaler) {}
 
 void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank) {
   float angle = GetAngleToPlayer(player_tank);
@@ -18,13 +18,13 @@ void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape 
  * @param rotation_angle 
  */
 void EnemyTank::UpdateShape(float rotation_angle) {
-  tank_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
+  turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
 }
 float EnemyTank::GetAngleToPlayer(sf::RectangleShape player_tank) { 
   sf::Vector2f player_position = player_tank.getPosition();
 
-  float dx = tank_shape_.getPosition().x - player_position.x;
-  float dy = tank_shape_.getPosition().y - player_position.y;
+  float dx = turret_shape_.getPosition().x - player_position.x;
+  float dy = turret_shape_.getPosition().y - player_position.y;
 
   return atan2(dy, dx);
 }

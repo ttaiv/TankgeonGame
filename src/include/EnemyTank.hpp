@@ -7,7 +7,7 @@
 
 class EnemyTank: public Tank {
   public:
-    EnemyTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed);
+    EnemyTank(sf::Vector2f initial_pos, float speed_scaler);
     void Update(std::vector<Projectile> &projectiles, sf::RectangleShape playerTank);
 
   private:
