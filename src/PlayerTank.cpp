@@ -1,7 +1,10 @@
 #include "include/PlayerTank.hpp"
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed) 
-  : Tank(initial_pos, initial_speed) {}
+  : Tank(initial_pos, initial_speed) {
+    textureNoPiippu.loadFromFile("./src/Assets/TankNoPiippu.png");
+    tank_shape_.setTexture(&textureNoPiippu);
+  }
   
 
 void PlayerTank::UpdateShape(float rotation_angle) {

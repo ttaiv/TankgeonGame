@@ -19,4 +19,5 @@ class PlayerTank: public Tank {
      */
     float GetRotationAngle(sf::RenderWindow &window);
     void UpdateShape(float rotation_angle) override;
+    sf::Texture textureNoPiippu;
 };

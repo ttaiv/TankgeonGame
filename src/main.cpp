@@ -10,8 +10,8 @@ using namespace std;
 
 int main() 
 {
-  int displayWidth = 600;
-  int displayLength = 600;
+  /*int displayWidth = 600;
+  int displayLength = 600;*/ //useless in fullscreen
   sf::RenderWindow window;
   //sf::RenderWindow window(sf::VideoMode(displayWidth, displayLength), "Tankgeon!");
   window.setFramerateLimit(60);

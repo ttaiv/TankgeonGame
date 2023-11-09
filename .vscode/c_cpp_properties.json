@@ -3,7 +3,7 @@
         {
             "name": "All",
             "includePath": [
-                "${workspaceFolder}/src/"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "cStandard": "c11",
