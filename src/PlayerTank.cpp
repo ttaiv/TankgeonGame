@@ -10,7 +10,8 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler)
  */
 void PlayerTank::UpdateShape(float rotation_angle) {
   sf::Vector2f current_pos = tank_shape_.getPosition();
-  float current_tank_rotation_rad = tank_shape_.getRotation() * M_PI / 180.0f;
+  float current_tank_rotation = tank_shape_.getRotation();
+  float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
     sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad), speed_scaler_ * sin(current_tank_rotation_rad));
     current_pos += speed; 
@@ -31,7 +32,6 @@ void PlayerTank::UpdateShape(float rotation_angle) {
   turret_shape_.setRotation(rotation_angle);
   turret_shape_.setPosition(current_pos);
 }
-
 
 
 void PlayerTank::Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles) {
