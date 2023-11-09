@@ -1,7 +1,7 @@
 #include "include/EnemyTank.hpp"
 
-EnemyTank::EnemyTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed) 
-  : Tank(initial_pos, initial_speed) {}
+EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler) 
+  : Tank(initial_pos, speed_scaler) {}
 
 void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank) {
   float angle = GetAngleToPlayer(player_tank);

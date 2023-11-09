@@ -1,23 +1,21 @@
 #include "include/PlayerTank.hpp"
 
-PlayerTank::PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed) 
-  : Tank(initial_pos, initial_speed) {}
+PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
+  : Tank(initial_pos, speed_scaler) {}
   
 
 void PlayerTank::UpdateShape(float rotation_angle) {
   sf::Vector2f current_pos = tank_shape_.getPosition();
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    current_pos.x -= speed_.x; 
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    current_pos.x += speed_.x; 
-  }
+
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    current_pos.y -= speed_.y; 
+    sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(rotation_angle + M_PI), speed_scaler_ * sin(rotation_angle + M_PI));
+    current_pos += speed; 
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    current_pos.y += speed_.y; 
+    sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(rotation_angle + M_PI), speed_scaler_ * sin(rotation_angle + M_PI));
+    current_pos -= speed; 
   }
+
   tank_shape_.setPosition(current_pos);
   tank_shape_.setRotation(rotation_angle);
 }

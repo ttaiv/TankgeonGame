@@ -7,7 +7,7 @@
 
 class PlayerTank: public Tank {
   public:
-    PlayerTank(sf::Vector2f initial_pos, sf::Vector2f initial_speed);
+    PlayerTank(sf::Vector2f initial_pos, float speed_scaler);
     void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles);
 
   private:
