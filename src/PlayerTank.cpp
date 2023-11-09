@@ -2,7 +2,10 @@
 
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
-  : Tank(initial_pos, speed_scaler) {}
+  : Tank(initial_pos, speed_scaler) {
+      textureNoPiippu.loadFromFile("./src/Assets/TankNoPiippu.png");
+      tank_shape_.setTexture(&textureNoPiippu);
+  }
   
 /**
  * @brief Updates tank chassis and turret angles based on inputs. Gets angle to mouse as parameter.

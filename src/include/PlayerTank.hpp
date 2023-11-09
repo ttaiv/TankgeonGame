@@ -22,5 +22,7 @@ class PlayerTank: public Tank {
     float GetTurretRotationAngle(sf::RenderWindow &window);
     void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) override;
     bool IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes) const;
+    sf::Texture textureNoPiippu;
 
+>>>>>>> src/include/PlayerTank.hpp
 };
