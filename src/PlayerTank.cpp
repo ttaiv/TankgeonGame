@@ -63,28 +63,6 @@ float PlayerTank::GetTurretRotationAngle(sf::RenderWindow &window) {
   return atan2(dy, dx);
 }
 
-bool PlayerTank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes) const {
-  sf::FloatRect tank_bounds = tank_shape_.getGlobalBounds();
-  tank_bounds.left = next_pos.x - tank_bounds.width / 2.0f;
-  tank_bounds.top = next_pos.y - tank_bounds.height / 2.0f;  
-  
-  for (Wall &wall : walls) {
-    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
 
-    if(tank_bounds.intersects(wall_bounds)) {
-      return true;
-    }
-  }
-
-  for (Spike &spike : spikes) {
-    sf::FloatRect spike_bounds = spike.GetGlobalBounds();
-    
-    if (tank_bounds.intersects(spike_bounds)) {
-      return true;
-    }
-  }
-
-  return false;
-}
 
 

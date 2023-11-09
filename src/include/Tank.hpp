@@ -46,7 +46,7 @@ class Tank {
     sf::RectangleShape tank_shape_;
     int cooldown_timer_;
     sf::RectangleShape turret_shape_;
-
+    bool IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes) const;
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 

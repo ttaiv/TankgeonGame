@@ -11,7 +11,6 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setOrigin(20,20);
       turret_shape_.setSize(sf::Vector2f(40,40));
       turret_shape_.setPosition(tank_shape_.getPosition());
-      turret_shape_.setFillColor(sf::Color::Green);
   }
 
 
@@ -27,3 +26,27 @@ void Tank::Shoot(std::vector<Projectile> &projectiles, float angle) {
 }
 
 sf::RectangleShape Tank::GetShape() const { return tank_shape_; }
+
+bool Tank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes) const {
+  sf::FloatRect tank_bounds = tank_shape_.getGlobalBounds();
+  tank_bounds.left = next_pos.x - tank_bounds.width / 2.0f;
+  tank_bounds.top = next_pos.y - tank_bounds.height / 2.0f;  
+  
+  for (Wall &wall : walls) {
+    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
+
+    if(tank_bounds.intersects(wall_bounds)) {
+      return true;
+    }
+  }
+
+  for (Spike &spike : spikes) {
+    sf::FloatRect spike_bounds = spike.GetGlobalBounds();
+    
+    if (tank_bounds.intersects(spike_bounds)) {
+      return true;
+    }
+  }
+
+  return false;
+}

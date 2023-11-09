@@ -24,7 +24,7 @@ class PlayerTank: public Tank {
      */
     float GetTurretRotationAngle(sf::RenderWindow &window);
 
-    bool IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes) const;
+    
     sf::Texture textureNoTurret;
     sf::Texture textureTurret;
 
