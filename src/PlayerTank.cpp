@@ -21,10 +21,10 @@ void PlayerTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std
     goBack(walls, spikes);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    turnLeft();
+    turnLeft(walls, spikes);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    turnRight();
+    turnRight(walls, spikes);
   }
 
   turret_shape_.setRotation(rotation_angle);
