@@ -14,13 +14,16 @@ Projectile::Projectile(sf::Vector2f initial_position, int speed_scaler, float an
 }
 
 void Projectile::Update(std::vector<Wall> &walls) {
-  sf::Vector2f new_pos = projectile_shape_.getPosition() + speed_;
+  // Update position
+  projectile_shape_.move(speed_);
+  // Check for collision
   for (Wall &wall : walls) {
-    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
-    sf::FloatRect next_pos_bounds(new_pos.x, new_pos.y, projectile_shape_.getGlobalBounds().width, projectile_shape_.getGlobalBounds().height);
-    if (wall_bounds.intersects(next_pos_bounds)) {
+    sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
+    sf::FloatRect projectile_box = projectile_shape_.getGlobalBounds();
+    if (wall_bounds.intersects(projectile_box)) {
+      // Collision happened, calculate intersection and make projectile bounce.
       sf::FloatRect intersection;
-      wall_bounds.intersects(next_pos_bounds, intersection);
+      wall_bounds.intersects(projectile_box, intersection);
       if (intersection.width > intersection.height) {
         // Collision is more vertical
         speed_.y = -speed_.y;
@@ -31,7 +34,6 @@ void Projectile::Update(std::vector<Wall> &walls) {
       break;
     }
   }
-  projectile_shape_.setPosition(new_pos);
 }
 
 void Projectile::Draw(sf::RenderWindow &window) const {

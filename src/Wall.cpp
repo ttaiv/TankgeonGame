@@ -16,6 +16,6 @@ void Wall::Draw(sf::RenderWindow &window) const {
     window.draw(wallShape_);
 }
 
-sf::FloatRect Wall::GetGlobalBounds() const {
-  return wallShape_.getGlobalBounds();
+sf::RectangleShape Wall::GetShape() const {
+  return wallShape_;
 }
