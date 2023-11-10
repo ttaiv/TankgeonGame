@@ -1,7 +1,12 @@
 #include "include/EnemyTank.hpp"
 
 EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler) 
-  : Tank(initial_pos, speed_scaler) {}
+  : Tank(initial_pos, speed_scaler) {
+      textureNoTurret_.loadFromFile("./src/assets/RedTankNoTurret.png");
+      tank_shape_.setTexture(&textureNoTurret_);
+      textureTurret_.loadFromFile("./src/assets/RedTankTurret.png");
+      turret_shape_.setTexture(&textureTurret_);
+  }
 
 void EnemyTank::Update(std::vector<Projectile> &projectiles, sf::RectangleShape player_tank, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   float angle = GetAngleToPlayer(player_tank);

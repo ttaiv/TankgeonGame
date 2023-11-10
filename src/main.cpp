@@ -27,7 +27,7 @@ int main()
   unsigned int windowWidth = windowSize.x;
   unsigned int windowHeight = windowSize.y;
   
-  float wallThickness = 40;
+  float wallThickness = 100;
   float gapSize = 1000;
   float gapCenterX = windowWidth / 2.0f;
   float halfGapSize = gapSize / 2.0f;

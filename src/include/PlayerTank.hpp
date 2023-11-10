@@ -22,10 +22,7 @@ class PlayerTank: public Tank {
      * @param window
      * @return the angle as float in radians
      */
+    sf::Texture textureNoTurret_;
+    sf::Texture textureTurret_;
     float GetTurretRotationAngle(sf::RenderWindow &window);
-
-    
-    sf::Texture textureNoTurret;
-    sf::Texture textureTurret;
-
 };
