@@ -16,4 +16,7 @@ class EnemyTank: public Tank {
   private:
     void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes);
     float GetAngleToPlayer(sf::RectangleShape playerTank);
+    sf::Texture textureNoTurret_;
+    sf::Texture textureTurret_;
+    bool IsTooClose(std::vector<Wall> &walls, std::vector<Spike> &spikes);
 };

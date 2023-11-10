@@ -2,10 +2,10 @@
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {
-      textureNoTurret.loadFromFile("../src/assets/TankNoPiippu.png");
-      tank_shape_.setTexture(&textureNoTurret);
-      textureTurret.loadFromFile("../src/assets/TankPiippu.png");
-      turret_shape_.setTexture(&textureTurret);
+      textureNoTurret_.loadFromFile("../src/assets/TankNoTurret.png");
+      tank_shape_.setTexture(&textureNoTurret_);
+      textureTurret_.loadFromFile("../src/assets/TankTurret.png");
+      turret_shape_.setTexture(&textureTurret_);
   }
   
 /**
@@ -15,16 +15,16 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler)
  */
 void PlayerTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    goForward(walls, spikes);
+    goForward(walls, spikes, 1);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    goBack(walls, spikes);
+    goBack(walls, spikes, 1);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    turnLeft();
+    turnLeft(walls, spikes, 1);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    turnRight();
+    turnRight(walls, spikes, 1);
   }
 
   turret_shape_.setRotation(rotation_angle);
