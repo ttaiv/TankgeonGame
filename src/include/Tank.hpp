@@ -40,13 +40,17 @@ class Tank {
      * @param angle as radians
      */
     void Shoot(std::vector<Projectile> &projectiles, float angle);
+    bool goForward(std::vector<Wall> &walls, std::vector<Spike> &spikes);
+    bool goBack(std::vector<Wall> &walls, std::vector<Spike> &spikes);
+    void turnLeft();
+    void turnRight();
 
   protected:
     float speed_scaler_;
     sf::RectangleShape tank_shape_;
     int cooldown_timer_;
     sf::RectangleShape turret_shape_;
-
+    bool IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes) const;
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 
