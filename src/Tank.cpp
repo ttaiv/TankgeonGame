@@ -82,15 +82,44 @@ bool Tank::goBack(std::vector<Wall> &walls, std::vector<Spike> &spikes) {
     return false;
   }
 }
-void Tank::turnLeft() {
+
+void Tank::turnLeft(std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   float current_tank_rotation = tank_shape_.getRotation();
   current_tank_rotation += 2;
+  float original_rotation_input = current_tank_rotation;
   tank_shape_.setRotation(current_tank_rotation);
+  
+  
+  /*Check if rotation causes a collision.
+  If a collision is detected the turn is reduced
+  so that a collision wont occur*/
+  if (IsCollided(tank_shape_.getPosition(), walls, spikes)) {
+    float adjusted_rotation = current_tank_rotation;
+    while (IsCollided(tank_shape_.getPosition(), walls, spikes) && ((original_rotation_input - adjusted_rotation) <= 2)) {
+      adjusted_rotation -= 0.1f;
+      tank_shape_.setRotation(adjusted_rotation);
+    }
+    current_tank_rotation = adjusted_rotation;
+  }
 }
-void Tank::turnRight() {
+
+void Tank::turnRight(std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   float current_tank_rotation = tank_shape_.getRotation();
   current_tank_rotation -= 2;
+  float original_rotation_input = current_tank_rotation;
   tank_shape_.setRotation(current_tank_rotation);
+  
+  /*Check if rotation causes a collision.
+  If a collision is detected the turn is reduced
+  so that a collision wont occur*/
+  if (IsCollided(tank_shape_.getPosition(), walls, spikes)) {
+    float adjusted_rotation = current_tank_rotation;
+    while (IsCollided(tank_shape_.getPosition(), walls, spikes) && ((adjusted_rotation - original_rotation_input) <= 2)) {
+      adjusted_rotation += 0.1f;
+      tank_shape_.setRotation(adjusted_rotation);
+    }
+    current_tank_rotation = adjusted_rotation;
+  }
 }
 
 
