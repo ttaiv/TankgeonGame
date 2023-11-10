@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Wall.hpp"
 
+// This class is probably unnecessary and will possibly get deleted
+
 class Ordnance {
   public:
     Ordnance();
