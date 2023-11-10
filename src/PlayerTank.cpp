@@ -15,16 +15,16 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler)
  */
 void PlayerTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    goForward(walls, spikes);
+    goForward(walls, spikes, 1);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    goBack(walls, spikes);
+    goBack(walls, spikes, 1);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    turnLeft(walls, spikes);
+    turnLeft(walls, spikes, 1);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    turnRight(walls, spikes);
+    turnRight(walls, spikes, 1);
   }
 
   turret_shape_.setRotation(rotation_angle);
