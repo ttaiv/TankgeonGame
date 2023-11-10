@@ -2,9 +2,9 @@
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {
-      textureNoTurret_.loadFromFile("./src/assets/TankNoTurret.png");
+      textureNoTurret_.loadFromFile("../src/assets/TankNoTurret.png");
       tank_shape_.setTexture(&textureNoTurret_);
-      textureTurret_.loadFromFile("./src/assets/TankTurret.png");
+      textureTurret_.loadFromFile("../src/assets/TankTurret.png");
       turret_shape_.setTexture(&textureTurret_);
   }
   

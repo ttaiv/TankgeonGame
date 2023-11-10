@@ -27,7 +27,7 @@ int main()
   unsigned int windowWidth = windowSize.x;
   unsigned int windowHeight = windowSize.y;
   
-  float wallThickness = 100;
+  float wallThickness = 60;
   float gapSize = 1000;
   float gapCenterX = windowWidth / 2.0f;
   float halfGapSize = gapSize / 2.0f;
@@ -41,7 +41,6 @@ int main()
   Wall leftVerticalWall(sf::Vector2f(gapCenterX - halfGapSize - wallThickness, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
   Wall rightVerticalWall(sf::Vector2f(gapCenterX + halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
   Spike middleSpikes(sf::Vector2f(gapCenterX - 100, verticalWallYPosition + 50), sf::Vector2f(wallThickness + 200, wallHeight - 100));
-
   
 
   vector<Wall> walls;
