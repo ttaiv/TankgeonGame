@@ -55,5 +55,5 @@ class Tank {
      * @param vector containing level's spikes
      *  
      */
-    virtual void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) = 0;
+    //virtual void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) = 0;
 };
