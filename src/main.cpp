@@ -71,7 +71,7 @@ int main()
     window.clear();
     player.Update(window, projectiles, walls, spikes);
     player.Draw(window);
-    enemy.Update(projectiles, player.GetShape(), walls, spikes);
+    enemy.Update(projectiles, player.GetShape());
     enemy.Draw(window);
 
     for (auto &w: walls) {
