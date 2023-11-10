@@ -11,7 +11,6 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setOrigin(50,50);
       turret_shape_.setSize(sf::Vector2f(100,100));
       turret_shape_.setPosition(tank_shape_.getPosition());
-      turret_shape_.setFillColor(sf::Color::Green);
   }
 
 

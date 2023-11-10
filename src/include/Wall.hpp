@@ -34,4 +34,5 @@ class Wall: public Obstacle
     sf::Vector2f position_;
     sf::Vector2f size_;
     sf::RectangleShape wallShape_;
+    sf::Texture wallTexture_;
 };

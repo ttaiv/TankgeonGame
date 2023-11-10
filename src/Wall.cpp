@@ -5,7 +5,10 @@ Wall::Wall(sf::Vector2f position, sf::Vector2f size)
 
         wallShape_.setPosition(position);
         wallShape_.setSize(size);
-        wallShape_.setFillColor(sf::Color::Red);
+        wallShape_.setFillColor(sf::Color::White);
+        wallTexture_.loadFromFile("../src/assets/Wall.jpg");
+        wallShape_.setTexture(&wallTexture_);
+        wallTexture_.setRepeated(true); //does not repeat hmm...?
     }
 
 bool Wall::IsProjectilePassable(){
