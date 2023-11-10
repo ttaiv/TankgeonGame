@@ -27,7 +27,7 @@ class Wall: public Obstacle
      */
     virtual void Draw(sf::RenderWindow &window) const override;
 
-    sf::FloatRect GetGlobalBounds() const;
+    sf::RectangleShape GetShape() const;
     
     
   private:

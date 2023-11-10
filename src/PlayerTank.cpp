@@ -1,11 +1,10 @@
 #include "include/PlayerTank.hpp"
 
-
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {
-      textureNoTurret.loadFromFile("./src/assets/TankNoPiippu.png");
+      textureNoTurret.loadFromFile("../src/assets/TankNoPiippu.png");
       tank_shape_.setTexture(&textureNoTurret);
-      textureTurret.loadFromFile("./src/assets/TankPiippu.png");
+      textureTurret.loadFromFile("../src/assets/TankPiippu.png");
       turret_shape_.setTexture(&textureTurret);
   }
   
@@ -69,7 +68,7 @@ bool PlayerTank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std
   tank_bounds.top = next_pos.y - tank_bounds.height / 2.0f;  
   
   for (Wall &wall : walls) {
-    sf::FloatRect wall_bounds = wall.GetGlobalBounds();
+    sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
 
     if(tank_bounds.intersects(wall_bounds)) {
       return true;
