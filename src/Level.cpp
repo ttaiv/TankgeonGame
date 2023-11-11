@@ -49,10 +49,10 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
   player_.Update(window, projectiles_, walls_, spikes_);
 }
 void Level::DrawLevel(sf::RenderWindow &window) {
-  for (auto it : walls_) {
+  for (auto &it : walls_) {
     it.Draw(window);
   }
-  for (auto it : spikes_) {
+  for (auto &it : spikes_) {
     it.Draw(window);
   }
   // Has to be it instead of &it, why?? T: Teemu
@@ -60,7 +60,7 @@ void Level::DrawLevel(sf::RenderWindow &window) {
     it.Draw(window);
   }
   player_.Draw(window);
-  for (auto it : projectiles_) {
+  for (auto &it : projectiles_) {
     it.Draw(window);
   }
 }

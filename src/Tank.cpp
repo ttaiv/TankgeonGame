@@ -25,7 +25,7 @@ void Tank::Shoot(std::vector<Projectile> &projectiles, float angle) {
   projectiles.push_back(new_projectile);
 }
 
-sf::RectangleShape Tank::GetShape() const { return tank_shape_; }
+const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }
 
 bool Tank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes, float scaler) const {
   sf::RectangleShape tank_shape_copy = tank_shape_;

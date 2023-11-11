@@ -16,7 +16,7 @@ class Tank {
      */
     Tank(sf::Vector2f initial_pos, float speed_scaler);
     
-    sf::RectangleShape GetShape() const;
+    const sf::RectangleShape& GetShape() const;
 
     /**
      * @brief Draws the shape on the window
