@@ -13,8 +13,9 @@ class Level {
   public:
     Level(PlayerTank player);
     void SetUpLevel(int level_number, sf::RenderWindow &window);
-    void updateLevel(sf::RenderWindow &window);
+    void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
+
   private:
     std::vector<Wall> walls_;
     std::vector<Spike> spikes_;

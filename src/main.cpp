@@ -36,7 +36,7 @@ int main()
     }
 
     window.clear();
-    level1.updateLevel(window);
+    level1.UpdateLevel(window);
     level1.DrawLevel(window);
 
     window.display();

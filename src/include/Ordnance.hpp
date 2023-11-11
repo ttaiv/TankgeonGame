@@ -14,7 +14,7 @@ class Ordnance {
     void Draw(sf::RenderWindow &window) const ;
     void UpdateAndDraw(sf::RenderWindow &window);
 
-    virtual void Update(std::vector<Wall> &walls) = 0;
+    // virtual void Update(std::vector<Wall> &walls) = 0;
 
   private:
     bool is_active_;
