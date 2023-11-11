@@ -34,12 +34,17 @@ void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
     enemies_.push_back(EnemyTank(sf::Vector2f(200, 200), 3));
   }
 }
-void Level::updateLevel(sf::RenderWindow &window) {
+void Level::UpdateLevel(sf::RenderWindow &window) {
   for (auto &it : enemies_) {
     it.Update(projectiles_, player_.GetShape(), walls_, spikes_);
   }
-  for (auto &it : projectiles_) {
-    it.Update(walls_);
+  for (auto it = projectiles_.begin(); it != projectiles_.end();) {
+    bool moving_successful = (*it).MoveAndRicochet(walls_);
+    if (!moving_successful) {
+      it = projectiles_.erase(it);
+    } else {
+      ++it;
+    }
   }
   player_.Update(window, projectiles_, walls_, spikes_);
 }
