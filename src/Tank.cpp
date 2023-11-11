@@ -21,7 +21,7 @@ void Tank::Draw(sf::RenderWindow &window) const {
 
 
 void Tank::Shoot(std::vector<Projectile> &projectiles, float angle) {
-  Projectile new_projectile(turret_shape_.getPosition(), 3, angle, 1);
+  Projectile new_projectile(turret_shape_.getPosition(), 4, angle, 1);
   projectiles.push_back(new_projectile);
 }
 
