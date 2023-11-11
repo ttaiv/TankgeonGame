@@ -50,6 +50,7 @@ void Level::DrawLevel(sf::RenderWindow &window) {
   for (auto it : spikes_) {
     it.Draw(window);
   }
+  // Has to be it instead of &it, why?? T: Teemu
   for (auto it : enemies_) {
     it.Draw(window);
   }
