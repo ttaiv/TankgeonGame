@@ -8,6 +8,7 @@
 #include "Spike.hpp"
 #include "PlayerTank.hpp"
 #include "EnemyTank.hpp"
+#include "CollisionManager.hpp"
 
 class Level {
   public:
@@ -22,4 +23,7 @@ class Level {
     std::vector<EnemyTank> enemies_;
     PlayerTank player_;
     std::vector<Projectile> projectiles_;
+
+    void HandleProjectileCollisions();
+
 };

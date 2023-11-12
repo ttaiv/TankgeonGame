@@ -15,34 +15,41 @@ Projectile::Projectile(sf::Vector2f initial_position, int speed_scaler, float an
   }
 
 
-bool Projectile::MoveAndRicochet(const std::vector<Wall> &walls) {
+void Projectile::Move() {
+  ++lifetime_;
   projectile_shape_.move(speed_);
-  sf::FloatRect projectile_box = projectile_shape_.getGlobalBounds();
-  // Check for collision
-  for (const Wall &wall : walls) {
-    sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
-    if (wall_bounds.intersects(projectile_box)) {
-      // Collision happened.
-      if (ricochet_count_ >= ricochet_limit_) {
-        return false; // Projectile should be destroyed
-      }
-      // Calculate intersection and make projectile ricochet.
-      ++ricochet_count_;
-      sf::FloatRect intersection;
-      wall_bounds.intersects(projectile_box, intersection);
-      if (intersection.width > intersection.height) {
-        // Collision is more vertical
-        speed_.y = -speed_.y;
-      } else {
-        // Collision is more horizontal
-        speed_.x = -speed_.x;
-      }
-      return true; // Moving and ricochet successful
-    }
-  }
-  return true; // Moving successful;
+}
+
+void Projectile::RicochetX() {
+  ++ricochet_count_;
+  speed_.x = -speed_.x;
+}
+
+void Projectile::RicochetY() {
+  ++ricochet_count_;
+  speed_.y = -speed_.y;
+}
+
+const sf::CircleShape& Projectile::GetShape() const {
+  return projectile_shape_;
+}
+
+int Projectile::GetRicochetCount() const {
+  return ricochet_count_;
+}
+
+int Projectile::GetRicochetLimit() const {
+  return ricochet_limit_;
+}
+
+bool Projectile::RicochetLimitReached() const {
+  return ricochet_count_ >= ricochet_limit_;
 }
 
 void Projectile::Draw(sf::RenderWindow &window) const {
   window.draw(projectile_shape_);
+}
+
+bool Projectile::Hurts() const {
+  return lifetime_ > 30;
 }
