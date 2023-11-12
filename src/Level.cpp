@@ -1,4 +1,5 @@
 #include "include/Level.hpp"
+#include <iostream>
 
 Level::Level(PlayerTank player) : player_(player) {}
 
@@ -39,26 +40,16 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
   for (auto &it : enemies_) {
     it.Update(projectiles_, player_.GetShape(), walls_, spikes_);
   }
-  // Update positions of projectiles, make them ricochet and destroy them if necessary.
-  for (auto it = projectiles_.begin(); it != projectiles_.end();) {
-    it->Move(); // Move projectile
-    // Check for collisions between wall and projectile.
-    ProjectileWallCollisionResult result = NoCollision;
-    for (Wall &wall : walls_) {
-      result = CollisionManager::ProjectileWall(*it, wall);
-      if (result == Ricochet || result == Destroy) {
-        // No need to check other walls
-        break;
-      }
-    }
-    if (result == Destroy) {
-      it = projectiles_.erase(it);
-    } else {
-      ++it;
-    }
+  // Update positions of projectiles.
+  for (auto &projectile: projectiles_) {
+    projectile.Move();
   }
+  // Handle projectile collisions
+  HandleProjectileCollisions();
+  // Update player tank position and make it shoot.
   player_.Update(window, projectiles_, walls_, spikes_);
 }
+
 void Level::DrawLevel(sf::RenderWindow &window) {
   for (auto &it : walls_) {
     it.Draw(window);
@@ -73,5 +64,49 @@ void Level::DrawLevel(sf::RenderWindow &window) {
   player_.Draw(window);
   for (auto &it : projectiles_) {
     it.Draw(window);
+  }
+}
+
+void Level::HandleProjectileCollisions() {
+  for (auto projectile_it = projectiles_.begin(); projectile_it != projectiles_.end();) {
+    // Check for collisions between wall and projectile.
+    ProjectileWallCollisionResult result = NoCollision;
+    for (Wall &wall : walls_) {
+      result = CollisionManager::ProjectileWall(*projectile_it, wall);
+      if (result == Ricochet || result == Destroy) {
+        // No need to check other walls
+        break;
+      }
+    }
+    if (result == Destroy) {
+      // Remove projectile and move to next one.
+      projectile_it = projectiles_.erase(projectile_it);
+      continue;
+    }
+    // Check for collisions with enemy tanks.
+    bool enemy_collision = false;
+    for (auto enemy_it = enemies_.begin(); enemy_it != enemies_.end();) {
+      enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy_it);
+      if (enemy_collision) {
+        // No need to check other enemies
+        enemies_.erase(enemy_it);
+        break;
+      } else {
+        ++enemy_it;
+      }
+    }
+    if (enemy_collision) {
+      // Remove projectile and move to next one.
+      projectile_it = projectiles_.erase(projectile_it);
+      continue;
+    }
+    // Check for collision with player tank
+    if (CollisionManager::ProjectileTank(*projectile_it, player_)) {
+      // Game over
+      std::cout << "Player was hit" << std::endl;
+      projectile_it = projectiles_.erase(projectile_it);
+      continue;
+    }
+    ++projectile_it; // No collisions
   }
 }

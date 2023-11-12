@@ -22,3 +22,20 @@ ProjectileWallCollisionResult CollisionManager::ProjectileWall(Projectile &proje
   }
   return NoCollision;
 }
+
+/**
+ * @brief 
+ * 
+ * @param projectile 
+ * @param tank 
+ * @return true, if tank and projectile collide and projectile is active
+ * @return false, if tank and projectile do not collide or projectile is not active
+ */
+bool CollisionManager::ProjectileTank(Projectile &projectile, Tank &tank) {
+  sf::FloatRect projectile_box = projectile.GetShape().getGlobalBounds();
+  sf::FloatRect tank_bounds = tank.GetShape().getGlobalBounds();
+  if (projectile.Hurts() && tank_bounds.intersects(projectile_box)) {
+    return true;
+  }
+  return false;
+}

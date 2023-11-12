@@ -1,6 +1,7 @@
 #pragma once
 #include "Projectile.hpp"
 #include "Wall.hpp"
+#include "Tank.hpp"
 
 enum ProjectileWallCollisionResult {
   NoCollision,
@@ -19,4 +20,6 @@ namespace CollisionManager {
    * @return ProjectileWallCollisionResult
    */
   ProjectileWallCollisionResult ProjectileWall(Projectile &projectile, Wall &wall);
+
+  bool ProjectileTank(Projectile &projectile, Tank &tank);
 }

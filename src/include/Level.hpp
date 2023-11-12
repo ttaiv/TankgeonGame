@@ -24,4 +24,6 @@ class Level {
     PlayerTank player_;
     std::vector<Projectile> projectiles_;
 
+    void HandleProjectileCollisions();
+
 };

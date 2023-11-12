@@ -16,10 +16,12 @@ class Projectile {
     int GetRicochetCount() const;
     int GetRicochetLimit() const;
     bool RicochetLimitReached() const;
+    bool Hurts() const;
 
   private:
     sf::Vector2f speed_;
     sf::CircleShape projectile_shape_;
     int ricochet_limit_;
     int ricochet_count_ = 0;
+    int lifetime_ = 0;
 };

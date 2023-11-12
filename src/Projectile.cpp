@@ -16,6 +16,7 @@ Projectile::Projectile(sf::Vector2f initial_position, int speed_scaler, float an
 
 
 void Projectile::Move() {
+  ++lifetime_;
   projectile_shape_.move(speed_);
 }
 
@@ -47,4 +48,8 @@ bool Projectile::RicochetLimitReached() const {
 
 void Projectile::Draw(sf::RenderWindow &window) const {
   window.draw(projectile_shape_);
+}
+
+bool Projectile::Hurts() const {
+  return lifetime_ > 30;
 }
