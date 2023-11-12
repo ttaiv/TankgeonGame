@@ -1,12 +1,12 @@
 #include "include/CollisionManager.hpp"
 
-bool CollisionManager::ProjectileWall(Projectile &projectile, Wall &wall) {
+ProjectileWallCollisionResult CollisionManager::ProjectileWall(Projectile &projectile, Wall &wall) {
   sf::FloatRect projectile_box = projectile.GetShape().getGlobalBounds();
   sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
   if (wall_bounds.intersects(projectile_box)) {
     // Collision happened.
     if (projectile.RicochetLimitReached()) {
-      return true; // Projectile should be destroyed
+      return Destroy; // Projectile should be destroyed
     }
     // Calculate intersection and make projectile ricochet.
     sf::FloatRect intersection;
@@ -18,6 +18,7 @@ bool CollisionManager::ProjectileWall(Projectile &projectile, Wall &wall) {
       // Collision is more horizontal
       projectile.RicochetX();
     }
+    return Ricochet;
   }
-  return false;
+  return NoCollision;
 }

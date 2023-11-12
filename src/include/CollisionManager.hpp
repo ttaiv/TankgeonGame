@@ -1,7 +1,12 @@
 #pragma once
 #include "Projectile.hpp"
 #include "Wall.hpp"
-#include "Level.hpp"
+
+enum ProjectileWallCollisionResult {
+  NoCollision,
+  Ricochet,
+  Destroy
+};
 
 namespace CollisionManager {
   /**
@@ -11,8 +16,7 @@ namespace CollisionManager {
    * 
    * @param projectile 
    * @param wall 
-   * @return false if projectile does not collide wall or collides and ricochets
-   * @return true if projectile collides wall and should be destroyed
+   * @return ProjectileWallCollisionResult
    */
-  bool ProjectileWall(Projectile &projectile, Wall &wall);
+  ProjectileWallCollisionResult ProjectileWall(Projectile &projectile, Wall &wall);
 }

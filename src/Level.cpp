@@ -42,16 +42,16 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update positions of projectiles, make them ricochet and destroy them if necessary.
   for (auto it = projectiles_.begin(); it != projectiles_.end();) {
     it->Move(); // Move projectile
-    bool destroy = false;
     // Check for collisions between wall and projectile.
+    ProjectileWallCollisionResult result = NoCollision;
     for (Wall &wall : walls_) {
-      bool should_destroy = CollisionManager::ProjectileWall(*it, wall);
-      if (should_destroy) {
-        destroy = true;
+      result = CollisionManager::ProjectileWall(*it, wall);
+      if (result == Ricochet || result == Destroy) {
+        // No need to check other walls
         break;
       }
     }
-    if (destroy) {
+    if (result == Destroy) {
       it = projectiles_.erase(it);
     } else {
       ++it;
