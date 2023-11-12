@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <vector>
+#include <list>
 #include "Projectile.hpp"
 #include "Tank.hpp"
 #include "Wall.hpp"
@@ -20,7 +21,7 @@ class Level {
   private:
     std::vector<Wall> walls_;
     std::vector<Spike> spikes_;
-    std::vector<EnemyTank> enemies_;
+    std::list<EnemyTank> enemies_;
     PlayerTank player_;
     std::vector<Projectile> projectiles_;
 
