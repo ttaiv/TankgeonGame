@@ -35,12 +35,23 @@ void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
   }
 }
 void Level::UpdateLevel(sf::RenderWindow &window) {
+  // Update enemy positions and make them shoot.
   for (auto &it : enemies_) {
     it.Update(projectiles_, player_.GetShape(), walls_, spikes_);
   }
+  // Update positions of projectiles, make them ricochet and destroy them if necessary.
   for (auto it = projectiles_.begin(); it != projectiles_.end();) {
-    bool moving_successful = (*it).MoveAndRicochet(walls_);
-    if (!moving_successful) {
+    it->Move(); // Move projectile
+    bool destroy = false;
+    // Check for collisions between wall and projectile.
+    for (Wall &wall : walls_) {
+      bool should_destroy = CollisionManager::ProjectileWall(*it, wall);
+      if (should_destroy) {
+        destroy = true;
+        break;
+      }
+    }
+    if (destroy) {
       it = projectiles_.erase(it);
     } else {
       ++it;

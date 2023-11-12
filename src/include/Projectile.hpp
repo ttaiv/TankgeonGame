@@ -8,9 +8,14 @@ class Projectile {
   public:
     Projectile(sf::Vector2f initial_position, int speed_scaler, float angle, int ricochet_limit);
 
-    bool MoveAndRicochet(const std::vector<Wall> &walls);
-
+    void Move();
+    void RicochetX();
+    void RicochetY();
     void Draw(sf::RenderWindow &window) const;
+    const sf::CircleShape& GetShape() const;
+    int GetRicochetCount() const;
+    int GetRicochetLimit() const;
+    bool RicochetLimitReached() const;
 
   private:
     sf::Vector2f speed_;
