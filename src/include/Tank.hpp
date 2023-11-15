@@ -47,8 +47,8 @@ class Tank {
 
   protected:
     float speed_scaler_;
+    int cooldown_timer_ = 0;
     sf::RectangleShape tank_shape_;
-    int cooldown_timer_;
     sf::RectangleShape turret_shape_;
     /**
      * @brief Takes in the planned next position and returns if it's crashing or not. margin parameter is to

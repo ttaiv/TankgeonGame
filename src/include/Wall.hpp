@@ -13,6 +13,10 @@ class Wall: public Obstacle
      */
     Wall(sf::Vector2f position, sf::Vector2f size);
 
+    // Copy constructor and copy assignment are needed to correctly load the texture
+    Wall(const Wall &other);
+    Wall& operator=(const Wall &other);
+
     /**
      * @brief Tells that a projectile cannot pass a wall
      *  

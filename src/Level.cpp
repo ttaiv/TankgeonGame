@@ -33,6 +33,9 @@ void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
     spikes_.push_back(middleSpikes);
 
     enemies_.push_back(EnemyTank(sf::Vector2f(200, 200), 3));
+    enemies_.push_back(EnemyTank(sf::Vector2f(200, 400), 3));
+    EnemyTank enemy(sf::Vector2f(600, 800), 3);
+    enemies_.push_back(enemy);
   }
 }
 void Level::UpdateLevel(sf::RenderWindow &window) {
@@ -51,20 +54,20 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
 }
 
 void Level::DrawLevel(sf::RenderWindow &window) {
-  for (auto &it : walls_) {
+  for (const auto &it : walls_) {
     it.Draw(window);
   }
-  for (auto &it : spikes_) {
+  for (const auto &it : spikes_) {
     it.Draw(window);
   }
   // Has to be it instead of &it, why?? T: Teemu
-  for (auto it : enemies_) {
+  for (const auto &it : enemies_) {
+    it.Draw(window);
+  }
+  for (const auto &it : projectiles_) {
     it.Draw(window);
   }
   player_.Draw(window);
-  for (auto &it : projectiles_) {
-    it.Draw(window);
-  }
 }
 
 void Level::HandleProjectileCollisions() {
