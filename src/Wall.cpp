@@ -6,7 +6,7 @@ Wall::Wall(sf::Vector2f position, sf::Vector2f size) : position_(position), size
   wallShape_.setFillColor(sf::Color::White);
   wallTexture_.loadFromFile("../src/assets/Wall.jpg");
   wallShape_.setTexture(&wallTexture_);
-  wallTexture_.setRepeated(true); //does not repeat hmm...?
+  wallTexture_.setRepeated(true);
 }
 
 Wall::Wall(const Wall &other) : position_(other.position_), size_(other.size_) {
@@ -15,7 +15,7 @@ Wall::Wall(const Wall &other) : position_(other.position_), size_(other.size_) {
   wallShape_.setFillColor(sf::Color::White);
   wallTexture_.loadFromFile("../src/assets/Wall.jpg");
   wallShape_.setTexture(&wallTexture_);
-  wallTexture_.setRepeated(true); //does not repeat hmm...?
+  wallTexture_.setRepeated(true);
 }
 
 Wall& Wall::operator=(const Wall &other) {
@@ -27,7 +27,7 @@ Wall& Wall::operator=(const Wall &other) {
     wallShape_.setFillColor(sf::Color::White);
     wallTexture_.loadFromFile("../src/assets/Wall.jpg");
     wallShape_.setTexture(&wallTexture_);
-    wallTexture_.setRepeated(true); //does not repeat hmm...?
+    wallTexture_.setRepeated(true);
   }
   return *this;
 }
