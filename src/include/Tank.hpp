@@ -40,10 +40,10 @@ class Tank {
      * @param angle as radians
      */
     void Shoot(std::vector<Projectile> &projectiles, float angle);
-    bool goForward(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin);
-    bool goBack(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin);
-    bool turnLeft(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin);
-    bool turnRight(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin);
+    bool goForward(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
+    bool goBack(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
+    bool turnLeft(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
+    bool turnRight(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
 
   protected:
     float speed_scaler_;
@@ -61,7 +61,7 @@ class Tank {
      * @return true 
      * @return false 
      */
-    bool IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin) const;
+    bool IsCollided(sf::Vector2f next_pos, const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) const;
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 

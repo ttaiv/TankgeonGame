@@ -8,7 +8,7 @@ EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setTexture(&textureTurret_);
   }
 
-void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &player_tank, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
+void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &player_tank, const std::vector<Wall> &walls, const std::vector<Spike> &spikes) {
   float angle = GetAngleToPlayer(player_tank);
   UpdateShape(angle, walls, spikes);
   if (cooldown_timer_ > 150) {
@@ -25,7 +25,7 @@ void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::Rectangle
  * 
  * NOTE: "walls" ans "spikes" commented out temporarily as they are currently not used in this implementation.
  */
-void EnemyTank::UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes) {
+void EnemyTank::UpdateShape(float rotation_angle, const std::vector<Wall> &walls, const std::vector<Spike> &spikes) {
   turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
   if (!goForward(walls, spikes, 2)) {
     turnLeft(walls, spikes, 1);  

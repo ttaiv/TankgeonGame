@@ -10,11 +10,11 @@
 class EnemyTank: public Tank {
   public:
     EnemyTank(sf::Vector2f initial_pos, float speed_scaler);
-    void Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &playerTank, std::vector<Wall> &walls, std::vector<Spike> &spikes);
+    void Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &playerTank, const std::vector<Wall> &walls, const std::vector<Spike> &spikes);
     
 
   private:
-    void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes);
+    void UpdateShape(float rotation_angle, const std::vector<Wall> &walls, const std::vector<Spike> &spikes);
     float GetAngleToPlayer(sf::RectangleShape playerTank);
     sf::Texture textureNoTurret_;
     sf::Texture textureTurret_;

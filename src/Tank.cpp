@@ -27,14 +27,14 @@ void Tank::Shoot(std::vector<Projectile> &projectiles, float angle) {
 
 const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }
 
-bool Tank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vector<Spike> &spikes, float scaler) const {
+bool Tank::IsCollided(sf::Vector2f next_pos, const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float scaler) const {
   sf::RectangleShape tank_shape_copy = tank_shape_;
   tank_shape_copy.setScale(scaler, scaler);
   sf::FloatRect tank_bounds = tank_shape_copy.getGlobalBounds();
   tank_bounds.left = next_pos.x - tank_bounds.width / 2.0f;
   tank_bounds.top = next_pos.y - tank_bounds.height / 2.0f;  
   
-  for (Wall &wall : walls) {
+  for (const Wall &wall : walls) {
     sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
 
     if(tank_bounds.intersects(wall_bounds)) {
@@ -42,7 +42,7 @@ bool Tank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vect
     }
   }
 
-  for (Spike &spike : spikes) {
+  for (const Spike &spike : spikes) {
     sf::FloatRect spike_bounds = spike.GetGlobalBounds();
     
     if (tank_bounds.intersects(spike_bounds)) {
@@ -53,7 +53,7 @@ bool Tank::IsCollided(sf::Vector2f next_pos, std::vector<Wall> &walls, std::vect
   return false;
 }
 
-bool Tank::goForward(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin) {
+bool Tank::goForward(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
   sf::Vector2f current_pos = tank_shape_.getPosition();
   float current_tank_rotation = tank_shape_.getRotation();
   float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
@@ -69,7 +69,7 @@ bool Tank::goForward(std::vector<Wall> &walls, std::vector<Spike> &spikes, float
   }
 }
 
-bool Tank::goBack(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin) {
+bool Tank::goBack(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
   sf::Vector2f current_pos = tank_shape_.getPosition();
   float current_tank_rotation = tank_shape_.getRotation();
   float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
@@ -85,7 +85,7 @@ bool Tank::goBack(std::vector<Wall> &walls, std::vector<Spike> &spikes, float ma
   }
 }
 
-bool Tank::turnLeft(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin) {
+bool Tank::turnLeft(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
   float current_tank_rotation = tank_shape_.getRotation();
   current_tank_rotation += 2;
   float original_rotation_input = current_tank_rotation;
@@ -109,7 +109,7 @@ bool Tank::turnLeft(std::vector<Wall> &walls, std::vector<Spike> &spikes, float 
   }
 }
 
-bool Tank::turnRight(std::vector<Wall> &walls, std::vector<Spike> &spikes, float margin) {
+bool Tank::turnRight(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
   float current_tank_rotation = tank_shape_.getRotation();
   current_tank_rotation -= 2;
   float original_rotation_input = current_tank_rotation;
