@@ -4,7 +4,7 @@
 #include <SFML/Graphics/Image.hpp>
 
 Tank::Tank(sf::Vector2f initial_pos, float speed_scaler) 
-  : speed_scaler_(speed_scaler), cooldown_timer_(0) {
+  : speed_scaler_(speed_scaler) {
       tank_shape_.setOrigin(50, 50);
       tank_shape_.setSize(sf::Vector2f(100,100));
       tank_shape_.setPosition(initial_pos);
