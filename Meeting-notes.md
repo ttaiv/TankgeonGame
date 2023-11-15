@@ -36,7 +36,7 @@ In each meeting, you are required to discuss:
 2. How to handle controls for the player tank
 
 ## Actions
-1. Otso will implement abstract class Enemy tank and
+1. Otso will implement abstract class Enemy tank
 2. Janne will finish Spikes and tank collisions with walls 
 3. Teemu will implement projectile collisions with the walls
 4. Jaakko will investigate adding graphics 
