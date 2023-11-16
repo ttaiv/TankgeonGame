@@ -5,6 +5,9 @@ class Spike: public Obstacle
 {
   public:
     
+
+    
+
     /**
      * @brief Construct a new Spike object
      * 
@@ -12,6 +15,9 @@ class Spike: public Obstacle
      * @param size 
      */
     Spike(sf::Vector2f position, sf::Vector2f size);
+
+    Spike(const Spike &other);
+    Spike& operator=(const Spike &other);
 
     /**
      * @brief Tells that a projectile can pass spikes
@@ -33,4 +39,5 @@ class Spike: public Obstacle
     sf::Vector2f position_;
     sf::Vector2f size_;
     sf::RectangleShape spikeShape_;
+    sf::Texture spikeTexture_;
 };
