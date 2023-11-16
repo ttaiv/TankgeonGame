@@ -31,7 +31,7 @@ EnemyTank& EnemyTank::operator=(const EnemyTank &other) {
 
 void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &player_tank, const std::vector<Wall> &walls, const std::vector<Spike> &spikes) {
   float angle = GetAngleToPlayer(player_tank);
-  UpdateShape(angle, walls, spikes);
+  UpdateShape(angle, walls, spikes, projectiles);
   if (cooldown_timer_ > 150) {
     cooldown_timer_ = 0;
     Shoot(projectiles, angle);
@@ -39,17 +39,16 @@ void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::Rectangle
   ++cooldown_timer_;
  
 }
-/**
- * @brief Gives the rotation angle as radians, rotates the tank using degrees.
- * 
- * @param rotation_angle 
- * 
- * NOTE: "walls" ans "spikes" commented out temporarily as they are currently not used in this implementation.
- */
-void EnemyTank::UpdateShape(float rotation_angle, const std::vector<Wall> &walls, const std::vector<Spike> &spikes) {
+
+void EnemyTank::UpdateShape(float rotation_angle, const std::vector<Wall> &walls, const std::vector<Spike> &spikes, const std::vector<Projectile> &projectiles) {
   turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
-  if (!goForward(walls, spikes, 2)) {
-    turnLeft(walls, spikes, 1);  
+  if (!WillBeHit(projectiles)){
+    if (!goForward(walls, spikes, 2)) {
+     turnLeft(walls, spikes, 1);  
+   }
+  }
+  else{
+    goBack(walls, spikes, 1);
   }
 }
 
@@ -63,4 +62,16 @@ float EnemyTank::GetAngleToPlayer(sf::RectangleShape player_tank) {
   return atan2(dy, dx);
 }
 
+bool EnemyTank::WillBeHit(const std::vector<Projectile> &projectiles) const {
+  float predictionTime = 1.0;
+  float AvoidanceRadius = 100.0;
+  for (const auto &it : projectiles) {
+    sf::Vector2f futureProjectilePosition = it.GetShape().getPosition() + it.GetSpeed() * predictionTime;
+    sf::Vector2f diff = tank_shape_.getPosition() - futureProjectilePosition;
+      if (std::sqrt(diff.x * diff.x + diff.y * diff.y) < AvoidanceRadius && it.Hurts()) {
+        return true;
+    }
+  }
+  return false;
+}
 

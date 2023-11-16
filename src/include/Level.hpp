@@ -17,6 +17,7 @@ class Level {
     void SetUpLevel(int level_number, sf::RenderWindow &window);
     void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
+    
 
   private:
     std::vector<Wall> walls_;

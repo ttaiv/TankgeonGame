@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <vector>
+#include <iostream>
 #include "Projectile.hpp"
 #include "Wall.hpp"
 #include "Spike.hpp"
@@ -39,6 +40,7 @@ class Tank {
      * @param vector of projectiles 
      * @param angle as radians
      */
+    sf::FloatRect getRotatedBoundingBox() const;
     void Shoot(std::vector<Projectile> &projectiles, float angle);
     bool goForward(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
     bool goBack(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);

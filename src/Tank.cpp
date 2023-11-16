@@ -17,6 +17,13 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
 void Tank::Draw(sf::RenderWindow &window) const {
   window.draw(tank_shape_);
   window.draw(turret_shape_);
+  sf::FloatRect rotatedBounds = getRotatedBoundingBox();
+  sf::RectangleShape boundingBoxShape(sf::Vector2f(rotatedBounds.width, rotatedBounds.height));
+  boundingBoxShape.setPosition(rotatedBounds.left, rotatedBounds.top);
+  boundingBoxShape.setFillColor(sf::Color::Transparent);
+  boundingBoxShape.setOutlineColor(sf::Color::Red);
+  boundingBoxShape.setOutlineThickness(1.0f);
+  window.draw(boundingBoxShape);
 }
 
 
@@ -132,4 +139,12 @@ bool Tank::turnRight(const std::vector<Wall> &walls, const std::vector<Spike> &s
   }
 }
 
+sf::FloatRect Tank::getRotatedBoundingBox() const {
+  // Get the local bounds of the tank shape
+  sf::FloatRect localBounds = tank_shape_.getLocalBounds();
+  // Get the transform of the tank shape (including position, rotation, and scale)
+  sf::Transform transform = tank_shape_.getTransform();
+  // Transform the local bounds to get the rotated bounding box
+  return transform.transformRect(localBounds);
+}
 

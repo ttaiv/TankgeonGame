@@ -53,3 +53,7 @@ void Projectile::Draw(sf::RenderWindow &window) const {
 bool Projectile::Hurts() const {
   return lifetime_ > 30;
 }
+
+sf::Vector2f Projectile::GetSpeed() const {
+  return speed_;
+}
