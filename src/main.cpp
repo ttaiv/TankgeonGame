@@ -19,10 +19,7 @@ int main()
   window.setFramerateLimit(60);
   
   PlayerTank player(sf::Vector2f(100, 100), 3);
-  Level level1(player);
-  level1.SetUpLevel(1, window);
-
-
+  Level level1(player, window);
 
   // Game loop
   while (window.isOpen())
