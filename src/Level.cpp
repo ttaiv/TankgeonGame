@@ -32,10 +32,9 @@ void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
     walls_.push_back(rightVerticalWall);
     spikes_.push_back(middleSpikes);
 
-    enemies_.push_back(EnemyTank(sf::Vector2f(200, 200), 3));
-    enemies_.push_back(EnemyTank(sf::Vector2f(200, 400), 3));
-    EnemyTank enemy(sf::Vector2f(600, 800), 3);
-    enemies_.push_back(enemy);
+    // Note use of emplace back which does not need copying
+    enemies_.emplace_back(sf::Vector2f(200, 200), 3);
+    enemies_.emplace_back(sf::Vector2f(200, 400), 3);
   }
 }
 void Level::UpdateLevel(sf::RenderWindow &window) {

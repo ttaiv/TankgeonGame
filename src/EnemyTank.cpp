@@ -8,8 +8,9 @@ EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setTexture(&textureTurret_);
   }
 
+/*
 EnemyTank::EnemyTank(const EnemyTank &other) 
-  : Tank(other) /* call copy (default) copy constructor of Tank */ {
+  : Tank(other) {
     textureNoTurret_.loadFromFile("../src/assets/RedTankNoTurret.png");
     tank_shape_.setTexture(&textureNoTurret_);
     textureTurret_.loadFromFile("../src/assets/RedTankTurret.png");
@@ -26,6 +27,7 @@ EnemyTank& EnemyTank::operator=(const EnemyTank &other) {
   }
   return *this;
 }
+*/
 
 void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &player_tank, const std::vector<Wall> &walls, const std::vector<Spike> &spikes) {
   float angle = GetAngleToPlayer(player_tank);
