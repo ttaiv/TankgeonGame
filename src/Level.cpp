@@ -1,10 +1,7 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(PlayerTank player) : player_(player) {}
-
-void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
-  if (level_number == 1) {
+Level::Level(PlayerTank player, sf::RenderWindow &window) : player_(player) {
     sf::Vector2u windowSize = window.getSize();
     unsigned int windowWidth = windowSize.x;
     unsigned int windowHeight = windowSize.y;
@@ -35,8 +32,16 @@ void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
     // Note use of emplace back which does not need copying
     enemies_.emplace_back(sf::Vector2f(200, 200), 3);
     enemies_.emplace_back(sf::Vector2f(200, 400), 3);
-  }
 }
+
+bool Level::IsCompleted() const {
+  // Add check whether player has reached door.
+  if (enemies_.empty()) {
+    return true;
+  }
+  return false;
+}
+
 void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update enemy positions and make them shoot.
   for (auto &it : enemies_) {
@@ -59,7 +64,6 @@ void Level::DrawLevel(sf::RenderWindow &window) {
   for (const auto &it : spikes_) {
     it.Draw(window);
   }
-  // Has to be it instead of &it, why?? T: Teemu
   for (const auto &it : enemies_) {
     it.Draw(window);
   }

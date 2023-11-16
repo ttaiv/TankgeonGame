@@ -11,8 +11,6 @@ class PlayerTank: public Tank {
   public:
     PlayerTank(sf::Vector2f initial_pos, float speed_scaler);
     
-    void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes);
-    
     void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles, std::vector<Wall> &walls, std::vector<Spike> &spikes);
 
   private:
@@ -25,4 +23,6 @@ class PlayerTank: public Tank {
     sf::Texture textureNoTurret_;
     sf::Texture textureTurret_;
     float GetTurretRotationAngle(sf::RenderWindow &window);
+
+    void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes);
 };

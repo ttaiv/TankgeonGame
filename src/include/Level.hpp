@@ -13,10 +13,14 @@
 
 class Level {
   public:
-    Level(PlayerTank player);
-    void SetUpLevel(int level_number, sf::RenderWindow &window);
+    Level(PlayerTank player, sf::RenderWindow &window);
+    // Disallow copying
+    Level(const Level &other) = delete;
+    Level& operator=(const Level &other) = delete;
+
     void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
+    bool IsCompleted() const;
 
   private:
     std::vector<Wall> walls_;
