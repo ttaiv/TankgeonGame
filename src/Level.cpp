@@ -73,15 +73,32 @@ void Level::HandleProjectileCollisions() {
   for (auto projectile_it = projectiles_.begin(); projectile_it != projectiles_.end();) {
     // Check for collisions between wall and projectile.
     ProjectileWallCollisionResult result = NoCollision;
-    for (Wall &wall : walls_) {
+    for (const Wall &wall : walls_) {
       result = CollisionManager::ProjectileWall(*projectile_it, wall);
-      if (result == Ricochet || result == Destroy) {
+      if (result == ProjectileWallCollisionResult::Ricochet || result == ProjectileWallCollisionResult::Destroy) {
         // No need to check other walls
         break;
       }
     }
-    if (result == Destroy) {
+    if (result == ProjectileWallCollisionResult::Destroy) {
       // Remove projectile and move to next one.
+      projectile_it = projectiles_.erase(projectile_it);
+      continue;
+    }
+    // Check for collisions with other projectiles
+    bool projectile_collision = false;
+    for (auto other_projectile_it = std::next(projectile_it); other_projectile_it != projectiles_.end();) {
+      projectile_collision = CollisionManager::ProjectileProjectile(*projectile_it, *other_projectile_it);
+      if (projectile_collision) {
+        projectiles_.erase(other_projectile_it);
+        // No need to check other projectiles
+        break;
+      } else {
+        ++other_projectile_it;
+      }
+    }
+    if (projectile_collision) {
+      // Remove projectile and move to next one
       projectile_it = projectiles_.erase(projectile_it);
       continue;
     }

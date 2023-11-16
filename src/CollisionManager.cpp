@@ -1,12 +1,12 @@
 #include "include/CollisionManager.hpp"
 
-ProjectileWallCollisionResult CollisionManager::ProjectileWall(Projectile &projectile, Wall &wall) {
+ProjectileWallCollisionResult CollisionManager::ProjectileWall(Projectile &projectile, const Wall &wall) {
   sf::FloatRect projectile_box = projectile.GetShape().getGlobalBounds();
   sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
   if (wall_bounds.intersects(projectile_box)) {
     // Collision happened.
     if (projectile.RicochetLimitReached()) {
-      return Destroy; // Projectile should be destroyed
+      return ProjectileWallCollisionResult::Destroy; // Projectile should be destroyed
     }
     // Calculate intersection and make projectile ricochet.
     sf::FloatRect intersection;
@@ -18,23 +18,24 @@ ProjectileWallCollisionResult CollisionManager::ProjectileWall(Projectile &proje
       // Collision is more horizontal
       projectile.RicochetX();
     }
-    return Ricochet;
+    return ProjectileWallCollisionResult::Ricochet;
   }
-  return NoCollision;
+  return ProjectileWallCollisionResult::NoCollision;
 }
 
-/**
- * @brief 
- * 
- * @param projectile 
- * @param tank 
- * @return true, if tank and projectile collide and projectile is active
- * @return false, if tank and projectile do not collide or projectile is not active
- */
 bool CollisionManager::ProjectileTank(Projectile &projectile, Tank &tank) {
   sf::FloatRect projectile_box = projectile.GetShape().getGlobalBounds();
   sf::FloatRect tank_bounds = tank.GetShape().getGlobalBounds();
   if (projectile.Hurts() && tank_bounds.intersects(projectile_box)) {
+    return true;
+  }
+  return false;
+}
+
+bool CollisionManager::ProjectileProjectile(Projectile &projectile1, Projectile &projectile2) {
+  sf::FloatRect projectile_box1 = projectile1.GetShape().getGlobalBounds();
+  sf::FloatRect projectile_box2 = projectile2.GetShape().getGlobalBounds();
+  if (projectile_box1.intersects(projectile_box2)) {
     return true;
   }
   return false;
