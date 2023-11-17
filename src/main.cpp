@@ -7,22 +7,18 @@
 #include "include/Wall.hpp"
 #include "include/Spike.hpp"
 #include "include/Level.hpp"
+#include "include/Game.hpp"
 using namespace std;
 
 int main() 
 {
-
   
   sf::RenderWindow window;
   window.create(sf::VideoMode::getFullscreenModes()[0],"Tankgeon!");
   window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
-  
-  PlayerTank player(sf::Vector2f(100, 100), 3);
-  Level level1(player);
-  level1.SetUpLevel(1, window);
 
-
+  Game game(window);
 
   // Game loop
   while (window.isOpen())
@@ -36,9 +32,7 @@ int main()
     }
 
     window.clear();
-    level1.UpdateLevel(window);
-    level1.DrawLevel(window);
-
+    game.Advance();
     window.display();
   }
   return 0;

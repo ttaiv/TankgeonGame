@@ -1,10 +1,7 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(PlayerTank player) : player_(player) {}
-
-void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
-  if (level_number == 1) {
+Level::Level(PlayerTank player, sf::RenderWindow &window) : player_(player) {
     sf::Vector2u windowSize = window.getSize();
     unsigned int windowWidth = windowSize.x;
     unsigned int windowHeight = windowSize.y;
@@ -35,8 +32,16 @@ void Level::SetUpLevel(int level_number, sf::RenderWindow &window) {
     // Note use of emplace back which does not need copying
     enemies_.emplace_back(sf::Vector2f(200, 200), 3);
     enemies_.emplace_back(sf::Vector2f(200, 400), 3);
-  }
 }
+
+bool Level::IsCompleted() const {
+  // Add check whether player has reached door.
+  if (enemies_.empty()) {
+    return true;
+  }
+  return false;
+}
+
 void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update enemy positions and make them shoot.
   for (auto &it : enemies_) {
@@ -59,7 +64,6 @@ void Level::DrawLevel(sf::RenderWindow &window) {
   for (const auto &it : spikes_) {
     it.Draw(window);
   }
-  // Has to be it instead of &it, why?? T: Teemu
   for (const auto &it : enemies_) {
     it.Draw(window);
   }
@@ -73,15 +77,32 @@ void Level::HandleProjectileCollisions() {
   for (auto projectile_it = projectiles_.begin(); projectile_it != projectiles_.end();) {
     // Check for collisions between wall and projectile.
     ProjectileWallCollisionResult result = NoCollision;
-    for (Wall &wall : walls_) {
+    for (const Wall &wall : walls_) {
       result = CollisionManager::ProjectileWall(*projectile_it, wall);
-      if (result == Ricochet || result == Destroy) {
+      if (result == ProjectileWallCollisionResult::Ricochet || result == ProjectileWallCollisionResult::Destroy) {
         // No need to check other walls
         break;
       }
     }
-    if (result == Destroy) {
+    if (result == ProjectileWallCollisionResult::Destroy) {
       // Remove projectile and move to next one.
+      projectile_it = projectiles_.erase(projectile_it);
+      continue;
+    }
+    // Check for collisions with other projectiles
+    bool projectile_collision = false;
+    for (auto other_projectile_it = std::next(projectile_it); other_projectile_it != projectiles_.end();) {
+      projectile_collision = CollisionManager::ProjectileProjectile(*projectile_it, *other_projectile_it);
+      if (projectile_collision) {
+        projectiles_.erase(other_projectile_it);
+        // No need to check other projectiles
+        break;
+      } else {
+        ++other_projectile_it;
+      }
+    }
+    if (projectile_collision) {
+      // Remove projectile and move to next one
       projectile_it = projectiles_.erase(projectile_it);
       continue;
     }
