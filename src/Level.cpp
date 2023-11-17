@@ -31,8 +31,8 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     level_data_.spikes_.push_back(middleSpikes);
 
     // Note use of emplace back which does not need copying
-    level_data_.enemies_.emplace_back(sf::Vector2f(200, 200), 3.0f, player_);
-    level_data_.enemies_.emplace_back(sf::Vector2f(200, 200), 3.0f, player_);
+    level_data_.enemies_.emplace_back(sf::Vector2f(500, 200), 3.0f, player_);
+    level_data_.enemies_.emplace_back(sf::Vector2f(300, 300), 3.0f, player_);
   
 }
 

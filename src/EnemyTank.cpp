@@ -32,16 +32,17 @@ void EnemyTank::Update(LevelData &level_data_) {
 void EnemyTank::UpdateShape(float rotation_angle, LevelData &level_data_) {
   turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
   //Introduce randomness
-  std::srand(std::time(nullptr) * tank_shape_.getPosition().y);
+  std::srand(std::time(nullptr));
   double randomFloat = static_cast<double>(std::rand()) / RAND_MAX;
+  
   if (randomFloat < 0.25){
     turnLeft(1, level_data_);
   }
   else if (randomFloat < 0.50){
-    goForward(1.25, level_data_);
+    goForward(2, level_data_);
   }
   else if (randomFloat < 0.75){
-    goBack(1.25, level_data_);
+    goBack(2, level_data_);
   }
   else{
     turnRight(1, level_data_);
@@ -51,10 +52,8 @@ void EnemyTank::UpdateShape(float rotation_angle, LevelData &level_data_) {
 
 float EnemyTank::GetAngleToPlayer() { 
   sf::Vector2f player_position = player_.GetShape().getPosition();
-
   float dx = turret_shape_.getPosition().x - player_position.x;
   float dy = turret_shape_.getPosition().y - player_position.y;
-
   return atan2(dy, dx);
 }
 
