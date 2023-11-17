@@ -28,7 +28,7 @@ class Spike: public Obstacle
     virtual void Draw(sf::RenderWindow &window) const override;
 
     sf::FloatRect GetGlobalBounds() const;
-    
+    sf::RectangleShape GetShape() const {return spikeShape_;}
   private:
     sf::Vector2f position_;
     sf::Vector2f size_;

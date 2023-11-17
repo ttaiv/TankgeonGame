@@ -32,7 +32,7 @@ EnemyTank& EnemyTank::operator=(const EnemyTank &other) {
 void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &player_tank, const std::vector<Wall> &walls, const std::vector<Spike> &spikes) {
   float angle = GetAngleToPlayer(player_tank);
   UpdateShape(angle, walls, spikes, projectiles);
-  if (cooldown_timer_ > 150) {
+  if (cooldown_timer_ > 150 && CanSeePlayer(player_tank, walls)) {
     cooldown_timer_ = 0;
     Shoot(projectiles, angle);
   }
@@ -75,3 +75,21 @@ bool EnemyTank::WillBeHit(const std::vector<Projectile> &projectiles) const {
   return false;
 }
 
+bool EnemyTank::CanSeePlayer(const sf::RectangleShape& player_tank, const std::vector<Wall>& walls) const {
+    sf::Vector2f sightLine = player_tank.getPosition() - tank_shape_.getPosition();
+    float sightLineLength = std::sqrt(sightLine.x * sightLine.x + sightLine.y * sightLine.y);
+
+    // Create a bounding box for the sightLine
+    sf::FloatRect sightLineBoundingBox(tank_shape_.getPosition(), sf::Vector2f(sightLineLength, 1.0f));
+    sf::RectangleShape sightLineRect(sf::Vector2f(sightLineLength, 1.0f));
+    sightLineRect.setPosition(tank_shape_.getPosition());
+    sightLineRect.setRotation(std::atan2(sightLine.y, sightLine.x) * 180.0f / M_PI);
+
+    // Check for obstacles in the sight line
+    for (const auto& wall : walls) {
+        if (wall.GetShape().getGlobalBounds().intersects(sightLineBoundingBox)) {
+            return false;
+        }
+    }
+    return true;
+}

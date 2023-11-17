@@ -6,8 +6,9 @@
 #include "Projectile.hpp"
 #include "Wall.hpp"
 #include "Spike.hpp"
+#include "OBB.hpp"
 
-class Tank {
+class Tank : public sf::Transformable {
   public:
     /**
      * @brief Construct a new Tank object

@@ -10,25 +10,18 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       tank_shape_.setPosition(initial_pos);
       turret_shape_.setOrigin(36,50);
       turret_shape_.setSize(sf::Vector2f(100,100));
-      turret_shape_.setPosition(tank_shape_.getPosition().x-18,tank_shape_.getPosition().y+2);
+      turret_shape_.setPosition(initial_pos);
   }
 
 
 void Tank::Draw(sf::RenderWindow &window) const {
-  window.draw(tank_shape_);
+  window.draw(tank_shape_, getTransform());
   window.draw(turret_shape_);
-  sf::FloatRect rotatedBounds = getRotatedBoundingBox();
-  sf::RectangleShape boundingBoxShape(sf::Vector2f(rotatedBounds.width, rotatedBounds.height));
-  boundingBoxShape.setPosition(rotatedBounds.left, rotatedBounds.top);
-  boundingBoxShape.setFillColor(sf::Color::Transparent);
-  boundingBoxShape.setOutlineColor(sf::Color::Red);
-  boundingBoxShape.setOutlineThickness(1.0f);
-  window.draw(boundingBoxShape);
 }
 
 
 void Tank::Shoot(std::vector<Projectile> &projectiles, float angle) {
-  Projectile new_projectile(turret_shape_.getPosition(), 4, angle, 1);
+  Projectile new_projectile(turret_shape_.getPosition(), 6, angle, 1);
   projectiles.push_back(new_projectile);
 }
 
@@ -37,114 +30,87 @@ const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }
 bool Tank::IsCollided(sf::Vector2f next_pos, const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float scaler) const {
   sf::RectangleShape tank_shape_copy = tank_shape_;
   tank_shape_copy.setScale(scaler, scaler);
-  sf::FloatRect tank_bounds = tank_shape_copy.getGlobalBounds();
-  tank_bounds.left = next_pos.x - tank_bounds.width / 2.0f;
-  tank_bounds.top = next_pos.y - tank_bounds.height / 2.0f;  
+  tank_shape_copy.setPosition(next_pos);
+  OBB tankOBB = OBB(tank_shape_copy); 
   
   for (const Wall &wall : walls) {
-    sf::FloatRect wall_bounds = wall.GetShape().getGlobalBounds();
+    OBB wallOBB = OBB(wall.GetShape());
 
-    if(tank_bounds.intersects(wall_bounds)) {
+    if(tankOBB.collides(wallOBB)) {
       return true;
     }
   }
-
   for (const Spike &spike : spikes) {
-    sf::FloatRect spike_bounds = spike.GetGlobalBounds();
-    
-    if (tank_bounds.intersects(spike_bounds)) {
+    OBB spikeOBB = OBB(spike.GetShape());
+
+    if(tankOBB.collides(spikeOBB)) {
       return true;
     }
   }
+
 
   return false;
 }
 
-bool Tank::goForward(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
-  sf::Vector2f current_pos = tank_shape_.getPosition();
-  float current_tank_rotation = tank_shape_.getRotation();
-  float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
-  sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad), speed_scaler_ * sin(current_tank_rotation_rad));
-  current_pos += speed; 
-  if (!IsCollided(current_pos, walls, spikes, margin)){
-    tank_shape_.setPosition(current_pos);
-    turret_shape_.setPosition(current_pos);
+bool Tank::goForward(const std::vector<Wall>& walls, const std::vector<Spike>& spikes, float margin) {
+  float rotation = tank_shape_.getRotation();
+  float angleRad = (rotation) * (3.14159265f / 180.0f);
+  // Calculate the forward vector
+  sf::Vector2f forwardVector(speed_scaler_ * std::cos(angleRad), speed_scaler_ * std::sin(angleRad));
+
+  if (!IsCollided(tank_shape_.getPosition() + forwardVector, walls, spikes, margin)) {
+    tank_shape_.move(forwardVector);
+    turret_shape_.move(forwardVector);
     return true;
-  } 
-  else {
-    return false;
   }
+  return false;
 }
 
 bool Tank::goBack(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
-  sf::Vector2f current_pos = tank_shape_.getPosition();
-  float current_tank_rotation = tank_shape_.getRotation();
-  float current_tank_rotation_rad = current_tank_rotation * M_PI / 180.0f;
-    sf::Vector2f speed = sf::Vector2f(speed_scaler_ * cos(current_tank_rotation_rad + M_PI), speed_scaler_ * sin(current_tank_rotation_rad + M_PI));
-    current_pos += speed; 
-  if (!IsCollided(current_pos, walls, spikes, margin)){
-    tank_shape_.setPosition(current_pos);
-    turret_shape_.setPosition(current_pos);
-    return true;
-  } 
-  else {
-    return false;
+  float rotation = tank_shape_.getRotation();
+  float angleRad = (rotation) * (3.14159265f / 180.0f);
+
+  // Calculate the backward vector
+  sf::Vector2f backwardVector(speed_scaler_ * std::cos(angleRad), speed_scaler_ * std::sin(angleRad));
+  tank_shape_.move(-backwardVector);
+  turret_shape_.move(-backwardVector);
+
+  // Check for collisions after moving backward
+  if (!IsCollided(tank_shape_.getPosition(), walls, spikes, margin)) {
+      return true;
   }
+
+  // If collision, revert to the original position
+  tank_shape_.move(backwardVector);
+  turret_shape_.move(backwardVector);
+  return false;
 }
 
 bool Tank::turnLeft(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
-  float current_tank_rotation = tank_shape_.getRotation();
-  current_tank_rotation += 2;
-  float original_rotation_input = current_tank_rotation;
-  tank_shape_.setRotation(current_tank_rotation);
-  
-  
-  /*Check if rotation causes a collision.
-  If a collision is detected the turn is reduced
-  so that a collision wont occur*/
-  if (IsCollided(tank_shape_.getPosition(), walls, spikes, margin)) {
-    float adjusted_rotation = current_tank_rotation;
-    while (IsCollided(tank_shape_.getPosition(), walls, spikes, margin) && ((original_rotation_input - adjusted_rotation) <= 2)) {
-      adjusted_rotation -= 0.1f;
-      tank_shape_.setRotation(adjusted_rotation);
-    }
-    current_tank_rotation = adjusted_rotation;
-    return false;
+  if (!IsCollided(tank_shape_.getPosition(), walls, spikes, margin)){
+    tank_shape_.rotate(2.f);
+    return true;
   }
-  else {
-    return true; 
-  }
+  return false;
 }
 
 bool Tank::turnRight(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) {
-  float current_tank_rotation = tank_shape_.getRotation();
-  current_tank_rotation -= 2;
-  float original_rotation_input = current_tank_rotation;
-  tank_shape_.setRotation(current_tank_rotation);
-  
-  /*Check if rotation causes a collision.
-  If a collision is detected the turn is reduced
-  so that a collision wont occur*/
+  // Save the current position and rotation
+  sf::Vector2f originalPosition = tank_shape_.getPosition();
+
+  // Rotate the tank to the right
+  tank_shape_.rotate(-2.0f);
+
+  // Check for collisions after rotation
   if (IsCollided(tank_shape_.getPosition(), walls, spikes, margin)) {
-    float adjusted_rotation = current_tank_rotation;
-    while (IsCollided(tank_shape_.getPosition(), walls, spikes, margin) && ((adjusted_rotation - original_rotation_input) <= 2)) {
-      adjusted_rotation += 0.1f;
-      tank_shape_.setRotation(adjusted_rotation);
-    }
-    current_tank_rotation = adjusted_rotation;
-    return false;
+      // If collision, revert to the original position and rotation
+      tank_shape_.setPosition(originalPosition);
+      tank_shape_.rotate(2.0f);
+      return false;
   }
-  else {
+
+    // If no collision, rotation is successful
     return true;
-  }
 }
 
-sf::FloatRect Tank::getRotatedBoundingBox() const {
-  // Get the local bounds of the tank shape
-  sf::FloatRect localBounds = tank_shape_.getLocalBounds();
-  // Get the transform of the tank shape (including position, rotation, and scale)
-  sf::Transform transform = tank_shape_.getTransform();
-  // Transform the local bounds to get the rotated bounding box
-  return transform.transformRect(localBounds);
-}
 
