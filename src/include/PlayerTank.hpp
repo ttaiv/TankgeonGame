@@ -1,17 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include <vector>
-#include "Projectile.hpp"
 #include "Tank.hpp"
-#include "Wall.hpp"
-#include "Spike.hpp"
+
 
 class PlayerTank: public Tank {
   public:
-    PlayerTank(sf::Vector2f initial_pos, float speed_scaler);
+    PlayerTank(sf::Vector2f initial_pos, float speed_scaler, LevelData &level_data);
     
-    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles, std::vector<Wall> &walls, std::vector<Spike> &spikes);
+    void Update(sf::RenderWindow &window);
 
   private:
     /**
@@ -24,5 +21,5 @@ class PlayerTank: public Tank {
     sf::Texture textureTurret_;
     float GetTurretRotationAngle(sf::RenderWindow &window);
 
-    void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes);
+    void UpdateShape(float rotation_angle);
 };

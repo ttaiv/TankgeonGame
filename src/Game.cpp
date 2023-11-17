@@ -2,8 +2,11 @@
 #include <iostream>
 
 
-Game::Game(sf::RenderWindow &window) 
-  : window_(window), player_(sf::Vector2f(100, 100), 3), current_level_(player_, window) {}
+Game::Game(sf::RenderWindow &window)  
+: window_(window), current_level_(Level(window))
+{
+
+}
 
 void Game::Advance() {
   if (current_level_.IsCompleted() && false) {

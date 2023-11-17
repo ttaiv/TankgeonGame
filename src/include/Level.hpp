@@ -1,19 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include <vector>
-#include <list>
-#include "Projectile.hpp"
-#include "Tank.hpp"
-#include "Wall.hpp"
-#include "Spike.hpp"
-#include "PlayerTank.hpp"
-#include "EnemyTank.hpp"
 #include "CollisionManager.hpp"
+#include "LevelData.hpp"
+
 
 class Level {
   public:
-    Level(PlayerTank player, sf::RenderWindow &window);
+    Level(sf::RenderWindow &window);
     // Disallow copying
     Level(const Level &other) = delete;
     Level& operator=(const Level &other) = delete;
@@ -21,14 +15,12 @@ class Level {
     void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
     bool IsCompleted() const;
+    LevelData GetLevelData();
+    
+
+    
 
   private:
-    std::vector<Wall> walls_;
-    std::vector<Spike> spikes_;
-    std::list<EnemyTank> enemies_;
-    PlayerTank player_;
-    std::vector<Projectile> projectiles_;
-
     void HandleProjectileCollisions();
-
+    LevelData level_data_;
 };
