@@ -17,6 +17,7 @@ class Projectile {
     int GetRicochetLimit() const;
     bool RicochetLimitReached() const;
     bool Hurts() const;
+    sf::Vector2f GetSpeed() const;
 
   private:
     sf::Vector2f speed_;

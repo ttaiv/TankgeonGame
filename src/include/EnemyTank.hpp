@@ -16,9 +16,11 @@ class EnemyTank: public Tank {
     
     void Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &playerTank, const std::vector<Wall> &walls, const std::vector<Spike> &spikes);
     
+    bool WillBeHit(const std::vector<Projectile> &projectiles) const;
+    bool CanSeePlayer(const sf::RectangleShape &player_tank, const std::vector<Wall> &walls ) const;
 
   private:
-    void UpdateShape(float rotation_angle, const std::vector<Wall> &walls, const std::vector<Spike> &spikes);
+    void UpdateShape(float rotation_angle, const std::vector<Wall> &walls, const std::vector<Spike> &spikes, const std::vector<Projectile> &projectiles);
     float GetAngleToPlayer(sf::RectangleShape playerTank);
     sf::Texture textureNoTurret_;
     sf::Texture textureTurret_;

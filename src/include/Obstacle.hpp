@@ -26,5 +26,6 @@ class Obstacle {
      * @param window 
      */
     virtual void Draw(sf::RenderWindow &window) const = 0;
+
 };
 
