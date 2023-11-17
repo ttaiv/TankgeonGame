@@ -1,8 +1,8 @@
 #include "include/PlayerTank.hpp"
 #include "include/LevelData.hpp"
 
-PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler,  LevelData &level_data) 
-  : Tank(initial_pos, speed_scaler, level_data) {
+PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
+  : Tank(initial_pos, speed_scaler) {
       textureNoTurret_.loadFromFile("../src/assets/TankNoTurret.png");
       tank_shape_.setTexture(&textureNoTurret_);
       textureTurret_.loadFromFile("../src/assets/TankTurret.png");
@@ -14,29 +14,29 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler,  LevelData 
  * 
  * @param rotation_angle 
  */
-void PlayerTank::UpdateShape(float rotation_angle) {
+void PlayerTank::UpdateShape(float rotation_angle, LevelData &level_data) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    goForward(1);
+    goForward(1, level_data);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    goBack(1);
+    goBack(1,level_data);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    turnLeft(1);
+    turnLeft(1, level_data);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    turnRight(1);
+    turnRight(1, level_data);
   }
 
   turret_shape_.setRotation(rotation_angle);
 }
 
 
-void PlayerTank::Update(sf::RenderWindow &window) {
-  UpdateShape(GetTurretRotationAngle(window) * 180 / M_PI + 180);
+void PlayerTank::Update(sf::RenderWindow &window, LevelData &level_data) {
+  UpdateShape(GetTurretRotationAngle(window) * 180 / M_PI + 180, level_data);
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > 30) {
     cooldown_timer_ = 0;
-    Shoot(GetTurretRotationAngle(window));
+    Shoot(GetTurretRotationAngle(window), level_data);
   }
   ++cooldown_timer_;
 }

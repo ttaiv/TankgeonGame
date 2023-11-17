@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Image.hpp>
 
-Tank::Tank(sf::Vector2f initial_pos, float speed_scaler, LevelData &level_data) 
-  : speed_scaler_(speed_scaler), level_data_(level_data) {
+Tank::Tank(sf::Vector2f initial_pos, float speed_scaler) 
+  : speed_scaler_(speed_scaler) {
       tank_shape_.setOrigin(50, 50);
       tank_shape_.setSize(sf::Vector2f(100,100));
       tank_shape_.setPosition(initial_pos);
@@ -21,14 +21,14 @@ void Tank::Draw(sf::RenderWindow &window) const {
 }
 
 
-void Tank::Shoot(float angle) {
+void Tank::Shoot(float angle, LevelData &level_data_) {
   Projectile new_projectile(turret_shape_.getPosition(), 6, angle, 1);
   level_data_.projectiles_.push_back(new_projectile);
 }
 
 const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }
 
-bool Tank::IsCollided(sf::Vector2f next_pos, float scaler) const {
+bool Tank::IsCollided(sf::Vector2f next_pos, float scaler, LevelData level_data_) const {
   sf::RectangleShape tank_shape_copy = tank_shape_;
   tank_shape_copy.setScale(scaler, scaler);
   tank_shape_copy.setPosition(next_pos);
@@ -53,20 +53,20 @@ bool Tank::IsCollided(sf::Vector2f next_pos, float scaler) const {
   return false;
 }
 
-bool Tank::goForward(float margin) {
+bool Tank::goForward(float margin, LevelData &level_data_) {
   float rotation = tank_shape_.getRotation();
   float angleRad = (rotation) * (3.14159265f / 180.0f);
   // Calculate the forward vector
   sf::Vector2f forwardVector(speed_scaler_ * std::cos(angleRad), speed_scaler_ * std::sin(angleRad));
 
-  if (!IsCollided(tank_shape_.getPosition() + forwardVector, margin)){
+  if (!IsCollided(tank_shape_.getPosition() + forwardVector, margin, level_data_)){
     turret_shape_.move(forwardVector);
     return true;
   }
   return false;
 }
 
-bool Tank::goBack(float margin) {
+bool Tank::goBack(float margin, LevelData &level_data_) {
   float rotation = tank_shape_.getRotation();
   float angleRad = (rotation) * (3.14159265f / 180.0f);
 
@@ -76,7 +76,7 @@ bool Tank::goBack(float margin) {
   turret_shape_.move(-backwardVector);
 
   // Check for collisions after moving backward
-  if (!IsCollided(tank_shape_.getPosition(), margin)) {
+  if (!IsCollided(tank_shape_.getPosition(), margin, level_data_)) {
       return true;
   }
 
@@ -86,30 +86,33 @@ bool Tank::goBack(float margin) {
   return false;
 }
 
-bool Tank::turnLeft(float margin) {
-  if (!IsCollided(tank_shape_.getPosition(), margin)){
-    tank_shape_.rotate(2.f);
-    return true;
+bool Tank::turnLeft(float margin, LevelData &level_data_) {
+
+  sf::Vector2f originalPosition = tank_shape_.getPosition();
+  tank_shape_.rotate(2.0f);
+
+
+  if (IsCollided(tank_shape_.getPosition(), margin, level_data_)) {
+    
+      tank_shape_.setPosition(originalPosition);
+      tank_shape_.rotate(-2.0f);
+      return false;
   }
-  return false;
+    return true;
 }
 
-bool Tank::turnRight(float margin) {
-  // Save the current position and rotation
-  sf::Vector2f originalPosition = tank_shape_.getPosition();
+bool Tank::turnRight(float margin, LevelData &level_data_) {
 
-  // Rotate the tank to the right
+  sf::Vector2f originalPosition = tank_shape_.getPosition();
   tank_shape_.rotate(-2.0f);
 
-  // Check for collisions after rotation
-  if (IsCollided(tank_shape_.getPosition(), margin)) {
-      // If collision, revert to the original position and rotation
+
+  if (IsCollided(tank_shape_.getPosition(), margin, level_data_)) {
+    
       tank_shape_.setPosition(originalPosition);
       tank_shape_.rotate(2.0f);
       return false;
   }
-
-    // If no collision, rotation is successful
     return true;
 }
 

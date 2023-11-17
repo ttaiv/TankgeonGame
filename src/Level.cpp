@@ -1,7 +1,8 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(sf::RenderWindow &window) 
+Level::Level(sf::RenderWindow &window, LevelData level_data) 
+: level_data_(level_data), player_(PlayerTank(sf::Vector2f(200, 200), 3.0f))
 {
 
     sf::Vector2u windowSize = window.getSize();
@@ -32,9 +33,9 @@ Level::Level(sf::RenderWindow &window)
     level_data_.spikes_.push_back(middleSpikes);
 
     // Note use of emplace back which does not need copying
-    level_data_.enemies_.emplace_back(sf::Vector2f(200, 200), 3.0f, level_data_);
-    level_data_.enemies_.emplace_back(sf::Vector2f(200, 200), 3.0f, level_data_);
-    level_data_.player_.emplace_back(sf::Vector2f(200, 200), 3.0f, level_data_);
+    level_data_.enemies_.emplace_back(sf::Vector2f(200, 200), 3.0f, player_);
+    level_data_.enemies_.emplace_back(sf::Vector2f(200, 200), 3.0f, player_);
+  
 }
 
 bool Level::IsCompleted() const {
@@ -48,7 +49,7 @@ bool Level::IsCompleted() const {
 void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update enemy positions and make them shoot.
   for (auto &it : level_data_.enemies_) {
-    it.Update();
+    it.Update(level_data_);
   }
   // Update positions of projectiles.
   for (auto &projectile: level_data_.projectiles_) {
@@ -57,11 +58,11 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
   // Handle projectile collisions
   HandleProjectileCollisions();
   // Update player tank position and make it shoot.
-  level_data_.player_.front().Update(window);
+  player_.Update(window, level_data_);
 }
 
 void Level::DrawLevel(sf::RenderWindow &window) {
-  level_data_.player_.front().Draw(window);
+  player_.Draw(window);
   for (const auto &it : level_data_.walls_) {
     it.Draw(window);
   }
@@ -127,7 +128,7 @@ void Level::HandleProjectileCollisions() {
       continue;
     }
     // Check for collision with player tank
-    if (CollisionManager::ProjectileTank(*projectile_it, level_data_.player_.front())) {
+    if (CollisionManager::ProjectileTank(*projectile_it, player_)) {
       // Game over
       std::cout << "Player was hit" << std::endl;
       projectile_it = level_data_.projectiles_.erase(projectile_it);

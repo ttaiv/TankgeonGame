@@ -14,7 +14,7 @@ class Tank : public sf::Transformable {
      * @param initial position
      * @param base speed of the tank
      */
-    Tank(sf::Vector2f initial_pos, float speed_scaler, LevelData &level_data);
+    Tank(sf::Vector2f initial_pos, float speed_scaler);
     
     const sf::RectangleShape& GetShape() const;
 
@@ -40,18 +40,17 @@ class Tank : public sf::Transformable {
      * @param angle as radians
      */
     sf::FloatRect getRotatedBoundingBox() const;
-    void Shoot(float angle);
-    bool goForward(float margin);
-    bool goBack(float margin);
-    bool turnLeft(float margin);
-    bool turnRight(float margin);
+    void Shoot(float angle, LevelData &level_data_);
+    bool goForward(float margin, LevelData &level_data_);
+    bool goBack(float margin, LevelData &level_data_);
+    bool turnLeft(float margin, LevelData &level_data_);
+    bool turnRight(float margin, LevelData &level_data_);
 
   protected:
     float speed_scaler_;
     int cooldown_timer_ = 0;
     sf::RectangleShape tank_shape_;
     sf::RectangleShape turret_shape_;
-    LevelData &level_data_;
     /**
      * @brief Takes in the planned next position and returns if it's crashing or not. margin parameter is to
      * scale the "hitbox" of the tank accordingly.
@@ -63,7 +62,7 @@ class Tank : public sf::Transformable {
      * @return true 
      * @return false 
      */
-    bool IsCollided(sf::Vector2f next_pos, float margin) const;
+    bool IsCollided(sf::Vector2f next_pos, float margin, LevelData level_data_) const;
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 

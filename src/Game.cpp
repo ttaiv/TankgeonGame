@@ -3,10 +3,8 @@
 
 
 Game::Game(sf::RenderWindow &window)  
-: window_(window), current_level_(Level(window))
-{
-
-}
+: window_(window), current_level_(window, LevelData())
+{}
 
 void Game::Advance() {
   if (current_level_.IsCompleted() && false) {

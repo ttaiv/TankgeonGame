@@ -6,9 +6,9 @@
 
 class PlayerTank: public Tank {
   public:
-    PlayerTank(sf::Vector2f initial_pos, float speed_scaler, LevelData &level_data);
+    PlayerTank(sf::Vector2f initial_pos, float speed_scaler);
     
-    void Update(sf::RenderWindow &window);
+    void Update(sf::RenderWindow &window, LevelData &level_data);
 
   private:
     /**
@@ -21,5 +21,5 @@ class PlayerTank: public Tank {
     sf::Texture textureTurret_;
     float GetTurretRotationAngle(sf::RenderWindow &window);
 
-    void UpdateShape(float rotation_angle);
+    void UpdateShape(float rotation_angle, LevelData &level_data);
 };
