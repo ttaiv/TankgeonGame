@@ -20,6 +20,8 @@ Level::Level(PlayerTank player, sf::RenderWindow &window) : player_(player) {
     Wall leftVerticalWall(sf::Vector2f(gapCenterX - halfGapSize - wallThickness, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
     Wall rightVerticalWall(sf::Vector2f(gapCenterX + halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
     Spike middleSpikes(sf::Vector2f(gapCenterX - 100, verticalWallYPosition + 50), sf::Vector2f(wallThickness + 200, wallHeight - 100));
+    Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 50));
+    Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 630));
     
     walls_.push_back(topWall);
     walls_.push_back(bottomWall);
@@ -28,6 +30,8 @@ Level::Level(PlayerTank player, sf::RenderWindow &window) : player_(player) {
     walls_.push_back(leftVerticalWall);
     walls_.push_back(rightVerticalWall);
     spikes_.push_back(middleSpikes);
+    shields_.push_back(testShield);
+    shields_.push_back(anotherTestShield);
 
     // Note use of emplace back which does not need copying
     enemies_.emplace_back(sf::Vector2f(200, 200), 3);
@@ -55,9 +59,14 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
   HandleProjectileCollisions();
   // Update player tank position and make it shoot.
   player_.Update(window, projectiles_, walls_, spikes_);
+  // Handle item pickups.
+  HandleItemPickUps();
 }
 
 void Level::DrawLevel(sf::RenderWindow &window) {
+  for (const auto &it : shields_) {
+    it.Draw(window);
+  }
   for (const auto &it : walls_) {
     it.Draw(window);
   }
@@ -125,11 +134,44 @@ void Level::HandleProjectileCollisions() {
     }
     // Check for collision with player tank
     if (CollisionManager::ProjectileTank(*projectile_it, player_)) {
-      // Game over
-      std::cout << "Player was hit" << std::endl;
-      projectile_it = projectiles_.erase(projectile_it);
-      continue;
+      //Projectile has hit a player, check if they have a shield.
+      if (player_.hasShield()) {
+        //Player has a shield. No game over but break the shield.
+        player_.breakShield();
+        std::cout << "Player was hit, but the shield saved them!" << std::endl;
+        projectile_it = projectiles_.erase(projectile_it);
+        continue;
+      } else {
+        // Game over
+        std::cout << "Player was hit" << std::endl;
+        projectile_it = projectiles_.erase(projectile_it);
+        continue;
+      }
     }
-    ++projectile_it; // No collisions
+    //No collisions
+    ++projectile_it;
+  }
+}
+
+void Level::HandleItemPickUps(){
+  OBB tankOBB = OBB(player_.GetShape());
+ 
+  //Check if player is over a shield.
+  for (auto shield = shields_.begin(); shield != shields_.end();){
+    OBB shieldOBB = OBB(shield->GetShape());
+    
+    if(tankOBB.collides(shieldOBB)){
+      //Player is over a shield. Check if player already has a shield.
+      if (!player_.hasShield()){
+        //Player doesn't have shield, enable it and remove it from the field.
+        player_.setShield();
+        shield = shields_.erase(shield);
+      } else {
+        //Player already has a shield. Do nothing.
+        shield++;
+      }
+    } else {
+      shield++;
+    }
   }
 }

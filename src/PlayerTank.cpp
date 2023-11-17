@@ -6,6 +6,7 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler)
       tank_shape_.setTexture(&textureNoTurret_);
       textureTurret_.loadFromFile("../src/assets/TankTurret.png");
       turret_shape_.setTexture(&textureTurret_);
+      has_shield_ = false;
   }
   
 /**
@@ -51,6 +52,17 @@ float PlayerTank::GetTurretRotationAngle(sf::RenderWindow &window) {
   return atan2(dy, dx);
 }
 
+void PlayerTank::setShield() {
+  has_shield_ = true;
+}
+
+void PlayerTank::breakShield() {
+  has_shield_ = false;
+}
+
+bool PlayerTank::hasShield() const {
+  return has_shield_;
+}
 
 
 

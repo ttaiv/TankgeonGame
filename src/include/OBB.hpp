@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <cmath>
+#pragma once
 
 class OBB // Oriented bounding box
 {
