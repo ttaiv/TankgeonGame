@@ -51,4 +51,6 @@ class Level {
     void HandleItemPickUps();
 
     void FillGridFromFile(std::vector<std::string> &level_grid, const std::string &filepath);
+
+    void SetBorderWalls(sf::Vector2u window_size);
 };

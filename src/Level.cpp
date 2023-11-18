@@ -1,7 +1,7 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 200), 3.0f))
+Level::Level(sf::RenderWindow &window): player_(sf::Vector2f(100, 100), 3) 
 {
     sf::Vector2u windowSize = window.getSize();
     unsigned int windowWidth = windowSize.x;
@@ -14,36 +14,27 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     float wallHeight = 400;
     float verticalWallYPosition = (windowHeight - wallHeight - 80) / 2.0f;
 
-    Wall topWall(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, 10));
-    Wall bottomWall(sf::Vector2f(0, windowHeight - 80), sf::Vector2f(windowWidth, 120));
-    Wall leftWall(sf::Vector2f(0, 0), sf::Vector2f(10, windowHeight));
-    Wall rightWall(sf::Vector2f(windowWidth - 10, 0), sf::Vector2f(10, windowHeight));
     Wall leftVerticalWall(sf::Vector2f(gapCenterX - halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
     Wall rightVerticalWall(sf::Vector2f(gapCenterX + halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
     Spike middleSpikes(sf::Vector2f(gapCenterX - 100, verticalWallYPosition), sf::Vector2f(wallThickness + 180, wallHeight - 25));
     Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 80));
     Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 500));
-    
-    level_data_.walls.push_back(topWall);
-    level_data_.walls.push_back(bottomWall);
-    level_data_.walls.push_back(leftWall);
-    level_data_.walls.push_back(rightWall);
+
     level_data_.walls.push_back(leftVerticalWall);
     level_data_.walls.push_back(rightVerticalWall);
     level_data_.spikes.push_back(middleSpikes);
-    level_data_.shields.emplace_back(testShield);
-    level_data_.shields.emplace_back(anotherTestShield);
-    
-
-    float enemy_1_x = 530;
-    float enemy_1_y = windowSize.y / 2.0f;
-    float enemy_2_x = windowSize.x - 100;
-    float enemy_2_y = (windowSize.y / 2.0f) - 80;
-
-    // Note use of emplace back which does not need copying
-    level_data_.enemies.emplace_back(sf::Vector2f(enemy_1_x, enemy_1_y), 3.0f, player_);
-    level_data_.enemies.emplace_back(sf::Vector2f(enemy_2_x, enemy_2_y), 3.0f, player_);
   
+}
+
+void Level::SetBorderWalls(sf::Vector2u window_size) {
+  Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 10));
+  Wall bottom_wall(sf::Vector2f(0, window_size.y - 80), sf::Vector2f(window_size.x, 120));
+  Wall left_wall(sf::Vector2f(0, 0), sf::Vector2f(10, window_size.y));
+  Wall right_wall(sf::Vector2f(window_size.x - 10, 0), sf::Vector2f(10, window_size.y));
+  level_data_.walls.push_back(top_wall);
+  level_data_.walls.push_back(bottom_wall);
+  level_data_.walls.push_back(left_wall);
+  level_data_.walls.push_back(right_wall);
 }
 
 void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
@@ -52,6 +43,8 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
   std::string filepath = "../src/levels/" + filename;
   // Fill level grid. It will be 9 x 32 matrix of chars.
   FillGridFromFile(level_grid, filepath);
+  // Set border walls
+  SetBorderWalls(window_size);
   // Build level using the grid.
   const int x_scaler = window_size.x / 32;
   const int y_scaler = window_size.y / 9;
@@ -61,16 +54,23 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
       switch (tile)
       {
       case '#':
-        // Side wall
+        // Border wall
         break;
       case ' ':
         // just blank
         break;
+      case 'p':
+        // player starting position
+        // implementation here
+        break;
       case 'e':
         // enemy
-        level_data_.enemies_.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler), 3.0f, player_);
+        level_data_.enemies.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler), 3.0f, player_);
+        break;
       case 's':
-        shields_.em
+        // shield
+        level_data_.shields.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler));
+        break;
       default:
         break;
       }
