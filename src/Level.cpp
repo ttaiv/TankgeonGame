@@ -137,4 +137,4 @@ void Level::HandleProjectileCollisions() {
     ++projectile_it; // No collisions
   } 
 }
-LevelData Level::GetLevelData(){ return level_data_; }
+const LevelData& Level::GetLevelData(){ return level_data_; }

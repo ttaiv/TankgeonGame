@@ -12,10 +12,10 @@
 #include "Projectile.hpp"
 
 struct LevelData {
-  std::vector<Wall> walls;
-  std::vector<Spike> spikes;
-  std::list<EnemyTank> enemies;
-  std::vector<Projectile> projectiles;
+  std::vector<Wall> walls_;
+  std::vector<Spike> spikes_;
+  std::list<EnemyTank> enemies_;
+  std::vector<Projectile> projectiles_;
 };
 
 class Level {
@@ -28,7 +28,7 @@ class Level {
     void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
     bool IsCompleted() const;
-    // LevelData& GetLevelData();
+    const LevelData& GetLevelData();
     
   private:
     void HandleProjectileCollisions();
