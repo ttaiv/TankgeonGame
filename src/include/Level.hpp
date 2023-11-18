@@ -14,10 +14,10 @@
 #include "OBB.hpp"
 
 struct LevelData {
-  std::vector<Wall> walls_;
-  std::vector<Spike> spikes_;
-  std::list<EnemyTank> enemies_;
-  std::vector<Projectile> projectiles_;
+  std::vector<Wall> walls;
+  std::vector<Spike> spikes;
+  std::list<EnemyTank> enemies;
+  std::vector<Projectile> projectiles;
 };
 
 

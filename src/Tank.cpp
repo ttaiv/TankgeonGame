@@ -1,8 +1,8 @@
 #include "include/Tank.hpp"
-#include "include/LevelData.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Image.hpp>
+#include "include/Level.hpp"
 
 Tank::Tank(sf::Vector2f initial_pos, float speed_scaler) 
   : speed_scaler_(speed_scaler) {
@@ -23,7 +23,7 @@ void Tank::Draw(sf::RenderWindow &window) const {
 
 void Tank::Shoot(float angle, LevelData &level_data_) {
   Projectile new_projectile(turret_shape_.getPosition(), 6, angle, 1);
-  level_data_.projectiles_.push_back(new_projectile);
+  level_data_.projectiles.push_back(new_projectile);
 }
 
 const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }
@@ -34,14 +34,14 @@ bool Tank::IsCollided(sf::Vector2f next_pos, float scaler, const LevelData &leve
   tank_shape_copy.setPosition(next_pos);
   OBB tankOBB = OBB(tank_shape_copy); 
   
-  for (const Wall &wall : level_data_.walls_) {
+  for (const Wall &wall : level_data_.walls) {
     OBB wallOBB = OBB(wall.GetShape());
 
     if(tankOBB.collides(wallOBB)) {
       return true;
     }
   }
-  for (const Spike &spike : level_data_.spikes_) {
+  for (const Spike &spike : level_data_.spikes) {
     OBB spikeOBB = OBB(spike.GetShape());
 
     if(tankOBB.collides(spikeOBB)) {

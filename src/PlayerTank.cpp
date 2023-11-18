@@ -1,5 +1,5 @@
 #include "include/PlayerTank.hpp"
-#include "include/LevelData.hpp"
+#include "include/Level.hpp"
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {
