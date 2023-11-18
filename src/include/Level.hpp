@@ -2,8 +2,21 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include "CollisionManager.hpp"
-#include "LevelData.hpp"
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <list>
+#include "Wall.hpp"
+#include "Spike.hpp"
+#include "PlayerTank.hpp"
+#include "EnemyTank.hpp"
+#include "Projectile.hpp"
 
+struct LevelData {
+  std::vector<Wall> walls;
+  std::vector<Spike> spikes;
+  std::list<EnemyTank> enemies;
+  std::vector<Projectile> projectiles;
+};
 
 class Level {
   public:
@@ -15,11 +28,8 @@ class Level {
     void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
     bool IsCompleted() const;
-    LevelData GetLevelData();
+    // LevelData& GetLevelData();
     
-
-    
-
   private:
     void HandleProjectileCollisions();
     LevelData level_data_;

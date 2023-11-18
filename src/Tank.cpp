@@ -61,6 +61,7 @@ bool Tank::goForward(float margin, LevelData &level_data_) {
 
   if (!IsCollided(tank_shape_.getPosition() + forwardVector, margin, level_data_)){
     turret_shape_.move(forwardVector);
+    tank_shape_.move(forwardVector);
     return true;
   }
   return false;
