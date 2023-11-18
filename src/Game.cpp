@@ -4,7 +4,9 @@
 
 Game::Game(sf::RenderWindow &window)  
 : window_(window), current_level_(window)
-{}
+  {
+    current_level_.LoadFromFile(1);
+  }
 
 void Game::Advance() {
   if (current_level_.IsCompleted() && false) {

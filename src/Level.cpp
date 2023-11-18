@@ -46,6 +46,73 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
   
 }
 
+void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
+  std::vector<std::string> level_grid;
+  std::string filename = "level" + std::to_string(level_number) + ".txt";
+  std::string filepath = "../src/levels/" + filename;
+  // Fill level grid. It will be 9 x 32 matrix of chars.
+  FillGridFromFile(level_grid, filepath);
+  // Build level using the grid.
+  const int x_scaler = window_size.x / 32;
+  const int y_scaler = window_size.y / 9;
+  for (auto y = 0; y < 9; ++y) {
+    for (auto x = 0; x < 32; ++x) {
+      char tile = level_grid[y][x];
+      switch (tile)
+      {
+      case '#':
+        // Side wall
+        break;
+      case ' ':
+        // just blank
+        break;
+      case 'e':
+        // enemy
+        level_data_.enemies_.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler), 3.0f, player_);
+      case 's':
+        shields_.em
+      default:
+        break;
+      }
+    }
+  }
+}
+
+void Level::FillGridFromFile(std::vector<std::string> &level_grid, const std::string &filepath) {
+  std::ifstream level_file(filepath);
+  if (!level_file.is_open()) {
+    throw std::runtime_error("Failed to open level file with path: " + filepath);
+  }
+  // File open successful.
+  // Fill and validate grid.
+  std::string line;
+  int row = 0; // counter
+  while (std::getline(level_file, line)) {
+    // Remove possible carriage return
+    if (line.back() == '\r') {
+      line.pop_back();
+    }
+    // require 32 columns, first and last being '#'.
+    if (line.length() != 32 || line.front() != '#' || line.back() != '#') {
+      throw std::runtime_error(
+        "Row length " + std::to_string(line.length()) + " on row " + std::to_string(row)
+          + " in level file with path " + filepath + " was not 32 " + 
+          "or the # chars were not in the correct place."
+      );
+    }
+    // Row ok, add it to grid.
+    level_grid.push_back(line);
+    ++row;
+  }
+  if (level_grid.size() != 9) {
+    // require 9 rows
+    throw std::runtime_error(
+      "Level file with path " + filepath + " had " + std::to_string(level_grid.size()) + " rows, 9 required"
+    );
+  }
+  // Grid ready and validated.
+}
+
 bool Level::IsCompleted() const {
   // Add check whether player has reached door.
   if (level_data_.enemies.empty()) {
