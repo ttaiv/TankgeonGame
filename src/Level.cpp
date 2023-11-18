@@ -11,18 +11,18 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     float gapSize = 1000;
     float gapCenterX = windowWidth / 2.0f;
     float halfGapSize = gapSize / 2.0f;
-    float wallHeight = 600;
-    float verticalWallYPosition = (windowHeight - wallHeight) / 2.0f;
+    float wallHeight = 400;
+    float verticalWallYPosition = (windowHeight - wallHeight - 80) / 2.0f;
 
     Wall topWall(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, 10));
-    Wall bottomWall(sf::Vector2f(0, windowHeight - 10), sf::Vector2f(windowWidth, 10));
+    Wall bottomWall(sf::Vector2f(0, windowHeight - 80), sf::Vector2f(windowWidth, 120));
     Wall leftWall(sf::Vector2f(0, 0), sf::Vector2f(10, windowHeight));
     Wall rightWall(sf::Vector2f(windowWidth - 10, 0), sf::Vector2f(10, windowHeight));
-    Wall leftVerticalWall(sf::Vector2f(gapCenterX - halfGapSize - wallThickness, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
+    Wall leftVerticalWall(sf::Vector2f(gapCenterX - halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
     Wall rightVerticalWall(sf::Vector2f(gapCenterX + halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
-    Spike middleSpikes(sf::Vector2f(gapCenterX - 100, verticalWallYPosition + 50), sf::Vector2f(wallThickness + 200, wallHeight - 100));
-    Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 50));
-    Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 630));
+    Spike middleSpikes(sf::Vector2f(gapCenterX - 100, verticalWallYPosition), sf::Vector2f(wallThickness + 180, wallHeight - 25));
+    Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 80));
+    Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 500));
     
     level_data_.walls_.push_back(topWall);
     level_data_.walls_.push_back(bottomWall);
@@ -34,9 +34,14 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     shields_.push_back(testShield);
     shields_.push_back(anotherTestShield);
 
+    float enemy_1_x = 530;
+    float enemy_1_y = windowSize.y / 2.0f;
+    float enemy_2_x = windowSize.x - 100;
+    float enemy_2_y = (windowSize.y / 2.0f) - 80;
+
     // Note use of emplace back which does not need copying
-    level_data_.enemies_.emplace_back(sf::Vector2f(500, 200), 3.0f, player_);
-    level_data_.enemies_.emplace_back(sf::Vector2f(300, 300), 3.0f, player_);
+    level_data_.enemies_.emplace_back(sf::Vector2f(enemy_1_x, enemy_1_y), 3.0f, player_);
+    level_data_.enemies_.emplace_back(sf::Vector2f(enemy_2_x, enemy_2_y), 3.0f, player_);
   
 }
 
