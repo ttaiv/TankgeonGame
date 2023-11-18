@@ -10,6 +10,8 @@
 #include "PlayerTank.hpp"
 #include "EnemyTank.hpp"
 #include "Projectile.hpp"
+#include "Shield.hpp"
+#include "OBB.hpp"
 
 struct LevelData {
   std::vector<Wall> walls_;
@@ -17,6 +19,7 @@ struct LevelData {
   std::list<EnemyTank> enemies_;
   std::vector<Projectile> projectiles_;
 };
+
 
 class Level {
   public:
@@ -31,7 +34,17 @@ class Level {
     const LevelData& GetLevelData();
     
   private:
-    void HandleProjectileCollisions();
     LevelData level_data_;
     PlayerTank player_; 
+    std::vector<Shield> shields_;
+
+    void HandleProjectileCollisions();
+    
+/**
+ * @brief Handles item pick ups by checking if the player collides with some item.
+ * If a collision with an item is detected then the correct actions are executed
+ * depending on the item type.
+ */
+    void HandleItemPickUps();
+
 };
