@@ -20,7 +20,7 @@ struct LevelData {
 
 class Level {
   public:
-    Level(sf::RenderWindow &window, LevelData level_data);
+    Level(sf::RenderWindow &window);
     // Disallow copying
     Level(const Level &other) = delete;
     Level& operator=(const Level &other) = delete;

@@ -1,10 +1,8 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(sf::RenderWindow &window, LevelData level_data) 
-: level_data_(level_data), player_(PlayerTank(sf::Vector2f(200, 200), 3.0f))
+Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 200), 3.0f))
 {
-
     sf::Vector2u windowSize = window.getSize();
     unsigned int windowWidth = windowSize.x;
     unsigned int windowHeight = windowSize.y;

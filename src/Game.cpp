@@ -3,7 +3,7 @@
 
 
 Game::Game(sf::RenderWindow &window)  
-: window_(window), current_level_(window, LevelData())
+: window_(window), current_level_(window)
 {}
 
 void Game::Advance() {

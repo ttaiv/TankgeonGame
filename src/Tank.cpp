@@ -28,7 +28,7 @@ void Tank::Shoot(float angle, LevelData &level_data_) {
 
 const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }
 
-bool Tank::IsCollided(sf::Vector2f next_pos, float scaler, LevelData level_data_) const {
+bool Tank::IsCollided(sf::Vector2f next_pos, float scaler, const LevelData &level_data_) const {
   sf::RectangleShape tank_shape_copy = tank_shape_;
   tank_shape_copy.setScale(scaler, scaler);
   tank_shape_copy.setPosition(next_pos);
@@ -53,7 +53,7 @@ bool Tank::IsCollided(sf::Vector2f next_pos, float scaler, LevelData level_data_
   return false;
 }
 
-bool Tank::goForward(float margin, LevelData &level_data_) {
+bool Tank::goForward(float margin, const LevelData &level_data_) {
   float rotation = tank_shape_.getRotation();
   float angleRad = (rotation) * (3.14159265f / 180.0f);
   // Calculate the forward vector
@@ -67,7 +67,7 @@ bool Tank::goForward(float margin, LevelData &level_data_) {
   return false;
 }
 
-bool Tank::goBack(float margin, LevelData &level_data_) {
+bool Tank::goBack(float margin, const LevelData &level_data_) {
   float rotation = tank_shape_.getRotation();
   float angleRad = (rotation) * (3.14159265f / 180.0f);
 
@@ -87,7 +87,7 @@ bool Tank::goBack(float margin, LevelData &level_data_) {
   return false;
 }
 
-bool Tank::turnLeft(float margin, LevelData &level_data_) {
+bool Tank::turnLeft(float margin, const LevelData &level_data_) {
 
   sf::Vector2f originalPosition = tank_shape_.getPosition();
   tank_shape_.rotate(2.0f);
@@ -102,7 +102,7 @@ bool Tank::turnLeft(float margin, LevelData &level_data_) {
     return true;
 }
 
-bool Tank::turnRight(float margin, LevelData &level_data_) {
+bool Tank::turnRight(float margin, const LevelData &level_data_) {
 
   sf::Vector2f originalPosition = tank_shape_.getPosition();
   tank_shape_.rotate(-2.0f);

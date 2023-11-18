@@ -41,10 +41,10 @@ class Tank : public sf::Transformable {
      */
     sf::FloatRect getRotatedBoundingBox() const;
     void Shoot(float angle, LevelData &level_data_);
-    bool goForward(float margin, LevelData &level_data_);
-    bool goBack(float margin, LevelData &level_data_);
-    bool turnLeft(float margin, LevelData &level_data_);
-    bool turnRight(float margin, LevelData &level_data_);
+    bool goForward(float margin, const LevelData &level_data_);
+    bool goBack(float margin, const LevelData &level_data_);
+    bool turnLeft(float margin, const LevelData &level_data_);
+    bool turnRight(float margin, const LevelData &level_data_);
 
   protected:
     float speed_scaler_;
@@ -62,7 +62,7 @@ class Tank : public sf::Transformable {
      * @return true 
      * @return false 
      */
-    bool IsCollided(sf::Vector2f next_pos, float margin, LevelData level_data_) const;
+    bool IsCollided(sf::Vector2f next_pos, float margin, const LevelData &level_data_) const;
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 
