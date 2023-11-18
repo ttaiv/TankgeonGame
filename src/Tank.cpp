@@ -23,7 +23,7 @@ void Tank::Draw(sf::RenderWindow &window) const {
 
 void Tank::Shoot(float angle, LevelData &level_data_) {
   Projectile new_projectile(turret_shape_.getPosition(), 6, angle, 1);
-  level_data_.projectiles.push_back(new_projectile);
+  level_data_.projectiles.emplace_back(new_projectile);
 }
 
 const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }
