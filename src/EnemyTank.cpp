@@ -1,7 +1,7 @@
 #include "include/EnemyTank.hpp"
 #include <cstdlib> 
 #include <ctime>  
-#include "include/LevelData.hpp" 
+#include "include/Level.hpp" 
 
 EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player) 
   : Tank(initial_pos, speed_scaler), player_(player)  {
@@ -79,7 +79,7 @@ bool EnemyTank::CanSeePlayer(LevelData &level_data_) const {
     sightLineRect.setRotation(std::atan2(sightLine.y, sightLine.x) * 180.0f / M_PI);
     OBB sightLineOBB = OBB(sightLineRect);
 
-    for (const auto& wall : level_data_.walls_) {
+    for (const auto& wall : level_data_.walls) {
       OBB wallOBB = OBB(wall.GetShape());
         if (sightLineOBB.collides(wallOBB)) {
             return false;

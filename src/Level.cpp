@@ -24,13 +24,13 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 80));
     Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 500));
     
-    level_data_.walls_.push_back(topWall);
-    level_data_.walls_.push_back(bottomWall);
-    level_data_.walls_.push_back(leftWall);
-    level_data_.walls_.push_back(rightWall);
-    level_data_.walls_.push_back(leftVerticalWall);
-    level_data_.walls_.push_back(rightVerticalWall);
-    level_data_.spikes_.push_back(middleSpikes);
+    level_data_.walls.push_back(topWall);
+    level_data_.walls.push_back(bottomWall);
+    level_data_.walls.push_back(leftWall);
+    level_data_.walls.push_back(rightWall);
+    level_data_.walls.push_back(leftVerticalWall);
+    level_data_.walls.push_back(rightVerticalWall);
+    level_data_.spikes.push_back(middleSpikes);
     shields_.push_back(testShield);
     shields_.push_back(anotherTestShield);
 
@@ -40,14 +40,14 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     float enemy_2_y = (windowSize.y / 2.0f) - 80;
 
     // Note use of emplace back which does not need copying
-    level_data_.enemies_.emplace_back(sf::Vector2f(enemy_1_x, enemy_1_y), 3.0f, player_);
-    level_data_.enemies_.emplace_back(sf::Vector2f(enemy_2_x, enemy_2_y), 3.0f, player_);
+    level_data_.enemies.emplace_back(sf::Vector2f(enemy_1_x, enemy_1_y), 3.0f, player_);
+    level_data_.enemies.emplace_back(sf::Vector2f(enemy_2_x, enemy_2_y), 3.0f, player_);
   
 }
 
 bool Level::IsCompleted() const {
   // Add check whether player has reached door.
-  if (level_data_.enemies_.empty()) {
+  if (level_data_.enemies.empty()) {
     return true;
   }
   return false;
@@ -55,11 +55,11 @@ bool Level::IsCompleted() const {
 
 void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update enemy positions and make them shoot.
-  for (auto &it : level_data_.enemies_) {
+  for (auto &it : level_data_.enemies) {
     it.Update(level_data_);
   }
   // Update positions of projectiles.
-  for (auto &projectile: level_data_.projectiles_) {
+  for (auto &projectile: level_data_.projectiles) {
     projectile.Move();
   }
   // Handle projectile collisions
@@ -73,26 +73,26 @@ void Level::DrawLevel(sf::RenderWindow &window) {
   for (const auto &it : shields_) {
     it.Draw(window);
   }
-  for (const auto &it : level_data_.walls_) {
+  for (const auto &it : level_data_.walls) {
     it.Draw(window);
   }
-  for (const auto &it : level_data_.spikes_) {
+  for (const auto &it : level_data_.spikes) {
     it.Draw(window);
   }
-  for (const auto &it : level_data_.enemies_) {
+  for (const auto &it : level_data_.enemies) {
     it.Draw(window);
   }
-  for (const auto &it : level_data_.projectiles_) {
+  for (const auto &it : level_data_.projectiles) {
     it.Draw(window);
   }
   player_.Draw(window);
 }
 
 void Level::HandleProjectileCollisions() {
-  for (auto projectile_it = level_data_.projectiles_.begin(); projectile_it != level_data_.projectiles_.end();) {
+  for (auto projectile_it = level_data_.projectiles.begin(); projectile_it != level_data_.projectiles.end();) {
     // Check for collisions between wall and projectile.
     ProjectileWallCollisionResult result = NoCollision;
-    for (const Wall &wall : level_data_.walls_) {
+    for (const Wall &wall : level_data_.walls) {
       result = CollisionManager::ProjectileWall(*projectile_it, wall);
       if (result == ProjectileWallCollisionResult::Ricochet || result == ProjectileWallCollisionResult::Destroy) {
         // No need to check other walls
@@ -101,15 +101,15 @@ void Level::HandleProjectileCollisions() {
     }
     if (result == ProjectileWallCollisionResult::Destroy) {
       // Remove projectile and move to next one.
-      projectile_it = level_data_.projectiles_.erase(projectile_it);
+      projectile_it = level_data_.projectiles.erase(projectile_it);
       continue;
     }
     // Check for collisions with other projectiles
     bool projectile_collision = false;
-    for (auto other_projectile_it = std::next(projectile_it); other_projectile_it != level_data_.projectiles_.end();) {
+    for (auto other_projectile_it = std::next(projectile_it); other_projectile_it != level_data_.projectiles.end();) {
       projectile_collision = CollisionManager::ProjectileProjectile(*projectile_it, *other_projectile_it);
       if (projectile_collision) {
-        level_data_.projectiles_.erase(other_projectile_it);
+        level_data_.projectiles.erase(other_projectile_it);
         // No need to check other projectiles
         break;
       } else {
@@ -118,16 +118,16 @@ void Level::HandleProjectileCollisions() {
     }
     if (projectile_collision) {
       // Remove projectile and move to next one
-      projectile_it = level_data_.projectiles_.erase(projectile_it);
+      projectile_it = level_data_.projectiles.erase(projectile_it);
       continue;
     }
     // Check for collisions with enemy tanks.
     bool enemy_collision = false;
-    for (auto enemy_it = level_data_.enemies_.begin(); enemy_it != level_data_.enemies_.end();) {
+    for (auto enemy_it = level_data_.enemies.begin(); enemy_it != level_data_.enemies.end();) {
       enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy_it);
       if (enemy_collision) {
         // No need to check other enemies
-        level_data_.enemies_.erase(enemy_it);
+        level_data_.enemies.erase(enemy_it);
         break;
       } else {
         ++enemy_it;
@@ -135,7 +135,7 @@ void Level::HandleProjectileCollisions() {
     }
     if (enemy_collision) {
       // Remove projectile and move to next one.
-      projectile_it = level_data_.projectiles_.erase(projectile_it);
+      projectile_it = level_data_.projectiles.erase(projectile_it);
       continue;
     }
     // Check for collision with player tank
@@ -145,12 +145,12 @@ void Level::HandleProjectileCollisions() {
         //Player has a shield. No game over but break the shield.
         player_.breakShield();
         std::cout << "Player was hit, but the shield saved them!" << std::endl;
-        projectile_it = level_data_.projectiles_.erase(projectile_it);
+        projectile_it = level_data_.projectiles.erase(projectile_it);
         continue;
       } else {
         // Game over
         std::cout << "Player was hit" << std::endl;
-        projectile_it = level_data_.projectiles_.erase(projectile_it);
+        projectile_it = level_data_.projectiles.erase(projectile_it);
         continue;
       }
     }
