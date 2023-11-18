@@ -10,6 +10,8 @@
 #include "PlayerTank.hpp"
 #include "EnemyTank.hpp"
 #include "CollisionManager.hpp"
+#include "Shield.hpp"
+#include "OBB.hpp"
 
 class Level {
   public:
@@ -25,10 +27,18 @@ class Level {
   private:
     std::vector<Wall> walls_;
     std::vector<Spike> spikes_;
+    std::vector<Shield> shields_;
     std::list<EnemyTank> enemies_;
     PlayerTank player_;
     std::vector<Projectile> projectiles_;
 
     void HandleProjectileCollisions();
+    
+/**
+ * @brief Handles item pick ups by checking if the player collides with some item.
+ * If a collision with an item is detected then the correct actions are executed
+ * depending on the item type.
+ */
+    void HandleItemPickUps();
 
 };
