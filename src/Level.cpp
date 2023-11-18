@@ -24,7 +24,6 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 50));
     Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 630));
     
-<<<<<<< src/Level.cpp
     level_data_.walls_.push_back(topWall);
     level_data_.walls_.push_back(bottomWall);
     level_data_.walls_.push_back(leftWall);
@@ -141,20 +140,21 @@ void Level::HandleProjectileCollisions() {
         //Player has a shield. No game over but break the shield.
         player_.breakShield();
         std::cout << "Player was hit, but the shield saved them!" << std::endl;
-        projectile_it = projectiles_.erase(projectile_it);
+        projectile_it = level_data_.projectiles_.erase(projectile_it);
         continue;
       } else {
         // Game over
         std::cout << "Player was hit" << std::endl;
-        projectile_it = projectiles_.erase(projectile_it);
+        projectile_it = level_data_.projectiles_.erase(projectile_it);
         continue;
       }
     }
     //No collisions
     ++projectile_it;
-  } 
+  }
+}
 
-void Level::HandleItemPickUps(){
+void Level::HandleItemPickUps() {
   OBB tankOBB = OBB(player_.GetShape());
  
   //Check if player is over a shield.
