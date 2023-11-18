@@ -1,17 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include <vector>
-#include "Projectile.hpp"
 #include "Tank.hpp"
-#include "Wall.hpp"
-#include "Spike.hpp"
+
 
 class PlayerTank: public Tank {
   public:
     PlayerTank(sf::Vector2f initial_pos, float speed_scaler);
     
-    void Update(sf::RenderWindow &window, std::vector<Projectile> &projectiles, std::vector<Wall> &walls, std::vector<Spike> &spikes);
+    void Update(sf::RenderWindow &window, LevelData &level_data);
 
     /**
      * @brief Sets has_shield_ to true for the player tank.
@@ -42,9 +39,9 @@ class PlayerTank: public Tank {
      */
     sf::Texture textureNoTurret_;
     sf::Texture textureTurret_;
-    float GetTurretRotationAngle(sf::RenderWindow &window);
-
-    void UpdateShape(float rotation_angle, std::vector<Wall> &walls, std::vector<Spike> &spikes);
-
     bool has_shield_;
+    
+    float GetTurretRotationAngle(sf::RenderWindow &window);
+    void UpdateShape(float rotation_angle, LevelData &level_data);
+
 };

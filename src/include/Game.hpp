@@ -15,7 +15,6 @@ class Game {
 
   private:
     sf::RenderWindow &window_;
-    PlayerTank player_;
     Level current_level_;
     int current_level_num_ = 1;
 

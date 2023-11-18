@@ -1,12 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include <vector>
 #include <iostream>
-#include "Projectile.hpp"
-#include "Wall.hpp"
-#include "Spike.hpp"
 #include "OBB.hpp"
+
+struct LevelData;
 
 class Tank : public sf::Transformable {
   public:
@@ -42,11 +40,11 @@ class Tank : public sf::Transformable {
      * @param angle as radians
      */
     sf::FloatRect getRotatedBoundingBox() const;
-    void Shoot(std::vector<Projectile> &projectiles, float angle);
-    bool goForward(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
-    bool goBack(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
-    bool turnLeft(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
-    bool turnRight(const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin);
+    void Shoot(float angle, LevelData &level_data_);
+    bool goForward(float margin, const LevelData &level_data_);
+    bool goBack(float margin, const LevelData &level_data_);
+    bool turnLeft(float margin, const LevelData &level_data_);
+    bool turnRight(float margin, const LevelData &level_data_);
 
   protected:
     float speed_scaler_;
@@ -64,7 +62,7 @@ class Tank : public sf::Transformable {
      * @return true 
      * @return false 
      */
-    bool IsCollided(sf::Vector2f next_pos, const std::vector<Wall> &walls, const std::vector<Spike> &spikes, float margin) const;
+    bool IsCollided(sf::Vector2f next_pos, float margin, const LevelData &level_data_) const;
     /**
      * @brief Moves the tank around by updating the shape's position 
      * 

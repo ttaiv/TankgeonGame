@@ -1,70 +1,66 @@
 #include "include/EnemyTank.hpp"
+#include <cstdlib> 
+#include <ctime>  
+#include "include/LevelData.hpp" 
 
-EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler) 
-  : Tank(initial_pos, speed_scaler) {
+EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player) 
+  : Tank(initial_pos, speed_scaler), player_(player)  {
       textureNoTurret_.loadFromFile("../src/assets/RedTankNoTurret.png");
       tank_shape_.setTexture(&textureNoTurret_);
       textureTurret_.loadFromFile("../src/assets/RedTankTurret.png");
       turret_shape_.setTexture(&textureTurret_);
-  }
-
-/*
-EnemyTank::EnemyTank(const EnemyTank &other) 
-  : Tank(other) {
-    textureNoTurret_.loadFromFile("../src/assets/RedTankNoTurret.png");
-    tank_shape_.setTexture(&textureNoTurret_);
-    textureTurret_.loadFromFile("../src/assets/RedTankTurret.png");
-    turret_shape_.setTexture(&textureTurret_);
-  }
-
-EnemyTank& EnemyTank::operator=(const EnemyTank &other) {
-  if (this != &other) {
-    Tank::operator=(other); // call (default) copy assignment operator of Tank
-    textureNoTurret_.loadFromFile("../src/assets/RedTankNoTurret.png");
-    tank_shape_.setTexture(&textureNoTurret_);
-    textureTurret_.loadFromFile("../src/assets/RedTankTurret.png");
-    turret_shape_.setTexture(&textureTurret_);
-  }
-  return *this;
 }
-*/
+EnemyTank::EnemyTank(const EnemyTank &other)
+    : Tank(other), textureNoTurret_(other.textureNoTurret_), textureTurret_(other.textureTurret_), player_(other.player_) {
+    // Reload textures for the new object
+    tank_shape_.setTexture(&textureNoTurret_);
+    turret_shape_.setTexture(&textureTurret_);
+}
 
-void EnemyTank::Update(std::vector<Projectile> &projectiles, const sf::RectangleShape &player_tank, const std::vector<Wall> &walls, const std::vector<Spike> &spikes) {
-  float angle = GetAngleToPlayer(player_tank);
-  UpdateShape(angle, walls, spikes, projectiles);
-  if (cooldown_timer_ > 150 && CanSeePlayer(player_tank, walls)) {
+
+void EnemyTank::Update(LevelData &level_data_) {
+  float angle = GetAngleToPlayer();
+  UpdateShape(angle, level_data_);
+  if (cooldown_timer_ > 150 && CanSeePlayer(level_data_)) {
     cooldown_timer_ = 0;
-    Shoot(projectiles, angle);
+    Shoot(angle, level_data_);
   }
   ++cooldown_timer_;
  
 }
 
-void EnemyTank::UpdateShape(float rotation_angle, const std::vector<Wall> &walls, const std::vector<Spike> &spikes, const std::vector<Projectile> &projectiles) {
+void EnemyTank::UpdateShape(float rotation_angle, LevelData &level_data_) {
   turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
-  if (!WillBeHit(projectiles)){
-    if (!goForward(walls, spikes, 2)) {
-     turnLeft(walls, spikes, 1);  
-   }
+  //Introduce randomness
+  std::srand(std::time(nullptr));
+  double randomFloat = static_cast<double>(std::rand()) / RAND_MAX;
+  
+  if (randomFloat < 0.25){
+    turnLeft(1, level_data_);
+  }
+  else if (randomFloat < 0.50){
+    goForward(2, level_data_);
+  }
+  else if (randomFloat < 0.75){
+    goBack(2, level_data_);
   }
   else{
-    goBack(walls, spikes, 1);
+    turnRight(1, level_data_);
   }
 }
 
 
-float EnemyTank::GetAngleToPlayer(sf::RectangleShape player_tank) { 
-  sf::Vector2f player_position = player_tank.getPosition();
-
+float EnemyTank::GetAngleToPlayer() { 
+  sf::Vector2f player_position = player_.GetShape().getPosition();
   float dx = turret_shape_.getPosition().x - player_position.x;
   float dy = turret_shape_.getPosition().y - player_position.y;
-
   return atan2(dy, dx);
 }
 
-bool EnemyTank::WillBeHit(const std::vector<Projectile> &projectiles) const {
-  float predictionTime = 1.0;
-  float AvoidanceRadius = 100.0;
+/*
+bool EnemyTank::WillBeHit() const {
+  float predictionTime = 100.0;
+  float AvoidanceRadius = 1000.0;
   for (const auto &it : projectiles) {
     sf::Vector2f futureProjectilePosition = it.GetShape().getPosition() + it.GetSpeed() * predictionTime;
     sf::Vector2f diff = tank_shape_.getPosition() - futureProjectilePosition;
@@ -74,20 +70,18 @@ bool EnemyTank::WillBeHit(const std::vector<Projectile> &projectiles) const {
   }
   return false;
 }
-
-bool EnemyTank::CanSeePlayer(const sf::RectangleShape& player_tank, const std::vector<Wall>& walls) const {
-    sf::Vector2f sightLine = player_tank.getPosition() - tank_shape_.getPosition();
+*/
+bool EnemyTank::CanSeePlayer(LevelData &level_data_) const {
+    sf::Vector2f sightLine = player_.GetShape().getPosition() - tank_shape_.getPosition();
     float sightLineLength = std::sqrt(sightLine.x * sightLine.x + sightLine.y * sightLine.y);
-
-    // Create a bounding box for the sightLine
-    sf::FloatRect sightLineBoundingBox(tank_shape_.getPosition(), sf::Vector2f(sightLineLength, 1.0f));
     sf::RectangleShape sightLineRect(sf::Vector2f(sightLineLength, 1.0f));
     sightLineRect.setPosition(tank_shape_.getPosition());
     sightLineRect.setRotation(std::atan2(sightLine.y, sightLine.x) * 180.0f / M_PI);
+    OBB sightLineOBB = OBB(sightLineRect);
 
-    // Check for obstacles in the sight line
-    for (const auto& wall : walls) {
-        if (wall.GetShape().getGlobalBounds().intersects(sightLineBoundingBox)) {
+    for (const auto& wall : level_data_.walls_) {
+      OBB wallOBB = OBB(wall.GetShape());
+        if (sightLineOBB.collides(wallOBB)) {
             return false;
         }
     }

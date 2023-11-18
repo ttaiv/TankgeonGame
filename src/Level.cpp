@@ -1,7 +1,8 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(PlayerTank player, sf::RenderWindow &window) : player_(player) {
+Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 200), 3.0f))
+{
     sf::Vector2u windowSize = window.getSize();
     unsigned int windowWidth = windowSize.x;
     unsigned int windowHeight = windowSize.y;
@@ -23,24 +24,26 @@ Level::Level(PlayerTank player, sf::RenderWindow &window) : player_(player) {
     Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 50));
     Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 630));
     
-    walls_.push_back(topWall);
-    walls_.push_back(bottomWall);
-    walls_.push_back(leftWall);
-    walls_.push_back(rightWall);
-    walls_.push_back(leftVerticalWall);
-    walls_.push_back(rightVerticalWall);
-    spikes_.push_back(middleSpikes);
+<<<<<<< src/Level.cpp
+    level_data_.walls_.push_back(topWall);
+    level_data_.walls_.push_back(bottomWall);
+    level_data_.walls_.push_back(leftWall);
+    level_data_.walls_.push_back(rightWall);
+    level_data_.walls_.push_back(leftVerticalWall);
+    level_data_.walls_.push_back(rightVerticalWall);
+    level_data_.spikes_.push_back(middleSpikes);
     shields_.push_back(testShield);
     shields_.push_back(anotherTestShield);
 
     // Note use of emplace back which does not need copying
-    enemies_.emplace_back(sf::Vector2f(200, 200), 3);
-    enemies_.emplace_back(sf::Vector2f(200, 400), 3);
+    level_data_.enemies_.emplace_back(sf::Vector2f(500, 200), 3.0f, player_);
+    level_data_.enemies_.emplace_back(sf::Vector2f(300, 300), 3.0f, player_);
+  
 }
 
 bool Level::IsCompleted() const {
   // Add check whether player has reached door.
-  if (enemies_.empty()) {
+  if (level_data_.enemies_.empty()) {
     return true;
   }
   return false;
@@ -48,18 +51,17 @@ bool Level::IsCompleted() const {
 
 void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update enemy positions and make them shoot.
-  for (auto &it : enemies_) {
-    it.Update(projectiles_, player_.GetShape(), walls_, spikes_);
+  for (auto &it : level_data_.enemies_) {
+    it.Update(level_data_);
   }
   // Update positions of projectiles.
-  for (auto &projectile: projectiles_) {
+  for (auto &projectile: level_data_.projectiles_) {
     projectile.Move();
   }
   // Handle projectile collisions
   HandleProjectileCollisions();
   // Update player tank position and make it shoot.
-  player_.Update(window, projectiles_, walls_, spikes_);
-  // Handle item pickups.
+  player_.Update(window, level_data_);
   HandleItemPickUps();
 }
 
@@ -67,26 +69,26 @@ void Level::DrawLevel(sf::RenderWindow &window) {
   for (const auto &it : shields_) {
     it.Draw(window);
   }
-  for (const auto &it : walls_) {
+  for (const auto &it : level_data_.walls_) {
     it.Draw(window);
   }
-  for (const auto &it : spikes_) {
+  for (const auto &it : level_data_.spikes_) {
     it.Draw(window);
   }
-  for (const auto &it : enemies_) {
+  for (const auto &it : level_data_.enemies_) {
     it.Draw(window);
   }
-  for (const auto &it : projectiles_) {
+  for (const auto &it : level_data_.projectiles_) {
     it.Draw(window);
   }
   player_.Draw(window);
 }
 
 void Level::HandleProjectileCollisions() {
-  for (auto projectile_it = projectiles_.begin(); projectile_it != projectiles_.end();) {
+  for (auto projectile_it = level_data_.projectiles_.begin(); projectile_it != level_data_.projectiles_.end();) {
     // Check for collisions between wall and projectile.
     ProjectileWallCollisionResult result = NoCollision;
-    for (const Wall &wall : walls_) {
+    for (const Wall &wall : level_data_.walls_) {
       result = CollisionManager::ProjectileWall(*projectile_it, wall);
       if (result == ProjectileWallCollisionResult::Ricochet || result == ProjectileWallCollisionResult::Destroy) {
         // No need to check other walls
@@ -95,15 +97,15 @@ void Level::HandleProjectileCollisions() {
     }
     if (result == ProjectileWallCollisionResult::Destroy) {
       // Remove projectile and move to next one.
-      projectile_it = projectiles_.erase(projectile_it);
+      projectile_it = level_data_.projectiles_.erase(projectile_it);
       continue;
     }
     // Check for collisions with other projectiles
     bool projectile_collision = false;
-    for (auto other_projectile_it = std::next(projectile_it); other_projectile_it != projectiles_.end();) {
+    for (auto other_projectile_it = std::next(projectile_it); other_projectile_it != level_data_.projectiles_.end();) {
       projectile_collision = CollisionManager::ProjectileProjectile(*projectile_it, *other_projectile_it);
       if (projectile_collision) {
-        projectiles_.erase(other_projectile_it);
+        level_data_.projectiles_.erase(other_projectile_it);
         // No need to check other projectiles
         break;
       } else {
@@ -112,16 +114,16 @@ void Level::HandleProjectileCollisions() {
     }
     if (projectile_collision) {
       // Remove projectile and move to next one
-      projectile_it = projectiles_.erase(projectile_it);
+      projectile_it = level_data_.projectiles_.erase(projectile_it);
       continue;
     }
     // Check for collisions with enemy tanks.
     bool enemy_collision = false;
-    for (auto enemy_it = enemies_.begin(); enemy_it != enemies_.end();) {
+    for (auto enemy_it = level_data_.enemies_.begin(); enemy_it != level_data_.enemies_.end();) {
       enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy_it);
       if (enemy_collision) {
         // No need to check other enemies
-        enemies_.erase(enemy_it);
+        level_data_.enemies_.erase(enemy_it);
         break;
       } else {
         ++enemy_it;
@@ -129,7 +131,7 @@ void Level::HandleProjectileCollisions() {
     }
     if (enemy_collision) {
       // Remove projectile and move to next one.
-      projectile_it = projectiles_.erase(projectile_it);
+      projectile_it = level_data_.projectiles_.erase(projectile_it);
       continue;
     }
     // Check for collision with player tank
@@ -150,8 +152,7 @@ void Level::HandleProjectileCollisions() {
     }
     //No collisions
     ++projectile_it;
-  }
-}
+  } 
 
 void Level::HandleItemPickUps(){
   OBB tankOBB = OBB(player_.GetShape());
@@ -175,3 +176,4 @@ void Level::HandleItemPickUps(){
     }
   }
 }
+const LevelData& Level::GetLevelData(){ return level_data_; }
