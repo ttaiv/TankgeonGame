@@ -12,6 +12,8 @@
 #include "Projectile.hpp"
 #include "Shield.hpp"
 #include "OBB.hpp"
+#include <string>
+#include <fstream>
 
 struct LevelData {
   std::vector<Wall> walls;
@@ -29,6 +31,7 @@ class Level {
     Level(const Level &other) = delete;
     Level& operator=(const Level &other) = delete;
 
+    void LoadFromFile(int level_number, sf::Vector2u window_size);
     void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
     bool IsCompleted() const;
@@ -47,4 +50,7 @@ class Level {
  */
     void HandleItemPickUps();
 
+    void FillGridFromFile(std::vector<std::string> &level_grid, const std::string &filepath);
+
+    void SetBorderWalls(sf::Vector2u window_size);
 };
