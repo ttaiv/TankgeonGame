@@ -31,8 +31,9 @@ Level::Level(sf::RenderWindow &window) : player_(PlayerTank(sf::Vector2f(200, 20
     level_data_.walls.push_back(leftVerticalWall);
     level_data_.walls.push_back(rightVerticalWall);
     level_data_.spikes.push_back(middleSpikes);
-    shields_.push_back(testShield);
-    shields_.push_back(anotherTestShield);
+    level_data_.shields.emplace_back(testShield);
+    level_data_.shields.emplace_back(anotherTestShield);
+    
 
     float enemy_1_x = 530;
     float enemy_1_y = windowSize.y / 2.0f;
@@ -70,7 +71,7 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
 }
 
 void Level::DrawLevel(sf::RenderWindow &window) {
-  for (const auto &it : shields_) {
+  for (const auto &it : level_data_.shields) {
     it.Draw(window);
   }
   for (const auto &it : level_data_.walls) {
@@ -163,7 +164,7 @@ void Level::HandleItemPickUps() {
   OBB tankOBB = OBB(player_.GetShape());
  
   //Check if player is over a shield.
-  for (auto shield = shields_.begin(); shield != shields_.end();){
+  for (auto shield = level_data_.shields.begin(); shield != level_data_.shields.end();){
     OBB shieldOBB = OBB(shield->GetShape());
     
     if(tankOBB.collides(shieldOBB)){
@@ -171,7 +172,8 @@ void Level::HandleItemPickUps() {
       if (!player_.hasShield()){
         //Player doesn't have shield, enable it and remove it from the field.
         player_.setShield();
-        shield = shields_.erase(shield);
+        level_data_.shields.erase(shield);
+        break;
       } else {
         //Player already has a shield. Do nothing.
         shield++;
@@ -181,4 +183,5 @@ void Level::HandleItemPickUps() {
     }
   }
 }
+
 const LevelData& Level::GetLevelData(){ return level_data_; }

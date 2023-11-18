@@ -18,6 +18,7 @@ struct LevelData {
   std::vector<Spike> spikes;
   std::list<EnemyTank> enemies;
   std::vector<Projectile> projectiles;
+  std::list<Shield> shields;
 };
 
 
@@ -36,7 +37,6 @@ class Level {
   private:
     LevelData level_data_;
     PlayerTank player_; 
-    std::vector<Shield> shields_;
 
     void HandleProjectileCollisions();
     
