@@ -17,7 +17,7 @@ struct LevelData {
   std::vector<Wall> walls;
   std::vector<Spike> spikes;
   std::list<EnemyTank> enemies;
-  std::vector<Projectile> projectiles;
+  std::list<Projectile> projectiles;
   std::list<Shield> shields;
 };
 
