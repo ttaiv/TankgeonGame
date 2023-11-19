@@ -273,6 +273,10 @@ void Level::HandleItemPickUps() {
 
 const LevelData& Level::GetLevelData(){ return level_data_; }
 
+const PlayerTank& Level::GetPlayerTank() const {
+      return player_;
+    }
+
 void Level::Clear() {
   level_data_.enemies.clear();
   level_data_.projectiles.clear();

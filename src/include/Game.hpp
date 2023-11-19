@@ -13,6 +13,21 @@ class Game {
      */
     void Advance();
 
+    /**
+     * @brief Getter function to let the hud know the current level.
+     * 
+     * @return int 
+     */
+    int GetLevelNum();
+
+    /**
+     * @brief Getter function to let the hud know wether the player has a shield.
+     * 
+     * @return true 
+     * @return false 
+     */
+    bool GetShieldStatus();
+
   private:
     sf::RenderWindow &window_;
     Level current_level_;
