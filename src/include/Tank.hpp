@@ -46,6 +46,8 @@ class Tank : public sf::Transformable {
     bool turnLeft(float margin, const LevelData &level_data_);
     bool turnRight(float margin, const LevelData &level_data_);
 
+    void SetPosition(sf::Vector2f position);
+
   protected:
     float speed_scaler_;
     int cooldown_timer_ = 0;

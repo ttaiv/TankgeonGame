@@ -1,7 +1,7 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(): player_(sf::Vector2f(100, 100), 3) {}
+Level::Level(): player_(sf::Vector2f(100, 100), 3) {} // Player position will be updated in LoadFromFile call
 
 void Level::SetBorderWalls(sf::Vector2u window_size) {
   Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 30));
@@ -40,6 +40,7 @@ sf::Vector2u Level::CountNeighboringObstacles(const std::vector<std::string> &le
 }
 
 void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
+  Clear();
   std::vector<std::string> level_grid;
   std::string filename = "level" + std::to_string(level_number) + ".txt";
   std::string filepath = "../src/levels/" + filename;
@@ -70,7 +71,7 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         break;
       case 'p':
         // player starting position
-        // implementation here
+        player_.SetPosition(sf::Vector2f(x * x_scaler, y * y_scaler));
         break;
       case 'e':
         // enemy
@@ -271,3 +272,11 @@ void Level::HandleItemPickUps() {
 }
 
 const LevelData& Level::GetLevelData(){ return level_data_; }
+
+void Level::Clear() {
+  level_data_.enemies.clear();
+  level_data_.projectiles.clear();
+  level_data_.shields.clear();
+  level_data_.spikes.clear();
+  level_data_.walls.clear();
+}
