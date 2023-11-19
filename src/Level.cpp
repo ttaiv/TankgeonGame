@@ -1,40 +1,41 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(sf::RenderWindow &window): player_(sf::Vector2f(100, 100), 3) 
-{
-    sf::Vector2u windowSize = window.getSize();
-    unsigned int windowWidth = windowSize.x;
-    unsigned int windowHeight = windowSize.y;
-    
-    float wallThickness = 40;
-    float gapSize = 1000;
-    float gapCenterX = windowWidth / 2.0f;
-    float halfGapSize = gapSize / 2.0f;
-    float wallHeight = 400;
-    float verticalWallYPosition = (windowHeight - wallHeight - 80) / 2.0f;
-
-    Wall leftVerticalWall(sf::Vector2f(gapCenterX - halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
-    Wall rightVerticalWall(sf::Vector2f(gapCenterX + halfGapSize, verticalWallYPosition), sf::Vector2f(wallThickness, wallHeight));
-    Spike middleSpikes(sf::Vector2f(gapCenterX - 100, verticalWallYPosition), sf::Vector2f(wallThickness + 180, wallHeight - 25));
-    Shield testShield(sf::Vector2f(gapCenterX - 50, verticalWallYPosition - 80));
-    Shield anotherTestShield(sf::Vector2f(gapCenterX, verticalWallYPosition + 500));
-
-    level_data_.walls.push_back(leftVerticalWall);
-    level_data_.walls.push_back(rightVerticalWall);
-    level_data_.spikes.push_back(middleSpikes);
-  
-}
+Level::Level(): player_(sf::Vector2f(100, 100), 3) {}
 
 void Level::SetBorderWalls(sf::Vector2u window_size) {
-  Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 10));
+  Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 30));
   Wall bottom_wall(sf::Vector2f(0, window_size.y - 80), sf::Vector2f(window_size.x, 120));
   Wall left_wall(sf::Vector2f(0, 0), sf::Vector2f(10, window_size.y));
-  Wall right_wall(sf::Vector2f(window_size.x - 10, 0), sf::Vector2f(10, window_size.y));
+  Wall right_wall(sf::Vector2f(window_size.x - 10, 0), sf::Vector2f(20, window_size.y));
   level_data_.walls.push_back(top_wall);
   level_data_.walls.push_back(bottom_wall);
   level_data_.walls.push_back(left_wall);
   level_data_.walls.push_back(right_wall);
+}
+
+sf::Vector2u Level::CountNeighboringObstacles(const std::vector<std::string> &level_grid,
+  std::array<std::array<bool, LEVEL_FILE_WIDTH>, LEVEL_FILE_HEIGHT> &visited, int start_x, int start_y, char obstacle) {
+  sf::Vector2u counts(0, 0);
+  // Count x neighbors
+  for (auto x = start_x + 1; x < LEVEL_FILE_WIDTH; ++x) {
+    if (level_grid[start_y][x] == obstacle) {
+      visited[start_y][x] = true;
+      counts.x += 1;
+    } else {
+      break;
+    }
+  }
+  // Count y neighbors
+    for (auto y = start_y + 1; y < LEVEL_FILE_HEIGHT; ++y) {
+    if (level_grid[y][start_x] == obstacle) {
+      visited[y][start_x] = true;
+      counts.y += 1;
+    } else {
+      break;
+    }
+  }
+  return counts;
 }
 
 void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
@@ -46,11 +47,18 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
   // Set border walls
   SetBorderWalls(window_size);
   // Build level using the grid.
-  const int x_scaler = window_size.x / 32;
-  const int y_scaler = window_size.y / 9;
-  for (auto y = 0; y < 9; ++y) {
-    for (auto x = 0; x < 32; ++x) {
+  const int x_scaler = window_size.x / LEVEL_FILE_WIDTH;
+  const int y_scaler = window_size.y / LEVEL_FILE_HEIGHT;
+  // Create 9 x 32 array to keep track of already visited tiles, initialized to false.
+  std::array<std::array<bool, LEVEL_FILE_WIDTH>, LEVEL_FILE_HEIGHT> visited {};
+  for (auto y = 0; y < LEVEL_FILE_HEIGHT; ++y) {
+    for (auto x = 0; x < LEVEL_FILE_WIDTH; ++x) {
+      if (visited[y][x]) {
+        continue;
+      }
+      visited[y][x] = true;
       char tile = level_grid[y][x];
+      sf::Vector2u neighbor_count, dimensions;
       switch (tile)
       {
       case '#':
@@ -70,6 +78,11 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
       case 's':
         // shield
         level_data_.shields.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler));
+        break;
+      case 'w':
+        neighbor_count = CountNeighboringObstacles(level_grid, visited, x, y, 'w');
+        dimensions = neighbor_count + sf::Vector2u(1, 1);
+        level_data_.walls.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(dimensions.x * x_scaler, dimensions.y * y_scaler));
         break;
       default:
         break;
@@ -93,7 +106,7 @@ void Level::FillGridFromFile(std::vector<std::string> &level_grid, const std::st
       line.pop_back();
     }
     // require 32 columns, first and last being '#'.
-    if (line.length() != 32 || line.front() != '#' || line.back() != '#') {
+    if (line.length() != LEVEL_FILE_WIDTH || line.front() != '#' || line.back() != '#') {
       throw std::runtime_error(
         "Row length " + std::to_string(line.length()) + " on row " + std::to_string(row)
           + " in level file with path " + filepath + " was not 32 " + 
@@ -104,7 +117,7 @@ void Level::FillGridFromFile(std::vector<std::string> &level_grid, const std::st
     level_grid.push_back(line);
     ++row;
   }
-  if (level_grid.size() != 9) {
+  if (level_grid.size() != LEVEL_FILE_HEIGHT) {
     // require 9 rows
     throw std::runtime_error(
       "Level file with path " + filepath + " had " + std::to_string(level_grid.size()) + " rows, 9 required"
