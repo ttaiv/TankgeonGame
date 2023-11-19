@@ -45,6 +45,13 @@ class Level {
     void DrawLevel(sf::RenderWindow &window);
     bool IsCompleted() const;
     const LevelData& GetLevelData();
+    
+    /**
+     * @brief Getter function that returns the player tank.
+     * 
+     * @return const PlayerTank& 
+     */
+    const PlayerTank& GetPlayerTank() const;
 
     
   private:
@@ -65,6 +72,7 @@ class Level {
     void SetBorderWalls(sf::Vector2u window_size);
 
     void Clear();
+
 
     sf::Vector2u CountNeighboringObstacles(const std::vector<std::string> &level_grid,
       std::array<std::array<bool, LEVEL_FILE_WIDTH>, LEVEL_FILE_HEIGHT> &visited, int start_x, int start_y, char obstacle);

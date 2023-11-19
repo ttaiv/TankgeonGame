@@ -14,3 +14,11 @@ void Game::Advance() {
   current_level_.UpdateLevel(window_);
   current_level_.DrawLevel(window_);
 }
+
+int Game::GetLevelNum(){
+      return current_level_num_;
+    }
+
+bool Game::GetShieldStatus() {
+      return current_level_.GetPlayerTank().hasShield();
+    }

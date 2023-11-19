@@ -8,17 +8,20 @@
 #include "include/Spike.hpp"
 #include "include/Level.hpp"
 #include "include/Game.hpp"
+#include "include/TankgeonHud.hpp"
 using namespace std;
 
 int main() 
 {
   
   sf::RenderWindow window;
+  sf::View defaultView;
   window.create(sf::VideoMode::getFullscreenModes()[0],"Tankgeon!");
   window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
 
   Game game(window);
+  TankgeonHud hud(window);
 
   // Game loop
   while (window.isOpen())
@@ -33,6 +36,11 @@ int main()
 
     window.clear();
     game.Advance();
+    hud.updateView(window);
+    window.setView(hud);
+    hud.draw(window, game.GetLevelNum(), game.GetShieldStatus());
+    defaultView = window.getDefaultView();
+    window.setView(defaultView);
     window.display();
   }
   return 0;
