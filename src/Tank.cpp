@@ -14,6 +14,10 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setPosition(initial_pos);
   }
 
+void Tank::SetPosition(sf::Vector2f position) {
+  tank_shape_.setPosition(position);
+  turret_shape_.setPosition(position);
+}
 
 void Tank::Draw(sf::RenderWindow &window) const {
   window.draw(tank_shape_, getTransform());

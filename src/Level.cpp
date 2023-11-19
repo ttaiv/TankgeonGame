@@ -1,7 +1,7 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(): player_(sf::Vector2f(100, 100), 3) {}
+Level::Level(): player_(sf::Vector2f(100, 100), 3) {} // Player position will be updated in LoadFromFile call
 
 void Level::SetBorderWalls(sf::Vector2u window_size) {
   Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 30));
@@ -14,6 +14,7 @@ void Level::SetBorderWalls(sf::Vector2u window_size) {
   level_data_.walls.push_back(right_wall);
 }
 
+// At the moment not needed as spikes (holes) and walls are built as single blocks.
 sf::Vector2u Level::CountNeighboringObstacles(const std::vector<std::string> &level_grid,
   std::array<std::array<bool, LEVEL_FILE_WIDTH>, LEVEL_FILE_HEIGHT> &visited, int start_x, int start_y, char obstacle) {
   sf::Vector2u counts(0, 0);
@@ -39,6 +40,7 @@ sf::Vector2u Level::CountNeighboringObstacles(const std::vector<std::string> &le
 }
 
 void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
+  Clear();
   std::vector<std::string> level_grid;
   std::string filename = "level" + std::to_string(level_number) + ".txt";
   std::string filepath = "../src/levels/" + filename;
@@ -69,7 +71,7 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         break;
       case 'p':
         // player starting position
-        // implementation here
+        player_.SetPosition(sf::Vector2f(x * x_scaler, y * y_scaler));
         break;
       case 'e':
         // enemy
@@ -80,9 +82,14 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         level_data_.shields.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler));
         break;
       case 'w':
-        neighbor_count = CountNeighboringObstacles(level_grid, visited, x, y, 'w');
-        dimensions = neighbor_count + sf::Vector2u(1, 1);
-        level_data_.walls.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(dimensions.x * x_scaler, dimensions.y * y_scaler));
+        // walls are built with single blocks
+        level_data_.walls.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(1 * x_scaler, 1 * y_scaler));
+        break;
+      case 'h':
+        // hole, count neighboring h chars to calculate the total size
+        // neighbor_count = CountNeighboringObstacles(level_grid, visited, x, y, 'h');
+        // dimensions = neighbor_count + sf::Vector2u(1, 1);
+        level_data_.spikes.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(1 * x_scaler, 1 * y_scaler));
         break;
       default:
         break;
@@ -265,3 +272,11 @@ void Level::HandleItemPickUps() {
 }
 
 const LevelData& Level::GetLevelData(){ return level_data_; }
+
+void Level::Clear() {
+  level_data_.enemies.clear();
+  level_data_.projectiles.clear();
+  level_data_.shields.clear();
+  level_data_.spikes.clear();
+  level_data_.walls.clear();
+}

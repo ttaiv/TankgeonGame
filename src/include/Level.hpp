@@ -34,11 +34,18 @@ class Level {
     Level(const Level &other) = delete;
     Level& operator=(const Level &other) = delete;
 
+    /**
+     * @brief Loads new level data from a text file. First clears all data of the current level.
+     * 
+     * @param level_number 
+     * @param window_size 
+     */
     void LoadFromFile(int level_number, sf::Vector2u window_size);
     void UpdateLevel(sf::RenderWindow &window);
     void DrawLevel(sf::RenderWindow &window);
     bool IsCompleted() const;
     const LevelData& GetLevelData();
+
     
   private:
     LevelData level_data_;
@@ -56,6 +63,8 @@ class Level {
     void FillGridFromFile(std::vector<std::string> &level_grid, const std::string &filepath);
 
     void SetBorderWalls(sf::Vector2u window_size);
+
+    void Clear();
 
     sf::Vector2u CountNeighboringObstacles(const std::vector<std::string> &level_grid,
       std::array<std::array<bool, LEVEL_FILE_WIDTH>, LEVEL_FILE_HEIGHT> &visited, int start_x, int start_y, char obstacle);

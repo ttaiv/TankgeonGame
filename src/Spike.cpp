@@ -8,7 +8,9 @@ Spike::Spike(sf::Vector2f position, sf::Vector2f size)
         spikeShape_.setFillColor(sf::Color::Yellow);
         spikeTexture_.loadFromFile("../src/assets/Hole.png");
         spikeShape_.setTexture(&spikeTexture_);
-        spikeShape_.setTextureRect( {1180,550, 280, 600} );
+        sf::Vector2i hitbox_size = sf::Vector2i(static_cast<int>(std::round(size.x)), static_cast<int>(std::round(size.y))); 
+        sf::Vector2i hitbox_position = sf::Vector2i(static_cast<int>(std::round(position.x)), static_cast<int>(std::round(position.y)));
+        spikeShape_.setTextureRect({ hitbox_position, hitbox_size });
         spikeTexture_.setRepeated(true);
 
     }
@@ -18,12 +20,14 @@ Spike::Spike(const Spike &other) : position_(other.position_), size_(other.size_
     spikeShape_.setSize(other.size_);
     spikeShape_.setFillColor(sf::Color::Yellow);
     spikeTexture_.loadFromFile("../src/assets/Hole.png");
-    spikeTexture_.setRepeated(true);
     spikeShape_.setTexture(&spikeTexture_);
     spikeTexture_.setRepeated(true);
-    spikeShape_.setTextureRect( {1180,550, 280, 600} );
+    sf::Vector2i hitbox_size = sf::Vector2i(static_cast<int>(std::round(other.size_.x)), static_cast<int>(std::round(other.size_.y))); 
+    sf::Vector2i hitbox_position = sf::Vector2i(static_cast<int>(std::round(other.position_.x)), static_cast<int>(std::round(other.position_.y)));
+    spikeShape_.setTextureRect({ hitbox_position, hitbox_size });
 }
 
+/*
 Spike& Spike::operator=(const Spike &other){
     if(this != &other){
     position_ = other.position_;
@@ -34,10 +38,11 @@ Spike& Spike::operator=(const Spike &other){
     spikeTexture_.loadFromFile("../src/assets/Hole.png");
     spikeTexture_.setRepeated(true);
     spikeShape_.setTexture(&spikeTexture_);
-    spikeShape_.setTextureRect( {1180,550, 280, 600} );
+    // spikeShape_.setTextureRect( {1180,550, 280, 600} );
     }
     return *this;
 }
+*/
 
 bool Spike::IsProjectilePassable(){
     return true;
