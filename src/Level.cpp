@@ -14,6 +14,7 @@ void Level::SetBorderWalls(sf::Vector2u window_size) {
   level_data_.walls.push_back(right_wall);
 }
 
+// At the moment not needed as spikes (holes) and walls are built as single blocks.
 sf::Vector2u Level::CountNeighboringObstacles(const std::vector<std::string> &level_grid,
   std::array<std::array<bool, LEVEL_FILE_WIDTH>, LEVEL_FILE_HEIGHT> &visited, int start_x, int start_y, char obstacle) {
   sf::Vector2u counts(0, 0);
@@ -80,9 +81,14 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         level_data_.shields.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler));
         break;
       case 'w':
-        neighbor_count = CountNeighboringObstacles(level_grid, visited, x, y, 'w');
-        dimensions = neighbor_count + sf::Vector2u(1, 1);
-        level_data_.walls.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(dimensions.x * x_scaler, dimensions.y * y_scaler));
+        // walls are built with single blocks
+        level_data_.walls.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(1 * x_scaler, 1 * y_scaler));
+        break;
+      case 'h':
+        // hole, count neighboring h chars to calculate the total size
+        // neighbor_count = CountNeighboringObstacles(level_grid, visited, x, y, 'h');
+        // dimensions = neighbor_count + sf::Vector2u(1, 1);
+        level_data_.spikes.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(1 * x_scaler, 1 * y_scaler));
         break;
       default:
         break;

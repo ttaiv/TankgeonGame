@@ -1,5 +1,6 @@
 #pragma once
 #include "Obstacle.hpp"
+#include <cmath>
 
 class Spike: public Obstacle 
 {
@@ -17,21 +18,21 @@ class Spike: public Obstacle
     Spike(sf::Vector2f position, sf::Vector2f size);
 
     Spike(const Spike &other);
-    Spike& operator=(const Spike &other);
+    Spike& operator=(const Spike &other) = delete;
 
     /**
      * @brief Tells that a projectile can pass spikes
      *  
      * @return true 
      */
-    virtual bool IsProjectilePassable() override;
+    bool IsProjectilePassable() override;
 
     /**
      * @brief Draws spikes to window given as a parameter.
      * 
      * @param window 
      */
-    virtual void Draw(sf::RenderWindow &window) const override;
+    void Draw(sf::RenderWindow &window) const override;
 
     sf::FloatRect GetGlobalBounds() const;
     sf::RectangleShape GetShape() const {return spikeShape_;}
