@@ -26,7 +26,10 @@ struct LevelData {
 
 class Level {
   public:
-    Level(sf::RenderWindow &window);
+    static constexpr int LEVEL_FILE_WIDTH = 32;
+    static constexpr int LEVEL_FILE_HEIGHT = 9;
+
+    Level();
     // Disallow copying
     Level(const Level &other) = delete;
     Level& operator=(const Level &other) = delete;
@@ -53,4 +56,7 @@ class Level {
     void FillGridFromFile(std::vector<std::string> &level_grid, const std::string &filepath);
 
     void SetBorderWalls(sf::Vector2u window_size);
+
+    sf::Vector2u CountNeighboringObstacles(const std::vector<std::string> &level_grid,
+      std::array<std::array<bool, LEVEL_FILE_WIDTH>, LEVEL_FILE_HEIGHT> &visited, int start_x, int start_y, char obstacle);
 };
