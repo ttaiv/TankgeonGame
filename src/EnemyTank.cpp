@@ -5,9 +5,9 @@
 
 EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player) 
   : Tank(initial_pos, speed_scaler), player_(player)  {
-      textureNoTurret_.loadFromFile("../src/assets/RedTankNoTurret.png");
+      textureNoTurret_.loadFromFile("../src/assets/tanks/RedTankNoTurret.png");
       tank_shape_.setTexture(&textureNoTurret_);
-      textureTurret_.loadFromFile("../src/assets/RedTankTurret.png");
+      textureTurret_.loadFromFile("../src/assets/tanks/RedTankTurret.png");
       turret_shape_.setTexture(&textureTurret_);
 }
 EnemyTank::EnemyTank(const EnemyTank &other)

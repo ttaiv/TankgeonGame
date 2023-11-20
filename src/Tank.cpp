@@ -12,16 +12,22 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       turret_shape_.setOrigin(36,50);
       turret_shape_.setSize(sf::Vector2f(100,100));
       turret_shape_.setPosition(initial_pos);
+      shield_shape_.setOrigin(60,60);
+      shield_shape_.setRadius(65);
+      shield_shape_.setPosition(initial_pos);
+      shield_shape_.setFillColor(sf::Color(0,0,0,0));
   }
 
 void Tank::SetPosition(sf::Vector2f position) {
   tank_shape_.setPosition(position);
   turret_shape_.setPosition(position);
+  shield_shape_.setPosition(position);
 }
 
 void Tank::Draw(sf::RenderWindow &window) const {
   window.draw(tank_shape_, getTransform());
   window.draw(turret_shape_);
+  window.draw(shield_shape_);
 }
 
 
@@ -66,6 +72,7 @@ bool Tank::goForward(float margin, const LevelData &level_data_) {
   if (!IsCollided(tank_shape_.getPosition() + forwardVector, margin, level_data_)){
     turret_shape_.move(forwardVector);
     tank_shape_.move(forwardVector);
+    shield_shape_.move(forwardVector);
     return true;
   }
   return false;
@@ -79,6 +86,7 @@ bool Tank::goBack(float margin, const LevelData &level_data_) {
   sf::Vector2f backwardVector(speed_scaler_ * std::cos(angleRad), speed_scaler_ * std::sin(angleRad));
   tank_shape_.move(-backwardVector);
   turret_shape_.move(-backwardVector);
+  shield_shape_.move(-backwardVector);
 
   // Check for collisions after moving backward
   if (!IsCollided(tank_shape_.getPosition(), margin, level_data_)) {
@@ -88,6 +96,7 @@ bool Tank::goBack(float margin, const LevelData &level_data_) {
   // If collision, revert to the original position
   tank_shape_.move(backwardVector);
   turret_shape_.move(backwardVector);
+  shield_shape_.move(backwardVector);
   return false;
 }
 

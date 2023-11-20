@@ -39,6 +39,8 @@ class PlayerTank: public Tank {
      */
     sf::Texture textureNoTurret_;
     sf::Texture textureTurret_;
+    sf::Texture shieldTexture_;
+    sf::Sprite ss_;
     bool has_shield_;
     
     float GetTurretRotationAngle(sf::RenderWindow &window);
