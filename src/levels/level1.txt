@@ -2,7 +2,7 @@
 #                             e#
 #   p  w    hhh    w           #
 #      w    hhh    w           #
-#      w    hhh    w         e #
+#  s   w    hhh    w         e #
 #      w           w           #
 #                        s     #
 #                      e       #
