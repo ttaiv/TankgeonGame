@@ -143,8 +143,11 @@ bool Level::IsCompleted() const {
 
 void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update enemy positions and make them shoot.
-  for (auto &it : level_data_.enemies) {
-    it.Update(level_data_);
+  for (auto it = level_data_.enemies.begin(); it != level_data_.enemies.end();) {
+    it->Update(level_data_);
+    if(it->AnimationOver()){
+      it = level_data_.enemies.erase(it);
+    }else {it++;}
   }
   // Update positions of projectiles.
   for (auto &projectile: level_data_.projectiles) {
@@ -167,13 +170,17 @@ void Level::DrawLevel(sf::RenderWindow &window) {
   for (const auto &it : level_data_.spikes) {
     it.Draw(window);
   }
-  for (const auto &it : level_data_.enemies) {
+  for (auto &it : level_data_.enemies) {
     it.Draw(window);
+    if(it.IsHit()){
+      it.DrawExplosion(window);
+    }
   }
   for (const auto &it : level_data_.projectiles) {
     it.Draw(window);
   }
   player_.Draw(window);
+  
 }
 
 void Level::HandleProjectileCollisions() {
@@ -215,7 +222,7 @@ void Level::HandleProjectileCollisions() {
       enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy_it);
       if (enemy_collision) {
         // No need to check other enemies
-        level_data_.enemies.erase(enemy_it);
+        enemy_it->SetHitTrue();
         break;
       } else {
         ++enemy_it;
