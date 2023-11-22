@@ -37,11 +37,19 @@ void PlayerTank::UpdateShape(float rotation_angle, LevelData &level_data) {
 
 void PlayerTank::Update(sf::RenderWindow &window, LevelData &level_data) {
   UpdateShape(GetTurretRotationAngle(window) * 180 / M_PI + 180, level_data);
-  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > 30) {
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > FIRE_COOLDOWN) {
     cooldown_timer_ = 0;
-    Shoot(GetTurretRotationAngle(window), level_data);
+    if (shots_fired_ < MAX_BURST_PROJECTILES) {
+      Shoot(GetTurretRotationAngle(window), level_data);
+      ++shots_fired_;
+    }
   }
   ++cooldown_timer_;
+  ++frame_counter_;
+  if (frame_counter_ > BURST_COOLDOWN) {
+    frame_counter_ = 0;
+    shots_fired_ = 0;
+  }
 }
 
 float PlayerTank::GetTurretRotationAngle(sf::RenderWindow &window) { 
