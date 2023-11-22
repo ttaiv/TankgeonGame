@@ -1,0 +1,1 @@
+constexpr int MAX_BURST_PROJECTILES = 5;
