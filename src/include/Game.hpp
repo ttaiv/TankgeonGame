@@ -13,6 +13,12 @@ class Game {
      */
     void Advance();
 
+    int StartScreen();
+
+    void PauseScreen();
+
+    void EndScreen();
+
     /**
      * @brief Getter function to let the hud know the current level.
      * 

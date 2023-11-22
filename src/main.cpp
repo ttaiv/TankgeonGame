@@ -33,15 +33,16 @@ int main()
         window.close();
       // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
     }
-
-    window.clear();
-    game.Advance();
-    hud.updateView(window);
-    window.setView(hud);
-    hud.draw(window, game.GetLevelNum(), game.GetShieldStatus());
-    defaultView = window.getDefaultView();
-    window.setView(defaultView);
-    window.display();
+    if (game.StartScreen() == 1){
+      window.clear();
+      game.Advance();
+      hud.updateView(window);
+      window.setView(hud);
+      hud.draw(window, game.GetLevelNum(), game.GetShieldStatus());
+      defaultView = window.getDefaultView();
+      window.setView(defaultView);
+      window.display();
+    }
   }
   return 0;
 }
