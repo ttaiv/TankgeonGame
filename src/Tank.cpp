@@ -18,9 +18,9 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       shield_shape_.setFillColor(sf::Color(0,0,0,0));
       explosion_texture_.loadFromFile("../src/assets/explosions/Ex3.png");
 
-      explosion.setPosition(0,0);
-      explosion.setOrigin(50,50);
-      explosion.setTexture(explosion_texture_);
+      explosion_.setPosition(0,0);
+      explosion_.setOrigin(50,50);
+      explosion_.setTexture(explosion_texture_);
 
 
   }
@@ -39,11 +39,11 @@ void Tank::Draw(sf::RenderWindow &window) const {
 }
 
 void Tank::DrawExplosion(sf::RenderWindow &window){
-  ++time_;
-  explosion.setPosition(tank_shape_.getPosition());
-  explosion.setScale(time_ * 0.05f, time_*0.05f);
-  window.draw(explosion);
-  if(time_>60){animation_over_=true;}
+  ++explosion_frames_;
+  explosion_.setPosition(tank_shape_.getPosition());
+  explosion_.setScale(explosion_frames_ * 0.05f, explosion_frames_*0.05f);
+  window.draw(explosion_);
+  if(explosion_frames_>60){explosion_over_=true;}
 }
 
 void Tank::Shoot(float angle, LevelData &level_data_) {
@@ -146,7 +146,7 @@ bool Tank::turnRight(float margin, const LevelData &level_data_) {
 }
 
 bool Tank::AnimationOver(){
-  return animation_over_;
+  return explosion_over_;
 }
 
 void Tank::SetHitTrue(){is_hit_ = true;}

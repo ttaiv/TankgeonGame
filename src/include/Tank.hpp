@@ -62,11 +62,14 @@ class Tank : public sf::Transformable {
     sf::RectangleShape tank_shape_;
     sf::RectangleShape turret_shape_;
     sf::CircleShape shield_shape_;
-    bool animation_over_=false;
+    bool explosion_over_ = false;
     sf::Texture explosion_texture_;
-    sf::Sprite explosion;
-    bool is_hit_=false;
-    int time_=1;
+    sf::Sprite explosion_;
+    bool is_hit_ = false;
+    int explosion_frames_ = 1;
+    int shots_fired_ = 0;
+    int frame_counter_ = 0;
+
     /**
      * @brief Takes in the planned next position and returns if it's crashing or not. margin parameter is to
      * scale the "hitbox" of the tank accordingly.
