@@ -48,12 +48,25 @@ class Tank : public sf::Transformable {
 
     void SetPosition(sf::Vector2f position);
 
+    bool AnimationOver();
+
+    void DrawExplosion(sf::RenderWindow &window);
+
+    void SetHitTrue();
+    
+    bool IsHit();
+
   protected:
     float speed_scaler_;
     int cooldown_timer_ = 0;
     sf::RectangleShape tank_shape_;
     sf::RectangleShape turret_shape_;
     sf::CircleShape shield_shape_;
+    bool animation_over_=false;
+    sf::Texture explosion_texture_;
+    sf::Sprite explosion;
+    bool is_hit_=false;
+    int time_=1;
     /**
      * @brief Takes in the planned next position and returns if it's crashing or not. margin parameter is to
      * scale the "hitbox" of the tank accordingly.
