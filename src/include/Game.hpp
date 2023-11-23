@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerTank.hpp"
 #include "Level.hpp"
+#include "SFML/Audio.hpp"
 
 class Game {
   public:
@@ -33,12 +34,13 @@ class Game {
      * @return false 
      */
     bool GetShieldStatus();
-
   private:
     sf::RenderWindow &window_;
     Level current_level_;
     int current_level_num_ = 1;
     sf::Font font_;
+    sf::SoundBuffer hype_sound_buffer_;
+    sf::Sound playing_sound_;
 
     bool LoadNextLevel();
 };

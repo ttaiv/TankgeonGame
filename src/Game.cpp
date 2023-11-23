@@ -5,6 +5,7 @@
 Game::Game(sf::RenderWindow &window) : window_(window) {
   current_level_.LoadFromFile(1, window.getSize());
   font_.loadFromFile("../src/fonts/arial.ttf");
+  hype_sound_buffer_.loadFromFile("../src/assets/sounds/Hype.wav");
 }
 
 void Game::Advance() {
@@ -19,7 +20,8 @@ int Game::StartScreen(){
   sf::RectangleShape background(sf::Vector2f(window_.getSize().x, window_.getSize().y));
   background.setFillColor(sf::Color::White);
   window_.draw(background);
-
+  playing_sound_.setBuffer(hype_sound_buffer_);
+  playing_sound_.play();
   sf::Text title_text_;
   title_text_.setFont(font_);
   title_text_.setString("Tankgeon! beta");

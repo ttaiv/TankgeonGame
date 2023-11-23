@@ -2,7 +2,7 @@
 #           hhhhhhh            #
 #       hhhh       hhhh        #
 #e     ww              ww    e #
-#      w        p       w      #
+#      h        p       h      #
 #e     ww              ww    e #
 #        hhh s      hhh        #
 #           hhhhhhhh           #
