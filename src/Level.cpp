@@ -85,6 +85,10 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         // shield
         level_data_.shields.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler));
         break;
+      case 'c':
+        // burst tank
+        level_data_.enemies.push_front(std::make_unique<BurstTank>(sf::Vector2f(x * x_scaler, y * y_scaler), player_));
+        break;
       case 'w':
         // walls are built with single blocks
         level_data_.walls.emplace_back(sf::Vector2f(x * x_scaler, y * y_scaler), sf::Vector2f(1 * x_scaler, 1 * y_scaler));

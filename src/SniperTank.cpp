@@ -12,8 +12,8 @@ SniperTank::SniperTank(sf::Vector2f initial_pos, PlayerTank &player)
 void SniperTank::Update(LevelData &level_data_) {
   float angle = GetAngleToPlayer();
   UpdateShape(angle, level_data_);
-  if (fire_cooldown_timer_ > 150 && CanSeePlayer(level_data_)) {
-    fire_cooldown_timer_ = 0;
+  bool can_shoot = CanShoot(); // call every frame to update cooldown timer
+  if (can_shoot && CanSeePlayer(level_data_)) {
     Shoot(angle, level_data_, 0, SNIPER_PROJECTILE_SPEED); // ricochet limit is zero for sniper
   }
   ++fire_cooldown_timer_;
