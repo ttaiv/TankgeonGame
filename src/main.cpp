@@ -46,9 +46,19 @@ int main()
       window.setView(defaultView);
       window.display();
     
-    }else if (game.gameState_ == Pause){
+    } else if (game.gameState_ == Pause){
       window.clear();
       game.PauseScreen();
+      window.display();
+    
+    } else if (game.gameState_ == GameOverWin){
+      window.clear();
+      game.EndScreenWin();
+      window.display();
+    
+    } else if (game.gameState_ == GameOverLose){
+      window.clear();
+      game.EndScreenLose();
       window.display();
     }
   }
