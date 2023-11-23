@@ -4,6 +4,7 @@
 #include <vector>
 #include "Tank.hpp"
 #include "PlayerTank.hpp"
+#include <random>
 
 class EnemyTank: public Tank {
   public:
@@ -39,4 +40,8 @@ class EnemyTank: public Tank {
     float GetAngleToPlayer();
     bool IsTooClose();
     const PlayerTank &player_;
+
+    // To generate random numbers
+    std::random_device rd_;
+    std::mt19937 gen_{rd_()};
 };
