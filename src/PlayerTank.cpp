@@ -3,10 +3,10 @@
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {
-      textureNoTurret_.loadFromFile("../src/assets/tanks/TankNoTurret.png");
-      tank_shape_.setTexture(&textureNoTurret_);
-      textureTurret_.loadFromFile("../src/assets/tanks/TankTurret.png");
-      turret_shape_.setTexture(&textureTurret_);
+      chassis_texture_.loadFromFile("../src/assets/tanks/TankNoTurret.png");
+      tank_shape_.setTexture(&chassis_texture_);
+      turret_texture_.loadFromFile("../src/assets/tanks/TankTurret.png");
+      turret_shape_.setTexture(&turret_texture_);
       shieldTexture_.loadFromFile("../src/assets/ShieldEffect.png");
       shield_shape_.setTexture(&shieldTexture_);
       has_shield_ = false;
@@ -40,7 +40,7 @@ void PlayerTank::Update(sf::RenderWindow &window, LevelData &level_data) {
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > FIRE_COOLDOWN) {
     cooldown_timer_ = 0;
     if (shots_fired_ < MAX_BURST_PROJECTILES) {
-      Shoot(GetTurretRotationAngle(window), level_data);
+      Shoot(GetTurretRotationAngle(window), level_data, 1, BASE_PROJECTILE_SPEED);
       ++shots_fired_;
     }
   }

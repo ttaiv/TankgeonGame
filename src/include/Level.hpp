@@ -8,7 +8,7 @@
 #include "Wall.hpp"
 #include "Spike.hpp"
 #include "PlayerTank.hpp"
-#include "EnemyTank.hpp"
+#include "SniperTank.hpp"
 #include "Projectile.hpp"
 #include "Shield.hpp"
 #include "OBB.hpp"
@@ -18,7 +18,7 @@
 struct LevelData {
   std::vector<Wall> walls;
   std::vector<Spike> spikes;
-  std::list<EnemyTank> enemies;
+  std::list<std::unique_ptr<EnemyTank>> enemies;
   std::list<Projectile> projectiles;
   std::list<Shield> shields;
 };

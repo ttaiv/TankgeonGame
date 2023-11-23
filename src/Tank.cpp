@@ -49,8 +49,8 @@ void Tank::DrawExplosion(sf::RenderWindow &window){
   if(explosion_frames_>60){explosion_over_=true;}
 }
 
-void Tank::Shoot(float angle, LevelData &level_data_) {
-  Projectile new_projectile(turret_shape_.getPosition(), 6, angle, 1);
+void Tank::Shoot(float angle, LevelData &level_data_, int ricochet_limit, int projectile_speed) {
+  Projectile new_projectile(turret_shape_.getPosition(), projectile_speed, angle, ricochet_limit);
   level_data_.projectiles.emplace_back(new_projectile);
   fire_sound_.play();
 }
