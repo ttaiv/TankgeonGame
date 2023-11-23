@@ -55,6 +55,12 @@ class Tank : public sf::Transformable {
     void SetHitTrue();
     
     bool IsHit();
+    /**
+     * @brief Scales the tank based on the screen size.
+     * 
+     * @param window_size 
+     */
+    void ScaleShape(sf::Vector2u window_size);
 
   protected:
     float speed_scaler_;
