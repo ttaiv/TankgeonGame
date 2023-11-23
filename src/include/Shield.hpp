@@ -21,5 +21,6 @@ class Shield : public Item {
 
   private:
     sf::Vector2f position_;
-    sf::RectangleShape shieldShape_;
+    sf::RectangleShape shield_shape_;
+    sf::Texture shield_texture;
 };
