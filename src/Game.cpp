@@ -22,8 +22,13 @@ void Game::Advance() {
 } 
 
 void Game::StartScreen(){
-  sf::RectangleShape background(sf::Vector2f(window_.getSize().x, window_.getSize().y));
-  background.setFillColor(sf::Color::White);
+  sf::Texture backgroundTexture;
+  backgroundTexture.loadFromFile("../src/assets/CiiPlayTanks.png");
+  sf::Sprite background(backgroundTexture);
+  background.setScale(
+    static_cast<float>(window_.getSize().x) / backgroundTexture.getSize().x,
+    static_cast<float>(window_.getSize().y) / backgroundTexture.getSize().y
+  );
   window_.draw(background);
 
   sf::Text title_text_;

@@ -5,7 +5,6 @@
 enum GameState {
   Start,
   Gameplay,
-  GameplayGodmode,
   Pause,
   GameOverWin,
   GameOverLose
