@@ -2,6 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerTank.hpp"
 #include "Level.hpp"
+enum GameState {
+  Start,
+  Gameplay,
+  Pause,
+  GameOver
+};
 
 class Game {
   public:
@@ -13,7 +19,7 @@ class Game {
      */
     void Advance();
 
-    int StartScreen();
+    void StartScreen();
 
     void PauseScreen();
 
@@ -34,11 +40,17 @@ class Game {
      */
     bool GetShieldStatus();
 
+    void SetGameState();
+       
+
+    GameState gameState_ = Start;
+
   private:
     sf::RenderWindow &window_;
     Level current_level_;
     int current_level_num_ = 1;
     sf::Font font_;
+    
 
     bool LoadNextLevel();
 };
