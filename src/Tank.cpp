@@ -4,8 +4,8 @@
 #include <SFML/Graphics/Image.hpp>
 #include "include/Level.hpp"
 
-Tank::Tank(sf::Vector2f initial_pos, float speed_scaler) 
-  : speed_scaler_(speed_scaler) {
+Tank::Tank(sf::Vector2f initial_pos, float speed_scaler, int fire_cooldown) 
+  : speed_scaler_(speed_scaler), fire_cooldown_(fire_cooldown) {
       tank_shape_.setOrigin(50, 50);
       tank_shape_.setSize(sf::Vector2f(100,100));
       tank_shape_.setPosition(initial_pos);
@@ -50,6 +50,8 @@ void Tank::DrawExplosion(sf::RenderWindow &window){
 }
 
 void Tank::Shoot(float angle, LevelData &level_data_, int ricochet_limit, int projectile_speed) {
+  fire_cooldown_timer_ = 0;
+  ++shots_fired_;
   Projectile new_projectile(turret_shape_.getPosition(), projectile_speed, angle, ricochet_limit);
   level_data_.projectiles.emplace_back(new_projectile);
   fire_sound_.play();
@@ -156,3 +158,16 @@ bool Tank::ExplosionAnimationOver(){
 void Tank::SetHitTrue(){is_hit_ = true;}
 
 bool Tank::IsHit(){return is_hit_;}
+
+bool Tank::CanShoot() {
+  ++frame_counter_; // count frames to keep track of burst cooldown
+  ++fire_cooldown_timer_;
+  if (frame_counter_ > BURST_COOLDOWN) {
+    frame_counter_ = 0;
+    shots_fired_ = 0;
+  }
+  if (fire_cooldown_timer_ > fire_cooldown_ && shots_fired_ < MAX_BURST_PROJECTILES) {
+    return true;
+  }
+  return false;
+}

@@ -18,8 +18,8 @@ float StationaryTank::GetRandomAngle() {
 
 void StationaryTank::Update(LevelData &level_data_) {
   float angle = GetAngleToPlayer() + GetRandomAngle();
-  if (fire_cooldown_timer_ > 150 && CanSeePlayer(level_data_)) {
-    fire_cooldown_timer_ = 0;
+  bool can_shoot = CanShoot(); // call every frame to update cooldown timer
+  if (can_shoot && CanSeePlayer(level_data_)) {
     turret_shape_.setRotation(angle * 180 / M_PI + 180);
     Shoot(angle, level_data_, 1, BASE_PROJECTILE_SPEED);
   }

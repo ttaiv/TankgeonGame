@@ -16,7 +16,7 @@ class Tank : public sf::Transformable {
      * @param initial position
      * @param base speed of the tank
      */
-    Tank(sf::Vector2f initial_pos, float speed_scaler);
+    Tank(sf::Vector2f initial_pos, float speed_scaler, int fire_cooldown);
     Tank(const Tank&) = delete;
     Tank& operator=(const Tank&) = delete;
     
@@ -58,6 +58,7 @@ class Tank : public sf::Transformable {
 
   protected:
     float speed_scaler_;
+    int fire_cooldown_;
     int fire_cooldown_timer_ = 0;
     bool explosion_over_ = false;
     bool is_hit_ = false;
@@ -75,6 +76,7 @@ class Tank : public sf::Transformable {
     sf::Texture chassis_texture_;
     sf::Texture turret_texture_;
 
+
     /**
      * @brief Takes in the planned next position and returns if it's crashing or not. margin parameter is to
      * scale the "hitbox" of the tank accordingly.
@@ -87,5 +89,7 @@ class Tank : public sf::Transformable {
      * @return false 
      */
     bool IsCollided(sf::Vector2f next_pos, float margin, const LevelData &level_data_) const;
+
+    bool CanShoot();
 
 };

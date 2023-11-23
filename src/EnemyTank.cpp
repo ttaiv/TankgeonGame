@@ -3,8 +3,8 @@
 #include <ctime>  
 #include "include/Level.hpp" 
 
-EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player) 
-  : Tank(initial_pos, speed_scaler), player_(player) {}
+EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player, int fire_cooldown) 
+  : Tank(initial_pos, speed_scaler, fire_cooldown), player_(player) {}
 
 /*
 EnemyTank::EnemyTank(const EnemyTank &other)
