@@ -38,6 +38,7 @@ class Game {
     sf::RenderWindow &window_;
     Level current_level_;
     int current_level_num_ = 1;
+    sf::Font font_;
 
     bool LoadNextLevel();
 };

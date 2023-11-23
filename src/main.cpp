@@ -22,7 +22,8 @@ int main()
 
   Game game(window);
   TankgeonHud hud(window);
-
+  bool startScreenDisplayed = false;
+  int proceed = 0;
   // Game loop
   while (window.isOpen())
   {
@@ -33,7 +34,12 @@ int main()
         window.close();
       // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
     }
-    if (game.StartScreen() == 1){
+
+    if (!startScreenDisplayed) {
+      proceed = game.StartScreen();
+    }
+
+    if (startScreenDisplayed || proceed == 1){
       window.clear();
       game.Advance();
       hud.updateView(window);
@@ -42,7 +48,8 @@ int main()
       defaultView = window.getDefaultView();
       window.setView(defaultView);
       window.display();
-    }
+      startScreenDisplayed = true;
+    } 
   }
   return 0;
 }
