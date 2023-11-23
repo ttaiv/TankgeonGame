@@ -6,7 +6,8 @@ enum GameState {
   Start,
   Gameplay,
   Pause,
-  GameOver
+  GameOverWin,
+  GameOverLose
 };
 
 class Game {
@@ -23,7 +24,9 @@ class Game {
 
     void PauseScreen();
 
-    void EndScreen();
+    void EndScreenWin();
+
+    void EndScreenLose();
 
     /**
      * @brief Getter function to let the hud know the current level.

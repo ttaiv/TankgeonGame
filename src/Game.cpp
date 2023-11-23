@@ -8,17 +8,27 @@ Game::Game(sf::RenderWindow &window) : window_(window) {
 }
 
 void Game::Advance() {
-  if (current_level_.IsCompleted()) {
-    std::cout << "Level " << current_level_num_ << " complete" << std::endl;
-    current_level_.LoadFromFile(++current_level_num_, window_.getSize());
+  try{
+    if (current_level_.IsCompleted()) {
+      std::cout << "Level " << current_level_num_ << " complete" << std::endl;
+      current_level_.LoadFromFile(++current_level_num_, window_.getSize());
+    }
+  } catch (const std::runtime_error& e) {
+    gameState_ = GameOverWin;
   }
+
   current_level_.UpdateLevel(window_);
   current_level_.DrawLevel(window_);
 } 
 
 void Game::StartScreen(){
-  sf::RectangleShape background(sf::Vector2f(window_.getSize().x, window_.getSize().y));
-  background.setFillColor(sf::Color::White);
+  sf::Texture backgroundTexture;
+  backgroundTexture.loadFromFile("../src/assets/CiiPlayTanks.png");
+  sf::Sprite background(backgroundTexture);
+  background.setScale(
+    static_cast<float>(window_.getSize().x) / backgroundTexture.getSize().x,
+    static_cast<float>(window_.getSize().y) / backgroundTexture.getSize().y
+  );
   window_.draw(background);
 
   sf::Text title_text_;
@@ -81,7 +91,39 @@ void Game::PauseScreen(){
   window_.draw(title_text_);
 }
 
+void Game::EndScreenWin(){
+  sf::RectangleShape background(sf::Vector2f(window_.getSize().x, window_.getSize().y));
+  background.setFillColor(sf::Color::Black);
+  window_.draw(background);
 
+  sf::Text title_text_;
+  title_text_.setFont(font_);
+  title_text_.setString("You win");
+  title_text_.setCharacterSize(50);
+  title_text_.setFillColor(sf::Color::White);
+  title_text_.setPosition(
+    window_.getSize().x / 2.0 - title_text_.getLocalBounds().width / 2.0, 
+    window_.getSize().y / 2.0 - title_text_.getLocalBounds().height / 2.0
+  );
+  window_.draw(title_text_);  
+}
+
+void Game::EndScreenLose(){
+  sf::RectangleShape background(sf::Vector2f(window_.getSize().x, window_.getSize().y));
+  background.setFillColor(sf::Color::Black);
+  window_.draw(background);
+
+  sf::Text title_text_;
+  title_text_.setFont(font_);
+  title_text_.setString("You Lose");
+  title_text_.setCharacterSize(50);
+  title_text_.setFillColor(sf::Color::White);
+  title_text_.setPosition(
+    window_.getSize().x / 2.0 - title_text_.getLocalBounds().width / 2.0, 
+    window_.getSize().y / 2.0 - title_text_.getLocalBounds().height / 2.0
+  );
+  window_.draw(title_text_); 
+}
 
 int Game::GetLevelNum(){ return current_level_num_; }
 

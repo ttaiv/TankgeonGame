@@ -8,7 +8,7 @@ int main()
 
   sf::RenderWindow window;
   sf::View defaultView;
-  window.create(sf::VideoMode::getFullscreenModes()[0],"Tankgeon!");
+  window.create(sf::VideoMode::getFullscreenModes()[0],"Tankgeon!",sf::Style::Fullscreen);
   window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
 
@@ -19,7 +19,7 @@ int main()
   {
     sf::Event event;
     while (window.pollEvent(event)){
-      if (event.type == sf::Event::Closed)
+      if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
         window.close();
       else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P){
         if (game.gameState_ == Gameplay){
@@ -46,9 +46,19 @@ int main()
       window.setView(defaultView);
       window.display();
     
-    }else if (game.gameState_ == Pause){
+    } else if (game.gameState_ == Pause){
       window.clear();
       game.PauseScreen();
+      window.display();
+    
+    } else if (game.gameState_ == GameOverWin){
+      window.clear();
+      game.EndScreenWin();
+      window.display();
+    
+    } else if (game.gameState_ == GameOverLose){
+      window.clear();
+      game.EndScreenLose();
       window.display();
     }
   }
