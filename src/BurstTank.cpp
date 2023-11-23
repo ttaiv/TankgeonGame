@@ -9,8 +9,8 @@ BurstTank::BurstTank(sf::Vector2f initial_pos, PlayerTank &player)
   }
 
 float BurstTank::GetRandomAngle() {
-  float angle = dis_(gen_);
-  if (sign_dis(gen_) == 1) {
+  float angle = angle_dis_(gen_);
+  if (angle_sign_dis_(gen_) == 1) {
     angle *= -1;
   }
   return angle;
@@ -29,20 +29,23 @@ void BurstTank::Update(LevelData &level_data_) {
 
 void BurstTank::UpdateShape(float rotation_angle, LevelData &level_data_) {
   turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
-  //Introduce randomness
-  std::srand(std::time(nullptr));
-  double randomFloat = static_cast<double>(std::rand()) / RAND_MAX;
+
+  if (movement_timer_ > SINGLE_MOVEMENT_DURATION) {
+    current_movement_ = static_cast<MovementOption>(movement_dis_(gen_));
+    movement_timer_ = 0;
+  }
   
-  if (randomFloat < 0.25){
-    TurnLeft(1, level_data_);
+  if (current_movement_ == MovementOption::TurnLeft){
+    Tank::TurnLeft(1, level_data_);
   }
-  else if (randomFloat < 0.50){
-    GoForward(2, level_data_);
+  else if (current_movement_ == MovementOption::TurnRight){
+    Tank::TurnRight(1, level_data_);
   }
-  else if (randomFloat < 0.75){
-    GoBack(2, level_data_);
+  else if (current_movement_ == MovementOption::GoBack){
+    Tank::GoBack(2, level_data_);
   }
-  else{
-    TurnRight(1, level_data_);
+  else {
+    Tank::GoForward(2, level_data_);
   }
+  ++movement_timer_;
 }

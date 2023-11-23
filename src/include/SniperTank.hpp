@@ -2,6 +2,7 @@
 #include "EnemyTank.hpp"
 #include <SFML/Graphics.hpp>
 
+
 class SniperTank : public EnemyTank {
   public:
     SniperTank(sf::Vector2f initial_pos, PlayerTank &player);
@@ -12,4 +13,18 @@ class SniperTank : public EnemyTank {
 
   private:
     void UpdateShape(float rotation_angle, LevelData &level_data_);
+
+    // Go forward is most probable.
+    enum MovementOption {
+      TurnLeft = 0,
+      TurnRight,
+      GoForward1,
+      GoForward2, // Extra value for GoForward
+      GoBack,
+      MovementCount // Count enum values
+    };
+
+    std::uniform_int_distribution<int> movement_dis_{0, MovementCount - 1};
+    int movement_timer_ = 0;
+    MovementOption current_movement_;
 };

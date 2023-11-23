@@ -9,8 +9,8 @@ StationaryTank::StationaryTank(sf::Vector2f initial_pos, PlayerTank &player)
   }
 
 float StationaryTank::GetRandomAngle() {
-  float angle = dis_(gen_);
-  if (sign_dis(gen_) == 1) {
+  float angle = angle_dis_(gen_);
+  if (angle_sign_dis_(gen_) == 1) {
     angle *= -1;
   }
   return angle;

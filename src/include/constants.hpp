@@ -1,6 +1,7 @@
 // For all tanks
 constexpr int MAX_BURST_PROJECTILES = 5;
 constexpr int BURST_COOLDOWN = 4 * 60; // frames
+constexpr int SINGLE_MOVEMENT_DURATION = 60; // frames
 // For some tanks
 constexpr int NORMAL_RICOCHET_COUNT = 1;
 constexpr int PLAYER_FIRE_COOLDOWN = 15; // frames
