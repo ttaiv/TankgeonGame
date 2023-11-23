@@ -10,6 +10,7 @@
 #include "PlayerTank.hpp"
 #include "SniperTank.hpp"
 #include "StationaryTank.hpp"
+#include "BurstTank.hpp"
 #include "Projectile.hpp"
 #include "Shield.hpp"
 #include "OBB.hpp"

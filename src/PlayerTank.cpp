@@ -2,7 +2,7 @@
 #include "include/Level.hpp"
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
-  : Tank(initial_pos, speed_scaler) {
+  : Tank(initial_pos, speed_scaler, PLAYER_FIRE_COOLDOWN) {
       chassis_texture_.loadFromFile("../src/assets/tanks/TankNoTurret.png");
       tank_shape_.setTexture(&chassis_texture_);
       turret_texture_.loadFromFile("../src/assets/tanks/TankTurret.png");
@@ -37,18 +37,9 @@ void PlayerTank::UpdateShape(float rotation_angle, LevelData &level_data) {
 
 void PlayerTank::Update(sf::RenderWindow &window, LevelData &level_data) {
   UpdateShape(GetTurretRotationAngle(window) * 180 / M_PI + 180, level_data);
-  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && fire_cooldown_timer_ > FIRE_COOLDOWN) {
-    fire_cooldown_timer_ = 0;
-    if (shots_fired_ < MAX_BURST_PROJECTILES) {
-      Shoot(GetTurretRotationAngle(window), level_data, 1, BASE_PROJECTILE_SPEED);
-      ++shots_fired_;
-    }
-  }
-  ++fire_cooldown_timer_;
-  ++frame_counter_;
-  if (frame_counter_ > BURST_COOLDOWN) {
-    frame_counter_ = 0;
-    shots_fired_ = 0;
+  bool can_shoot = CanShoot(); // important to call every frame
+  if (can_shoot && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    Shoot(GetTurretRotationAngle(window), level_data, NORMAL_RICOCHET_COUNT, BASE_PROJECTILE_SPEED);
   }
 }
 

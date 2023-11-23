@@ -7,7 +7,7 @@
 
 class EnemyTank: public Tank {
   public:
-    EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player);
+    EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player, int fire_cooldown = ENEMY_FIRE_COOLDOWN);
     EnemyTank(const EnemyTank &other) = delete;
     EnemyTank& operator=(const EnemyTank &other) = delete;
     
