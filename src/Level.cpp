@@ -146,7 +146,7 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
   // Update enemy positions and make them shoot. Erase enemies for which explosion animation has ended.
   for (auto it = level_data_.enemies.begin(); it != level_data_.enemies.end();) {
     (*it)->Update(level_data_);
-    if((*it)->AnimationOver()){
+    if((*it)->ExplosionAnimationOver()){
       it = level_data_.enemies.erase(it);
     } else {
       ++it;
@@ -237,9 +237,9 @@ void Level::HandleProjectileCollisions() {
     // Check for collision with player tank
     if (CollisionManager::ProjectileTank(*projectile_it, player_)) {
       //Projectile has hit a player, check if they have a shield.
-      if (player_.hasShield()) {
+      if (player_.HasShield()) {
         //Player has a shield. No game over but break the shield.
-        player_.breakShield();
+        player_.BreakShield();
         std::cout << "Player was hit, but the shield saved them!" << std::endl;
         projectile_it = level_data_.projectiles.erase(projectile_it);
         continue;
@@ -264,9 +264,9 @@ void Level::HandleItemPickUps() {
     
     if(tankOBB.collides(shieldOBB)){
       //Player is over a shield. Check if player already has a shield.
-      if (!player_.hasShield()){
+      if (!player_.HasShield()){
         //Player doesn't have shield, enable it and remove it from the field.
-        player_.setShield();
+        player_.SetShield();
         level_data_.shields.erase(shield);
         break;
       } else {

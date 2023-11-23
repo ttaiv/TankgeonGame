@@ -127,4 +127,4 @@ void Game::EndScreenLose(){
 
 int Game::GetLevelNum(){ return current_level_num_; }
 
-bool Game::GetShieldStatus() { return current_level_.GetPlayerTank().hasShield(); }
+bool Game::GetShieldStatus() { return current_level_.GetPlayerTank().HasShield(); }
