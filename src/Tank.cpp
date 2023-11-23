@@ -22,6 +22,9 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler)
       explosion_.setOrigin(50,50);
       explosion_.setTexture(explosion_texture_);
 
+      fire_sound_buffer_.loadFromFile("../src/assets/sounds/tank_firing.wav");
+      fire_sound_.setBuffer(fire_sound_buffer_);
+
 
   }
 
@@ -49,6 +52,7 @@ void Tank::DrawExplosion(sf::RenderWindow &window){
 void Tank::Shoot(float angle, LevelData &level_data_) {
   Projectile new_projectile(turret_shape_.getPosition(), 6, angle, 1);
   level_data_.projectiles.emplace_back(new_projectile);
+  fire_sound_.play();
 }
 
 const sf::RectangleShape& Tank::GetShape() const { return tank_shape_; }

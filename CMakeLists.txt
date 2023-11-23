@@ -5,7 +5,7 @@ set(EXECUTABLE_NAME TanksGame)
 
 # Find SFML library
 set(SFML_DIR libs/SFML-2.5.1/lib/cmake/SFML)
-find_package(SFML 2.5.1 COMPONENTS system window graphics REQUIRED)
+find_package(SFML 2.5.1 COMPONENTS system window graphics audio REQUIRED)
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -22,7 +22,7 @@ add_executable(${EXECUTABLE_NAME})
 target_sources(${EXECUTABLE_NAME} PUBLIC ${SOURCES})
 
 # Link libraries
-target_link_libraries(${PROJECT_NAME} sfml-system sfml-window sfml-graphics)
+target_link_libraries(${PROJECT_NAME} sfml-system sfml-window sfml-graphics sfml-audio)
 
 # Set the project include directories
 target_include_directories(${EXECUTABLE_NAME} PUBLIC ${CMAKE_SOURCE_DIR})
