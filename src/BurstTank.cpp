@@ -1,7 +1,7 @@
 #include "include/BurstTank.hpp"
 
 BurstTank::BurstTank(sf::Vector2f initial_pos, PlayerTank &player)
-  : EnemyTank(initial_pos, BURST_TANK_SPEED, player) {
+  : EnemyTank(initial_pos, BURST_TANK_SPEED, player, PLAYER_FIRE_COOLDOWN) { // same cooldown as player
     chassis_texture_.loadFromFile("../src/assets/tanks/BlueTankNoTurret.png");
     tank_shape_.setTexture(&chassis_texture_);
     turret_texture_.loadFromFile("../src/assets/tanks/BlueTankTurret.png");
@@ -19,12 +19,11 @@ float BurstTank::GetRandomAngle() {
 void BurstTank::Update(LevelData &level_data_) {
   float shooting_angle = GetAngleToPlayer() + GetRandomAngle();
   UpdateShape(GetAngleToPlayer(), level_data_);
-  if (fire_cooldown_timer_ > PLAYER_FIRE_COOLDOWN && CanSeePlayer(level_data_)) { // same cooldown as player
+  bool can_shoot = CanShoot(); // call to update cooldown timers
+  if (can_shoot && CanSeePlayer(level_data_)) { 
     turret_shape_.setRotation(shooting_angle * 180 / M_PI + 180);
-    fire_cooldown_timer_ = 0;
     Shoot(shooting_angle, level_data_, 1, BASE_PROJECTILE_SPEED);
   }
-  ++fire_cooldown_timer_;
 }
 
 
