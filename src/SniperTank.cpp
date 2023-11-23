@@ -19,7 +19,7 @@ void SniperTank::Update(LevelData &level_data_) {
   UpdateShape(angle, level_data_);
   if (cooldown_timer_ > 150 && CanSeePlayer(level_data_)) {
     cooldown_timer_ = 0;
-    Shoot(angle, level_data_);
+    Shoot(angle, level_data_, 0, SNIPER_PROJECTILE_SPEED); // ricochet limit is zero for sniper
   }
   ++cooldown_timer_;
 }

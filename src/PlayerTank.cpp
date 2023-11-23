@@ -40,7 +40,7 @@ void PlayerTank::Update(sf::RenderWindow &window, LevelData &level_data) {
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > FIRE_COOLDOWN) {
     cooldown_timer_ = 0;
     if (shots_fired_ < MAX_BURST_PROJECTILES) {
-      Shoot(GetTurretRotationAngle(window), level_data);
+      Shoot(GetTurretRotationAngle(window), level_data, 1, BASE_PROJECTILE_SPEED);
       ++shots_fired_;
     }
   }

@@ -42,7 +42,7 @@ class Tank : public sf::Transformable {
      * @param angle as radians
      */
     sf::FloatRect getRotatedBoundingBox() const;
-    void Shoot(float angle, LevelData &level_data_);
+    void Shoot(float angle, LevelData &level_data_, int ricochet_limit, int projectile_speed);
     bool goForward(float margin, const LevelData &level_data_);
     bool goBack(float margin, const LevelData &level_data_);
     bool turnLeft(float margin, const LevelData &level_data_);
