@@ -7,6 +7,8 @@
 class PlayerTank: public Tank {
   public:
     PlayerTank(sf::Vector2f initial_pos, float speed_scaler);
+    PlayerTank(const PlayerTank&) = delete;
+    PlayerTank& operator=(const PlayerTank&) = delete;
     
     void Update(sf::RenderWindow &window, LevelData &level_data);
 
@@ -14,13 +16,13 @@ class PlayerTank: public Tank {
      * @brief Sets has_shield_ to true for the player tank.
      * 
      */
-    void setShield();
+    void SetShield();
 
     /**
      * @brief Sets has_shield_ to false for the player tank.
      * 
      */
-    void breakShield();
+    void BreakShield();
 
     /**
      * @brief Returns true if the player tank has a shield, false otherwise.
@@ -28,7 +30,7 @@ class PlayerTank: public Tank {
      * @return true 
      * @return false 
      */
-    bool hasShield() const;
+    bool HasShield() const;
 
   private:
     /**
@@ -37,9 +39,7 @@ class PlayerTank: public Tank {
      * @param window
      * @return the angle as float in radians
      */
-    sf::Texture chassis_texture_;
-    sf::Texture turret_texture_;
-    sf::Texture shieldTexture_;
+    sf::Texture shield_texture_;
     sf::Sprite ss_;
     bool has_shield_;
     
