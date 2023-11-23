@@ -56,6 +56,8 @@ class Tank : public sf::Transformable {
     
     bool IsHit();
 
+    void ScaleShape(sf::Vector2u window_size);
+
   protected:
     float speed_scaler_;
     int fire_cooldown_;

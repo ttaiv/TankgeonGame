@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include "include/Level.hpp"
+#include <cmath>
 
 Tank::Tank(sf::Vector2f initial_pos, float speed_scaler, int fire_cooldown) 
   : speed_scaler_(speed_scaler), fire_cooldown_(fire_cooldown) {
@@ -170,4 +171,12 @@ bool Tank::CanShoot() {
     return true;
   }
   return false;
+}
+
+void Tank::ScaleShape(sf::Vector2u window_size){
+  float scaler = std::sqrt(window_size.x * window_size.x + window_size.y * window_size.y);
+  tank_shape_.setSize(sf::Vector2f(scaler / 23, scaler / 23));
+  turret_shape_.setSize(sf::Vector2f(scaler / 23, scaler / 23));
+  tank_shape_.setOrigin((scaler / 23) / 2.0f, (scaler / 23) / 2.0f);
+  turret_shape_.setOrigin((scaler / 23) * 0.36, (scaler / 23) / 2.0f );
 }

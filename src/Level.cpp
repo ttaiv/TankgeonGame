@@ -72,6 +72,7 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
       case 'p':
         // player starting position
         player_.SetPosition(sf::Vector2f(x * x_scaler, y * y_scaler));
+        player_.ScaleShape(window_size);
         break;
       case 'r':
         // red sniper tank
@@ -103,6 +104,9 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         break;
       }
     }
+  }
+  for (auto& it : level_data_.enemies){
+    it->ScaleShape(window_size);
   }
 }
 
