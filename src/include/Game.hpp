@@ -53,7 +53,8 @@ class Game {
     Level current_level_;
     int current_level_num_ = 1;
     sf::Font font_;
-    
+    sf::SoundBuffer hype_sound_buffer_;
+    sf::Sound playing_sound_;
 
     bool LoadNextLevel();
 };
