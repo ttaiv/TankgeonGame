@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerTank.hpp"
 #include "Level.hpp"
+#include <SFML/Audio.hpp>
 enum GameState {
   Start,
   Gameplay,
@@ -55,6 +56,7 @@ class Game {
     sf::Font font_;
     sf::SoundBuffer hype_sound_buffer_;
     sf::Sound playing_sound_;
+    bool is_playing_ = false;
 
     bool LoadNextLevel();
 };
