@@ -24,7 +24,9 @@ Tank::Tank(sf::Vector2f initial_pos, float speed_scaler, int fire_cooldown)
       explosion_.setTexture(explosion_texture_);
 
       fire_sound_buffer_.loadFromFile("../src/assets/sounds/tank_firing.wav");
+      explosion_sound_buffer_.loadFromFile("../src/assets/sounds/explosion_sound.wav");
       fire_sound_.setBuffer(fire_sound_buffer_);
+      explosion_sound_.setBuffer(explosion_sound_buffer_);
 
 
   }
@@ -43,6 +45,9 @@ void Tank::Draw(sf::RenderWindow &window) const {
 }
 
 void Tank::DrawExplosion(sf::RenderWindow &window){
+  if(explosion_sound_.getStatus()!=sf::Sound::Playing) {
+    explosion_sound_.play();
+  }
   ++explosion_frames_;
   explosion_.setPosition(tank_shape_.getPosition());
   explosion_.setScale(explosion_frames_ * 0.05f, explosion_frames_*0.05f);

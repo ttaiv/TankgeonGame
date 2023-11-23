@@ -78,7 +78,9 @@ class Tank : public sf::Transformable {
     sf::Texture explosion_texture_;
     sf::Sprite explosion_;
     sf::SoundBuffer fire_sound_buffer_;
+    sf::SoundBuffer explosion_sound_buffer_;
     sf::Sound fire_sound_;
+    sf::Sound explosion_sound_;
     sf::Texture chassis_texture_;
     sf::Texture turret_texture_;
 
