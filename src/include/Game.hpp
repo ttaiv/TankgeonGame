@@ -29,6 +29,10 @@ class Game {
 
     void EndScreenLose();
 
+    void PauseMusic();
+
+    void ContinueMusic();
+
     /**
      * @brief Getter function to let the hud know the current level.
      * 
@@ -55,6 +59,7 @@ class Game {
     int current_level_num_ = 1;
     sf::Font font_;
     sf::SoundBuffer hype_sound_buffer_;
+    sf::SoundBuffer start_sound_buffer_;
     sf::Sound playing_sound_;
     bool is_playing_ = false;
 

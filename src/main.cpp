@@ -37,8 +37,10 @@ int main()
       else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P){
         if (game.gameState_ == Gameplay){
           game.gameState_ = Pause;
+          game.PauseMusic();
         }else if (game.gameState_ == Pause){
           game.gameState_ = Gameplay;
+          game.ContinueMusic();
         }
       }
     }

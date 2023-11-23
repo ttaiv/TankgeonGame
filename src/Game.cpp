@@ -6,6 +6,7 @@ Game::Game(sf::RenderWindow &window) : window_(window) {
   current_level_.LoadFromFile(1, window.getSize());
   font_.loadFromFile("../src/fonts/arial.ttf");
   hype_sound_buffer_.loadFromFile("../src/assets/sounds/Hype.wav");
+  start_sound_buffer_.loadFromFile("../src/assets/sounds/StartMusic.wav");
 }
 
 void Game::Advance() {
@@ -31,7 +32,7 @@ void Game::StartScreen(){
     static_cast<float>(window_.getSize().y) / backgroundTexture.getSize().y
   );
   if(!is_playing_){
-    playing_sound_.setBuffer(hype_sound_buffer_);
+    playing_sound_.setBuffer(start_sound_buffer_);
     playing_sound_.setLoop(true);
     playing_sound_.play();
     is_playing_=true;
@@ -72,6 +73,10 @@ void Game::StartScreen(){
     start_button.setFillColor(sf::Color::Green);
     
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+      playing_sound_.setBuffer(hype_sound_buffer_);
+      playing_sound_.setLoop(true);
+      playing_sound_.setVolume(60);
+      playing_sound_.play();
       gameState_ = Gameplay;
     }
   }
@@ -95,6 +100,7 @@ void Game::PauseScreen(){
     window_.getSize().y / 2.0 - title_text_.getLocalBounds().height / 2.0
   );
   window_.draw(title_text_);
+  playing_sound_.pause();
 }
 
 void Game::EndScreenWin(){
@@ -134,3 +140,11 @@ void Game::EndScreenLose(){
 int Game::GetLevelNum(){ return current_level_num_; }
 
 bool Game::GetShieldStatus() { return current_level_.GetPlayerTank().HasShield(); }
+
+void Game::PauseMusic(){
+  playing_sound_.pause();
+}
+
+void Game::ContinueMusic(){
+  playing_sound_.play();
+}
