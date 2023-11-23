@@ -13,6 +13,12 @@ class Game {
      */
     void Advance();
 
+    int StartScreen();
+
+    void PauseScreen();
+
+    void EndScreen();
+
     /**
      * @brief Getter function to let the hud know the current level.
      * 
@@ -32,6 +38,7 @@ class Game {
     sf::RenderWindow &window_;
     Level current_level_;
     int current_level_num_ = 1;
+    sf::Font font_;
 
     bool LoadNextLevel();
 };

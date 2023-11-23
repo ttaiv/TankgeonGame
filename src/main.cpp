@@ -13,7 +13,8 @@ int main()
 
   Game game(window);
   TankgeonHud hud(window);
-
+  bool startScreenDisplayed = false;
+  int proceed = 0;
   // Game loop
   while (window.isOpen())
   {
@@ -25,14 +26,21 @@ int main()
       // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) window.close();
     }
 
-    window.clear();
-    game.Advance();
-    hud.updateView(window);
-    window.setView(hud);
-    hud.draw(window, game.GetLevelNum(), game.GetShieldStatus());
-    defaultView = window.getDefaultView();
-    window.setView(defaultView);
-    window.display();
+    if (!startScreenDisplayed) {
+      proceed = game.StartScreen();
+    }
+
+    if (startScreenDisplayed || proceed == 1){
+      window.clear();
+      game.Advance();
+      hud.updateView(window);
+      window.setView(hud);
+      hud.draw(window, game.GetLevelNum(), game.GetShieldStatus());
+      defaultView = window.getDefaultView();
+      window.setView(defaultView);
+      window.display();
+      startScreenDisplayed = true;
+    } 
   }
   return 0;
 }
