@@ -75,8 +75,11 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         break;
       case 'r':
         // red sniper tank
-        // level_data_.enemies.pua(sf::Vector2f(x * x_scaler, y * y_scaler), 3.0f, player_);
         level_data_.enemies.push_front(std::make_unique<SniperTank>(sf::Vector2f(x * x_scaler, y * y_scaler), player_));
+        break;
+      case 'b':
+        // blue stationary tank
+        level_data_.enemies.push_front(std::make_unique<StationaryTank>(sf::Vector2f(x * x_scaler, y * y_scaler), player_));
         break;
       case 's':
         // shield

@@ -33,7 +33,7 @@ class EnemyTank: public Tank {
      * @param wanted rotation_angle 
      * @param level_data
      */
-    void virtual UpdateShape(float rotation_angle, LevelData &level_data_) = 0;
+    // void virtual UpdateShape(float rotation_angle, LevelData &level_data_);
 
 
     float GetAngleToPlayer();
