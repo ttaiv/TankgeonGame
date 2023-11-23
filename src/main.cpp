@@ -11,9 +11,22 @@ int main()
   window.create(sf::VideoMode::getFullscreenModes()[0],"Tankgeon!",sf::Style::Fullscreen);
   window.setPosition(sf::Vector2i(0,0));
   window.setFramerateLimit(60);
+  window.setMouseCursorVisible(false);
 
+  sf::Cursor cursor;
+  if (cursor.loadFromSystem(sf::Cursor::Cross))
+    window.setMouseCursor(cursor);
+
+  sf::Texture texture;
+  texture.loadFromFile("../src/assets/Inverted_sight.png");
+  sf::Sprite sprite(texture);
+  sprite.setScale(sf::Vector2f(0.1,0.1));
+  sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
+
+  
   Game game(window);
   TankgeonHud hud(window);
+
   // Game loop
   while (window.isOpen())
   {
@@ -29,38 +42,31 @@ int main()
         }
       }
     }
-    
+    sprite.setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+    window.clear();
 
     if (game.gameState_ == Start){
-      window.clear();
       game.StartScreen();
-      window.display();
     
     }else if (game.gameState_ == Gameplay) {
-      window.clear();
       game.Advance();
       hud.updateView(window);
       window.setView(hud);
       hud.draw(window, game.GetLevelNum(), game.GetShieldStatus());
       defaultView = window.getDefaultView();
       window.setView(defaultView);
-      window.display();
     
     } else if (game.gameState_ == Pause){
-      window.clear();
       game.PauseScreen();
-      window.display();
     
     } else if (game.gameState_ == GameOverWin){
-      window.clear();
       game.EndScreenWin();
-      window.display();
     
     } else if (game.gameState_ == GameOverLose){
-      window.clear();
       game.EndScreenLose();
-      window.display();
     }
+    window.draw(sprite);
+    window.display();
   }
   return 0;
 } 
