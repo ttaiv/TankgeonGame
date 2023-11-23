@@ -1,15 +1,6 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include "include/EnemyTank.hpp"
-#include "include/PlayerTank.hpp"
-#include "include/Projectile.hpp"
-#include "include/Wall.hpp"
-#include "include/Spike.hpp"
-#include "include/Level.hpp"
 #include "include/Game.hpp"
 #include "include/TankgeonHud.hpp"
-using namespace std;
 
 int main() 
 {

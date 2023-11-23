@@ -4,6 +4,7 @@
 #include <iostream>
 #include "OBB.hpp"
 #include "constants.hpp"
+#include <SFML/Audio.hpp>
 
 struct LevelData;
 
@@ -70,6 +71,8 @@ class Tank : public sf::Transformable {
     int explosion_frames_ = 1;
     int shots_fired_ = 0;
     int frame_counter_ = 0;
+    sf::SoundBuffer fire_sound_buffer_;
+    sf::Sound fire_sound_;
 
     /**
      * @brief Takes in the planned next position and returns if it's crashing or not. margin parameter is to
