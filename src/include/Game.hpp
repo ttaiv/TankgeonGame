@@ -2,7 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerTank.hpp"
 #include "Level.hpp"
-#include "SFML/Audio.hpp"
+enum GameState {
+  Start,
+  Gameplay,
+  Pause,
+  GameOverWin,
+  GameOverLose
+};
 
 class Game {
   public:
@@ -14,11 +20,13 @@ class Game {
      */
     void Advance();
 
-    int StartScreen();
+    void StartScreen();
 
     void PauseScreen();
 
-    void EndScreen();
+    void EndScreenWin();
+
+    void EndScreenLose();
 
     /**
      * @brief Getter function to let the hud know the current level.
@@ -34,6 +42,12 @@ class Game {
      * @return false 
      */
     bool GetShieldStatus();
+
+    void SetGameState();
+       
+
+    GameState gameState_ = Start;
+
   private:
     sf::RenderWindow &window_;
     Level current_level_;

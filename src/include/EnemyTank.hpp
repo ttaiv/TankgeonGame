@@ -8,20 +8,35 @@
 class EnemyTank: public Tank {
   public:
     EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player);
-    EnemyTank(const EnemyTank &other); //Custom copy constructor to keep textures
+    EnemyTank(const EnemyTank &other) = delete;
     EnemyTank& operator=(const EnemyTank &other) = delete;
     
-    void Update(LevelData &level_data_);
+    /*
+    Update and UpdateShape are overriden by derived concrete enemy tank classes
+    to implement different behaviour for different enemy tanks.
+    */
+
+    /**
+     * @brief Make tank shoot and move
+     * 
+     * @param level_data
+     */
+    void virtual Update(LevelData &level_data_) = 0;
     
     bool WillBeHit(LevelData &level_data_) const;
     bool CanSeePlayer(LevelData &level_data_) const;
 
-  private:
-    void UpdateShape(float rotation_angle, LevelData &level_data_);
+  protected:
+    /**
+     * @brief Handle moving and rotating the tank shape
+     * 
+     * @param wanted rotation_angle 
+     * @param level_data
+     */
+    // void virtual UpdateShape(float rotation_angle, LevelData &level_data_);
+
+
     float GetAngleToPlayer();
-    sf::Texture textureNoTurret_;
-    sf::Texture textureTurret_;
     bool IsTooClose();
     const PlayerTank &player_;
-
 };

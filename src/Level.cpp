@@ -5,7 +5,7 @@ Level::Level(): player_(sf::Vector2f(100, 100), 3) {} // Player position will be
 
 void Level::SetBorderWalls(sf::Vector2u window_size) {
   Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 30));
-  Wall bottom_wall(sf::Vector2f(0, window_size.y - 80), sf::Vector2f(window_size.x, 120));
+  Wall bottom_wall(sf::Vector2f(0, window_size.y - 0.09f * window_size.y), sf::Vector2f(window_size.x, 0.09f * window_size.y));
   Wall left_wall(sf::Vector2f(0, 0), sf::Vector2f(10, window_size.y));
   Wall right_wall(sf::Vector2f(window_size.x - 10, 0), sf::Vector2f(20, window_size.y));
   level_data_.walls.push_back(top_wall);
@@ -73,9 +73,13 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         // player starting position
         player_.SetPosition(sf::Vector2f(x * x_scaler, y * y_scaler));
         break;
-      case 'e':
-        // enemy
-        level_data_.enemies.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler), 3.0f, player_);
+      case 'r':
+        // red sniper tank
+        level_data_.enemies.push_front(std::make_unique<SniperTank>(sf::Vector2f(x * x_scaler, y * y_scaler), player_));
+        break;
+      case 'b':
+        // blue stationary tank
+        level_data_.enemies.push_front(std::make_unique<StationaryTank>(sf::Vector2f(x * x_scaler, y * y_scaler), player_));
         break;
       case 's':
         // shield
@@ -142,12 +146,14 @@ bool Level::IsCompleted() const {
 }
 
 void Level::UpdateLevel(sf::RenderWindow &window) {
-  // Update enemy positions and make them shoot.
+  // Update enemy positions and make them shoot. Erase enemies for which explosion animation has ended.
   for (auto it = level_data_.enemies.begin(); it != level_data_.enemies.end();) {
-    it->Update(level_data_);
-    if(it->AnimationOver()){
+    (*it)->Update(level_data_);
+    if((*it)->ExplosionAnimationOver()){
       it = level_data_.enemies.erase(it);
-    }else {it++;}
+    } else {
+      ++it;
+    }
   }
   // Update positions of projectiles.
   for (auto &projectile: level_data_.projectiles) {
@@ -171,9 +177,9 @@ void Level::DrawLevel(sf::RenderWindow &window) {
     it.Draw(window);
   }
   for (auto &it : level_data_.enemies) {
-    it.Draw(window);
-    if(it.IsHit()){
-      it.DrawExplosion(window);
+    it->Draw(window);
+    if(it->IsHit()){
+      it->DrawExplosion(window);
     }
   }
   for (const auto &it : level_data_.projectiles) {
@@ -218,14 +224,12 @@ void Level::HandleProjectileCollisions() {
     }
     // Check for collisions with enemy tanks.
     bool enemy_collision = false;
-    for (auto enemy_it = level_data_.enemies.begin(); enemy_it != level_data_.enemies.end();) {
-      enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy_it);
+    for (auto &enemy : level_data_.enemies) {
+      enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy);
       if (enemy_collision) {
         // No need to check other enemies
-        enemy_it->SetHitTrue();
+        enemy->SetHitTrue();
         break;
-      } else {
-        ++enemy_it;
       }
     }
     if (enemy_collision) {
@@ -236,9 +240,9 @@ void Level::HandleProjectileCollisions() {
     // Check for collision with player tank
     if (CollisionManager::ProjectileTank(*projectile_it, player_)) {
       //Projectile has hit a player, check if they have a shield.
-      if (player_.hasShield()) {
+      if (player_.HasShield()) {
         //Player has a shield. No game over but break the shield.
-        player_.breakShield();
+        player_.BreakShield();
         std::cout << "Player was hit, but the shield saved them!" << std::endl;
         projectile_it = level_data_.projectiles.erase(projectile_it);
         continue;
@@ -263,9 +267,9 @@ void Level::HandleItemPickUps() {
     
     if(tankOBB.collides(shieldOBB)){
       //Player is over a shield. Check if player already has a shield.
-      if (!player_.hasShield()){
+      if (!player_.HasShield()){
         //Player doesn't have shield, enable it and remove it from the field.
-        player_.setShield();
+        player_.SetShield();
         level_data_.shields.erase(shield);
         break;
       } else {

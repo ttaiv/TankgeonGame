@@ -3,12 +3,12 @@
 
 PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler) 
   : Tank(initial_pos, speed_scaler) {
-      textureNoTurret_.loadFromFile("../src/assets/tanks/TankNoTurret.png");
-      tank_shape_.setTexture(&textureNoTurret_);
-      textureTurret_.loadFromFile("../src/assets/tanks/TankTurret.png");
-      turret_shape_.setTexture(&textureTurret_);
-      shieldTexture_.loadFromFile("../src/assets/ShieldEffect.png");
-      shield_shape_.setTexture(&shieldTexture_);
+      chassis_texture_.loadFromFile("../src/assets/tanks/TankNoTurret.png");
+      tank_shape_.setTexture(&chassis_texture_);
+      turret_texture_.loadFromFile("../src/assets/tanks/TankTurret.png");
+      turret_shape_.setTexture(&turret_texture_);
+      shield_texture_.loadFromFile("../src/assets/ShieldEffect.png");
+      shield_shape_.setTexture(&shield_texture_);
       has_shield_ = false;
   }
   
@@ -19,16 +19,16 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler)
  */
 void PlayerTank::UpdateShape(float rotation_angle, LevelData &level_data) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    goForward(1, level_data);
+    GoForward(1, level_data);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    goBack(1,level_data);
+    GoBack(1,level_data);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    turnLeft(1, level_data);
+    TurnLeft(1, level_data);
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    turnRight(1, level_data);
+    TurnRight(1, level_data);
   }
 
   turret_shape_.setRotation(rotation_angle);
@@ -37,14 +37,14 @@ void PlayerTank::UpdateShape(float rotation_angle, LevelData &level_data) {
 
 void PlayerTank::Update(sf::RenderWindow &window, LevelData &level_data) {
   UpdateShape(GetTurretRotationAngle(window) * 180 / M_PI + 180, level_data);
-  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && cooldown_timer_ > FIRE_COOLDOWN) {
-    cooldown_timer_ = 0;
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && fire_cooldown_timer_ > FIRE_COOLDOWN) {
+    fire_cooldown_timer_ = 0;
     if (shots_fired_ < MAX_BURST_PROJECTILES) {
-      Shoot(GetTurretRotationAngle(window), level_data);
+      Shoot(GetTurretRotationAngle(window), level_data, 1, BASE_PROJECTILE_SPEED);
       ++shots_fired_;
     }
   }
-  ++cooldown_timer_;
+  ++fire_cooldown_timer_;
   ++frame_counter_;
   if (frame_counter_ > BURST_COOLDOWN) {
     frame_counter_ = 0;
@@ -63,17 +63,17 @@ float PlayerTank::GetTurretRotationAngle(sf::RenderWindow &window) {
   return atan2(dy, dx);
 }
 
-void PlayerTank::setShield() {
+void PlayerTank::SetShield() {
   has_shield_ = true;
   shield_shape_.setFillColor(sf::Color(0,0,255,255));
 }
 
-void PlayerTank::breakShield() {
+void PlayerTank::BreakShield() {
   has_shield_ = false;
   shield_shape_.setFillColor(sf::Color::Transparent);
 }
 
-bool PlayerTank::hasShield() const {
+bool PlayerTank::HasShield() const {
   return has_shield_;
 }
 
