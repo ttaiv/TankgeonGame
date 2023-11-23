@@ -16,8 +16,8 @@ class StationaryTank : public EnemyTank {
 
     std::random_device rd_;
     std::mt19937 gen_{rd_()};
-    std::uniform_real_distribution<float> dis_{0, M_PI / 4};
-    std::uniform_int_distribution<int> sign_dis{0, 1};
+    std::uniform_real_distribution<float> angle_dis_{0, M_PI / 4};
+    std::uniform_int_distribution<int> angle_sign_dis_{0, 1};
 
     float GetRandomAngle();
 };

@@ -59,6 +59,8 @@ class Level {
   private:
     LevelData level_data_;
     PlayerTank player_; 
+    sf::Texture background_texture_;
+    sf::Sprite background_;
 
     void HandleProjectileCollisions();
     

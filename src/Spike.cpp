@@ -5,7 +5,7 @@ Spike::Spike(sf::Vector2f position, sf::Vector2f size)
 
         spikeShape_.setPosition(position);
         spikeShape_.setSize(size);
-        spikeShape_.setFillColor(sf::Color::Yellow);
+        spikeShape_.setFillColor(sf::Color(50,50,50));
         spikeTexture_.loadFromFile("../src/assets/Hole.png");
         spikeShape_.setTexture(&spikeTexture_);
         sf::Vector2i hitbox_size = sf::Vector2i(static_cast<int>(std::round(size.x)), static_cast<int>(std::round(size.y))); 
@@ -18,7 +18,7 @@ Spike::Spike(sf::Vector2f position, sf::Vector2f size)
 Spike::Spike(const Spike &other) : position_(other.position_), size_(other.size_){
     spikeShape_.setPosition(other.position_);
     spikeShape_.setSize(other.size_);
-    spikeShape_.setFillColor(sf::Color::Yellow);
+    spikeShape_.setFillColor(sf::Color(50,50,50));
     spikeTexture_.loadFromFile("../src/assets/Hole.png");
     spikeShape_.setTexture(&spikeTexture_);
     spikeTexture_.setRepeated(true);

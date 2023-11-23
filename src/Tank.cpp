@@ -167,7 +167,7 @@ bool Tank::CanShoot() {
     frame_counter_ = 0;
     shots_fired_ = 0;
   }
-  if (fire_cooldown_timer_ > fire_cooldown_ && shots_fired_ < MAX_BURST_PROJECTILES) {
+  if (fire_cooldown_timer_ > fire_cooldown_ && shots_fired_ < MAX_BURST_PROJECTILES && !is_hit_) {
     return true;
   }
   return false;

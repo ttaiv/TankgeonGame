@@ -12,6 +12,12 @@ void Level::SetBorderWalls(sf::Vector2u window_size) {
   level_data_.walls.push_back(bottom_wall);
   level_data_.walls.push_back(left_wall);
   level_data_.walls.push_back(right_wall);
+  background_texture_.loadFromFile("../src/assets/Floor.png");
+  background_.setTexture(background_texture_);
+  background_.setScale(
+    static_cast<float>(window_size.x) / background_texture_.getSize().x,
+    static_cast<float>(window_size.y) / background_texture_.getSize().y
+  );
 }
 
 // At the moment not needed as spikes (holes) and walls are built as single blocks.
@@ -176,6 +182,7 @@ void Level::UpdateLevel(sf::RenderWindow &window) {
 }
 
 void Level::DrawLevel(sf::RenderWindow &window) {
+  window.draw(background_);
   for (const auto &it : level_data_.shields) {
     it.Draw(window);
   }
