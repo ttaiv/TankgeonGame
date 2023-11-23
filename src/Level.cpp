@@ -5,7 +5,7 @@ Level::Level(): player_(sf::Vector2f(100, 100), 3) {} // Player position will be
 
 void Level::SetBorderWalls(sf::Vector2u window_size) {
   Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 30));
-  Wall bottom_wall(sf::Vector2f(0, window_size.y - 80), sf::Vector2f(window_size.x, 120));
+  Wall bottom_wall(sf::Vector2f(0, window_size.y - 0.09f * window_size.y), sf::Vector2f(window_size.x, 0.09f * window_size.y));
   Wall left_wall(sf::Vector2f(0, 0), sf::Vector2f(10, window_size.y));
   Wall right_wall(sf::Vector2f(window_size.x - 10, 0), sf::Vector2f(20, window_size.y));
   level_data_.walls.push_back(top_wall);
