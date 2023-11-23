@@ -73,9 +73,10 @@ void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
         // player starting position
         player_.SetPosition(sf::Vector2f(x * x_scaler, y * y_scaler));
         break;
-      case 'e':
-        // enemy
-        level_data_.enemies.emplace_front(sf::Vector2f(x * x_scaler, y * y_scaler), 3.0f, player_);
+      case 'r':
+        // red sniper tank
+        // level_data_.enemies.pua(sf::Vector2f(x * x_scaler, y * y_scaler), 3.0f, player_);
+        level_data_.enemies.push_front(std::make_unique<SniperTank>(sf::Vector2f(x * x_scaler, y * y_scaler), player_));
         break;
       case 's':
         // shield
@@ -142,12 +143,14 @@ bool Level::IsCompleted() const {
 }
 
 void Level::UpdateLevel(sf::RenderWindow &window) {
-  // Update enemy positions and make them shoot.
+  // Update enemy positions and make them shoot. Erase enemies for which explosion animation has ended.
   for (auto it = level_data_.enemies.begin(); it != level_data_.enemies.end();) {
-    it->Update(level_data_);
-    if(it->AnimationOver()){
+    (*it)->Update(level_data_);
+    if((*it)->AnimationOver()){
       it = level_data_.enemies.erase(it);
-    }else {it++;}
+    } else {
+      ++it;
+    }
   }
   // Update positions of projectiles.
   for (auto &projectile: level_data_.projectiles) {
@@ -171,9 +174,9 @@ void Level::DrawLevel(sf::RenderWindow &window) {
     it.Draw(window);
   }
   for (auto &it : level_data_.enemies) {
-    it.Draw(window);
-    if(it.IsHit()){
-      it.DrawExplosion(window);
+    it->Draw(window);
+    if(it->IsHit()){
+      it->DrawExplosion(window);
     }
   }
   for (const auto &it : level_data_.projectiles) {
@@ -218,14 +221,12 @@ void Level::HandleProjectileCollisions() {
     }
     // Check for collisions with enemy tanks.
     bool enemy_collision = false;
-    for (auto enemy_it = level_data_.enemies.begin(); enemy_it != level_data_.enemies.end();) {
-      enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy_it);
+    for (auto &enemy : level_data_.enemies) {
+      enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy);
       if (enemy_collision) {
         // No need to check other enemies
-        enemy_it->SetHitTrue();
+        enemy->SetHitTrue();
         break;
-      } else {
-        ++enemy_it;
       }
     }
     if (enemy_collision) {

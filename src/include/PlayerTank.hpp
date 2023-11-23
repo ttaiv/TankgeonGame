@@ -37,8 +37,8 @@ class PlayerTank: public Tank {
      * @param window
      * @return the angle as float in radians
      */
-    sf::Texture textureNoTurret_;
-    sf::Texture textureTurret_;
+    sf::Texture chassis_texture_;
+    sf::Texture turret_texture_;
     sf::Texture shieldTexture_;
     sf::Sprite ss_;
     bool has_shield_;
