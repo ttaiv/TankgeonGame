@@ -47,7 +47,8 @@
     "stdexcept": "cpp",
     "streambuf": "cpp",
     "typeinfo": "cpp",
-    "list": "cpp"
+    "list": "cpp",
+    "set": "cpp"
   },
   "C_Cpp.clang_format_style": "Google",
   "editor.tabSize": 2

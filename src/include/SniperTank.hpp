@@ -11,5 +11,5 @@ class SniperTank : public EnemyTank {
     void Update(LevelData &level_data_) override;
 
   private:
-    void UpdateShape(float rotation_angle, LevelData &level_data_) override;
+    void UpdateShape(float rotation_angle, LevelData &level_data_);
 };
