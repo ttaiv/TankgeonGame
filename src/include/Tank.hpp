@@ -48,7 +48,7 @@ class Tank : public sf::Transformable {
     bool TurnRight(float margin, const LevelData &level_data_);
 
     void SetPosition(sf::Vector2f position);
-    bool ExplosionAnimationOver();
+    bool ExplosionAnimationOver() const;
 
     void DrawExplosion(sf::RenderWindow &window);
 

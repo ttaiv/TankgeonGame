@@ -157,7 +157,7 @@ bool Tank::TurnRight(float margin, const LevelData &level_data_) {
     return true;
 }
 
-bool Tank::ExplosionAnimationOver(){
+bool Tank::ExplosionAnimationOver() const{
   return explosion_over_;
 }
 

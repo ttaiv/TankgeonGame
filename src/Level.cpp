@@ -202,6 +202,9 @@ void Level::DrawLevel(sf::RenderWindow &window) {
     it.Draw(window);
   }
   player_.Draw(window);
+  if(player_.IsHit()){
+    player_.DrawExplosion(window);
+  }
   
 }
 
@@ -264,6 +267,7 @@ void Level::HandleProjectileCollisions() {
         continue;
       } else {
         // Game over
+        player_.SetHitTrue();
         std::cout << "Player was hit" << std::endl;
         projectile_it = level_data_.projectiles.erase(projectile_it);
         continue;

@@ -49,6 +49,8 @@ class Game {
     bool GetShieldStatus();
 
     void SetGameState();
+
+    bool GetPlayerAnimationStatus();
        
 
     GameState gameState_ = Start;
