@@ -2,6 +2,7 @@
 
 StationaryTank::StationaryTank(sf::Vector2f initial_pos, PlayerTank &player)
   : EnemyTank(initial_pos, 0, player) {
+    points_ = 100;
     chassis_texture_.loadFromFile("../src/assets/tanks/BlueTankNoTurret.png");
     tank_shape_.setTexture(&chassis_texture_);
     turret_texture_.loadFromFile("../src/assets/tanks/BlueTankTurret.png");

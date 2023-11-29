@@ -27,6 +27,8 @@ class EnemyTank: public Tank {
     bool WillBeHit(LevelData &level_data_) const;
     bool CanSeePlayer(LevelData &level_data_) const;
 
+    int GetPoints() const;
+
   protected:
     /**
      * @brief Handle moving and rotating the tank shape
@@ -40,6 +42,7 @@ class EnemyTank: public Tank {
     float GetAngleToPlayer();
     bool IsTooClose();
     const PlayerTank &player_;
+    int points_;
 
     // To generate random numbers
     std::random_device rd_;

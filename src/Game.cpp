@@ -148,3 +148,5 @@ void Game::PauseMusic(){
 void Game::ContinueMusic(){
   playing_sound_.play();
 }
+
+int Game::GetPlayerScore() const { return current_level_.GetPlayerTank().GetScore(); }

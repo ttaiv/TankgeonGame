@@ -32,6 +32,10 @@ class PlayerTank: public Tank {
      */
     bool HasShield() const;
 
+    void AddScore(int amount);
+
+    int GetScore() const;
+
   private:
     /**
      * @brief Get new rotation angle for tank shape using mouse position
@@ -42,6 +46,7 @@ class PlayerTank: public Tank {
     sf::Texture shield_texture_;
     sf::Sprite ss_;
     bool has_shield_;
+    int score_;
     
     float GetTurretRotationAngle(sf::RenderWindow &window);
     void UpdateShape(float rotation_angle, LevelData &level_data);

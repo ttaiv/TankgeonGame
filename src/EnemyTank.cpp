@@ -4,7 +4,7 @@
 #include "include/Level.hpp" 
 
 EnemyTank::EnemyTank(sf::Vector2f initial_pos, float speed_scaler, PlayerTank &player, int fire_cooldown) 
-  : Tank(initial_pos, speed_scaler, fire_cooldown), player_(player) {}
+  : Tank(initial_pos, speed_scaler, fire_cooldown), player_(player), points_(200) {}
 
 /*
 EnemyTank::EnemyTank(const EnemyTank &other)
@@ -53,3 +53,5 @@ bool EnemyTank::CanSeePlayer(LevelData &level_data_) const {
     }
     return true;
 }
+
+int EnemyTank::GetPoints() const { return points_; }

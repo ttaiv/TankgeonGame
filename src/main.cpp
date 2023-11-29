@@ -25,7 +25,7 @@ int main()
 
   
   Game game(window);
-  TankgeonHud hud(window);
+  TankgeonHud hud(window, game);
 
   // Game loop
   while (window.isOpen())
@@ -54,7 +54,7 @@ int main()
       game.Advance();
       hud.updateView(window);
       window.setView(hud);
-      hud.draw(window, game.GetLevelNum(), game.GetShieldStatus());
+      hud.draw(window);
       defaultView = window.getDefaultView();
       window.setView(defaultView);
     

@@ -1,8 +1,8 @@
 #include "include/TankgeonHud.hpp"
 #include <iostream>
 
-TankgeonHud::TankgeonHud(const sf::RenderWindow& window)
-  : sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y / 10)) {
+TankgeonHud::TankgeonHud(const sf::RenderWindow& window, Game& game)
+  : sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y / 10)), game_(game) {
         setViewport(sf::FloatRect(0, 0.92f, 1.f, 0.08f));
         font_.loadFromFile("../src/fonts/arial.ttf");
     }
@@ -12,7 +12,7 @@ void TankgeonHud::updateView(const sf::RenderWindow& window) {
     setSize(window.getSize().x, window.getSize().y / 10);
 }
 
-void TankgeonHud::draw(sf::RenderWindow &window, int level_num, bool shield_status) const {
+void TankgeonHud::draw(sf::RenderWindow &window) const {
         sf::RectangleShape hudRect(sf::Vector2f(getSize().x, getSize().y));
         hudRect.setFillColor(sf::Color::White);
         window.draw(hudRect);
@@ -27,40 +27,23 @@ void TankgeonHud::draw(sf::RenderWindow &window, int level_num, bool shield_stat
 
         sf::Text level_text;
         level_text.setFont(font_);
-        level_text.setString("Level: " + std::to_string(level_num));
+        level_text.setString("Level: " + std::to_string(game_.GetLevelNum()));
         level_text.setCharacterSize(30);
         level_text.setFillColor(sf::Color::Black);
         level_text.setPosition(getCenter().x - level_text.getLocalBounds().width / 2, getCenter().y - level_text.getLocalBounds().height / 2);
 
-        sf::Text shield_text;
-        shield_text.setFont(font_);
-        shield_text.setString("Shield:");
-        shield_text.setCharacterSize(30);
-        shield_text.setFillColor(sf::Color::Black);
-        shield_text.setPosition(getSize().x - 120 - shield_text.getLocalBounds().width, getCenter().y - level_text.getLocalBounds().height / 2);
-
-        sf::RectangleShape frameRect_;
-        frameRect_.setSize(sf::Vector2f(100, getSize().y));
-        frameRect_.setFillColor(sf::Color::Black);
-        frameRect_.setPosition(window.getSize().x - 100, 0);
-
-        sf::RectangleShape whiteSquare_;
-        whiteSquare_.setSize(sf::Vector2f(80, getSize().y - 20));
-        whiteSquare_.setFillColor(sf::Color::White);
-        whiteSquare_.setPosition(window.getSize().x - 90, 10);
-
-        sf::RectangleShape shield_;
-        shield_.setSize(sf::Vector2f(52, 50));
-        shield_.setFillColor(sf::Color::Cyan);
-        shield_.setPosition((whiteSquare_.getPosition().x + (whiteSquare_.getSize().x - 50) / 2), (whiteSquare_.getPosition().y + (whiteSquare_.getSize().y - 50) / 2));
+        sf::Text score_text;
+        sf::Text score_width;
+        score_width.setFont(font_);
+        score_width.setCharacterSize(30);
+        score_width.setString("Score: 000000");
+        score_text.setFont(font_);
+        score_text.setString("Score: " + std::to_string(game_.GetPlayerScore()));
+        score_text.setCharacterSize(30);
+        score_text.setFillColor(sf::Color::Black);
+        score_text.setPosition(getSize().x - score_width.getLocalBounds().width, getCenter().y - score_text.getLocalBounds().height / 2);
 
         window.draw(title_text_);
         window.draw(level_text);
-        window.draw(shield_text);
-        window.draw(frameRect_);
-        window.draw(whiteSquare_);
-        
-        if (shield_status){  
-          window.draw(shield_);
-        }
+        window.draw(score_text);
     }

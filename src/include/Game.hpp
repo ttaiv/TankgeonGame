@@ -49,6 +49,8 @@ class Game {
     bool GetShieldStatus();
 
     void SetGameState();
+
+    int GetPlayerScore() const;
        
 
     GameState gameState_ = Start;
