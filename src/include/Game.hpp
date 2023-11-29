@@ -3,6 +3,7 @@
 #include "PlayerTank.hpp"
 #include "Level.hpp"
 #include <SFML/Audio.hpp>
+#include <fstream>
 enum GameState {
   Start,
   Gameplay,
@@ -51,7 +52,8 @@ class Game {
     void SetGameState();
 
     int GetPlayerScore() const;
-       
+
+    void UpdateHighScore(int game_score);       
 
     GameState gameState_ = Start;
 
@@ -64,6 +66,8 @@ class Game {
     sf::SoundBuffer start_sound_buffer_;
     sf::Sound playing_sound_;
     bool is_playing_ = false;
+    bool new_high_score_ = false;
+    int frame_counter_ = 0;
 
     bool LoadNextLevel();
 };
