@@ -6,6 +6,7 @@ SniperTank::SniperTank(sf::Vector2f initial_pos, PlayerTank &player)
     tank_shape_.setTexture(&chassis_texture_);
     turret_texture_.loadFromFile("../src/assets/tanks/RedTankTurret.png");
     turret_shape_.setTexture(&turret_texture_);
+    points_ = 150;
   }
 
 

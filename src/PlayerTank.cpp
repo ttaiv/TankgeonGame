@@ -10,6 +10,7 @@ PlayerTank::PlayerTank(sf::Vector2f initial_pos, float speed_scaler)
       shield_texture_.loadFromFile("../src/assets/ShieldEffect.png");
       shield_shape_.setTexture(&shield_texture_);
       has_shield_ = false;
+      score_ = 0;
   }
   
 /**
@@ -66,6 +67,14 @@ void PlayerTank::BreakShield() {
 
 bool PlayerTank::HasShield() const {
   return has_shield_;
+}
+
+void PlayerTank::AddScore(int amount){
+  score_ += amount;
+}
+
+int PlayerTank::GetScore() const {
+  return score_;
 }
 
 
