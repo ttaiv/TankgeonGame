@@ -17,6 +17,7 @@ void Game::Advance() {
     }
   } catch (const std::runtime_error& e) {
     gameState_ = GameOverWin;
+    UpdateHighScore(GetPlayerScore());
   }
 
   current_level_.UpdateLevel(window_);
@@ -117,7 +118,40 @@ void Game::EndScreenWin(){
     window_.getSize().x / 2.0 - title_text_.getLocalBounds().width / 2.0, 
     window_.getSize().y / 2.0 - title_text_.getLocalBounds().height / 2.0
   );
-  window_.draw(title_text_);  
+  window_.draw(title_text_);
+
+  sf::Text score_text;
+  score_text.setFont(font_);
+  score_text.setString("Your score: " + std::to_string(GetPlayerScore()));
+  score_text.setCharacterSize(40);
+  score_text.setFillColor(sf::Color::White);
+  score_text.setPosition(
+    window_.getSize().x / 2.0 - score_text.getLocalBounds().width / 2.0, 
+    window_.getSize().y / 2.0 - score_text.getLocalBounds().height / 2.0 + 200
+  );
+
+  window_.draw(score_text);
+
+  sf::Text new_high_score_text;
+  new_high_score_text.setFont(font_);
+  new_high_score_text.setString("New high score!");
+  new_high_score_text.setCharacterSize(40);
+  new_high_score_text.setPosition(
+    window_.getSize().x / 2.0 - new_high_score_text.getLocalBounds().width / 2.0, 
+    window_.getSize().y / 2.0 - new_high_score_text.getLocalBounds().height / 2.0 + 100
+  );
+
+  if (new_high_score_){
+    frame_counter_++;
+    if (frame_counter_ < 35) {
+      new_high_score_text.setFillColor(sf::Color::Black);
+    } else if (frame_counter_ > 80) {
+      frame_counter_ = 0;
+    } else {
+      new_high_score_text.setFillColor(sf::Color::Yellow);
+    }
+    window_.draw(new_high_score_text);
+  }
 }
 
 void Game::EndScreenLose(){
@@ -150,3 +184,28 @@ void Game::ContinueMusic(){
 }
 
 int Game::GetPlayerScore() const { return current_level_.GetPlayerTank().GetScore(); }
+
+void Game::UpdateHighScore(int game_score) {
+  int current_high_score;
+  
+  std::ifstream high_score_file_in("../src/High_score.txt");
+  if (!high_score_file_in.is_open()) {
+    throw std::runtime_error("Failed to open the file with high score");
+  }
+
+  high_score_file_in >> current_high_score;
+  high_score_file_in.close();
+
+  if (game_score > current_high_score) {
+    std::ofstream high_score_file_out("../src/High_score.txt");
+    
+    if (!high_score_file_out.is_open()) {
+      throw std::runtime_error("Failed to open the file with high score");
+    }
+
+    high_score_file_out << game_score;
+    high_score_file_out.close();
+
+    new_high_score_ = true;
+  }
+}
