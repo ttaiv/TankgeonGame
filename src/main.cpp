@@ -26,7 +26,8 @@ int main()
   
   Game game(window);
   TankgeonHud hud(window, game);
-
+  
+  int delayClock_=0;
   // Game loop
   while (window.isOpen())
   {
@@ -63,12 +64,23 @@ int main()
     
     } else if (game.gameState_ == GameOverWin){
       game.EndScreenWin();
+        if (delayClock_ >= 3*60) {
+          delayClock_=0;
+          game.StartScreen();
+        }
+      delayClock_++;
     
     } else if (game.gameState_ == GameOverLose){
       game.EndScreenLose();
+      if (delayClock_ >= 3*60) {
+        delayClock_=0;
+        game.StartScreen();
+      }
+      delayClock_++;
     }
     window.draw(sprite);
     window.display();
+    
   }
   return 0;
 } 
