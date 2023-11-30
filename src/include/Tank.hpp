@@ -53,6 +53,8 @@ class Tank : public sf::Transformable {
     void DrawExplosion(sf::RenderWindow &window);
 
     void SetHitTrue();
+
+    void SetHitFalse();
     
     bool IsHit();
     /**

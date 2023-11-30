@@ -46,6 +46,7 @@ sf::Vector2u Level::CountNeighboringObstacles(const std::vector<std::string> &le
 }
 
 void Level::LoadFromFile(int level_number, sf::Vector2u window_size) {
+  player_.SetHitFalse();
   Clear();
   std::vector<std::string> level_grid;
   std::string filename = "level" + std::to_string(level_number) + ".txt";

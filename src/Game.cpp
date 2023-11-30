@@ -28,6 +28,7 @@ void Game::Advance() {
 } 
 
 void Game::StartScreen(){
+  gameState_ = Start;
   sf::Texture backgroundTexture;
   backgroundTexture.loadFromFile("../src/assets/CiiPlayTanks.png");
   sf::Sprite background(backgroundTexture);
@@ -82,6 +83,8 @@ void Game::StartScreen(){
       playing_sound_.setVolume(60);
       playing_sound_.play();
       gameState_ = Gameplay;
+      current_level_num_=1;
+      current_level_.LoadFromFile(1, window_.getSize());
     }
   }
   window_.draw(start_button);
@@ -180,13 +183,9 @@ bool Game::GetShieldStatus() { return current_level_.GetPlayerTank().HasShield()
 
 bool Game::GetPlayerAnimationStatus() {return current_level_.GetPlayerTank().ExplosionAnimationOver();}
 
-void Game::PauseMusic(){
-  playing_sound_.pause();
-}
+void Game::PauseMusic(){playing_sound_.pause();}
 
-void Game::ContinueMusic(){
-  playing_sound_.play();
-}
+void Game::ContinueMusic() {playing_sound_.play();}
 
 int Game::GetPlayerScore() const { return current_level_.GetPlayerTank().GetScore(); }
 
