@@ -15,7 +15,10 @@ void Game::Advance() {
       std::cout << "Level " << current_level_num_ << " complete" << std::endl;
       current_level_.LoadFromFile(++current_level_num_, window_.getSize());
     }
-    if(current_level_.GetPlayerTank().ExplosionAnimationOver()){gameState_ = GameOverLose;}
+    if(current_level_.GetPlayerTank().ExplosionAnimationOver()){
+      gameState_ = GameOverLose;
+      UpdateHighScore(GetPlayerScore());  
+    }
   } catch (const std::runtime_error& e) {
     if(current_level_.GetLevelData().enemies.empty()){
       gameState_ = GameOverWin;
@@ -172,6 +175,39 @@ void Game::EndScreenLose(){
     window_.getSize().y / 2.0 - title_text_.getLocalBounds().height / 2.0
   );
   window_.draw(title_text_); 
+
+  sf::Text score_text;
+  score_text.setFont(font_);
+  score_text.setString("Your score: " + std::to_string(GetPlayerScore()));
+  score_text.setCharacterSize(40);
+  score_text.setFillColor(sf::Color::White);
+  score_text.setPosition(
+    window_.getSize().x / 2.0 - score_text.getLocalBounds().width / 2.0, 
+    window_.getSize().y / 2.0 - score_text.getLocalBounds().height / 2.0 + 200
+  );
+
+  window_.draw(score_text);
+
+  sf::Text new_high_score_text;
+  new_high_score_text.setFont(font_);
+  new_high_score_text.setString("New high score!");
+  new_high_score_text.setCharacterSize(40);
+  new_high_score_text.setPosition(
+    window_.getSize().x / 2.0 - new_high_score_text.getLocalBounds().width / 2.0, 
+    window_.getSize().y / 2.0 - new_high_score_text.getLocalBounds().height / 2.0 + 100
+  );
+
+  if (new_high_score_){
+    frame_counter_++;
+    if (frame_counter_ < 35) {
+      new_high_score_text.setFillColor(sf::Color::Black);
+    } else if (frame_counter_ > 80) {
+      frame_counter_ = 0;
+    } else {
+      new_high_score_text.setFillColor(sf::Color::Yellow);
+    }
+    window_.draw(new_high_score_text);
+  } 
 }
 
 int Game::GetLevelNum(){ return current_level_num_; }
