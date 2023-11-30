@@ -15,9 +15,12 @@ void Game::Advance() {
       std::cout << "Level " << current_level_num_ << " complete" << std::endl;
       current_level_.LoadFromFile(++current_level_num_, window_.getSize());
     }
+    if(current_level_.GetPlayerTank().ExplosionAnimationOver()){gameState_ = GameOverLose;}
   } catch (const std::runtime_error& e) {
-    gameState_ = GameOverWin;
-    UpdateHighScore(GetPlayerScore());
+    if(current_level_.GetLevelData().enemies.empty()){
+      gameState_ = GameOverWin;
+      UpdateHighScore(GetPlayerScore());
+    }
   }
 
   current_level_.UpdateLevel(window_);
@@ -174,6 +177,8 @@ void Game::EndScreenLose(){
 int Game::GetLevelNum(){ return current_level_num_; }
 
 bool Game::GetShieldStatus() { return current_level_.GetPlayerTank().HasShield(); }
+
+bool Game::GetPlayerAnimationStatus() {return current_level_.GetPlayerTank().ExplosionAnimationOver();}
 
 void Game::PauseMusic(){
   playing_sound_.pause();

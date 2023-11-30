@@ -51,9 +51,11 @@ class Game {
 
     void SetGameState();
 
+    bool GetPlayerAnimationStatus();
+       
     int GetPlayerScore() const;
 
-    void UpdateHighScore(int game_score);       
+    void UpdateHighScore(int game_score);
 
     GameState gameState_ = Start;
 
