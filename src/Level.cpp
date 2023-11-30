@@ -247,6 +247,10 @@ void Level::HandleProjectileCollisions() {
       enemy_collision = CollisionManager::ProjectileTank(*projectile_it, *enemy);
       if (enemy_collision) {
         // No need to check other enemies
+        //Check if player has already gotten the points for the kill.
+        if (!enemy->IsHit()){
+          player_.AddScore(enemy->GetPoints());
+        }
         enemy->SetHitTrue();
         break;
       }
@@ -291,6 +295,7 @@ void Level::HandleItemPickUps() {
         //Player doesn't have shield, enable it and remove it from the field.
         player_.SetShield();
         level_data_.shields.erase(shield);
+        player_.AddScore(50);
         break;
       } else {
         //Player already has a shield. Do nothing.
