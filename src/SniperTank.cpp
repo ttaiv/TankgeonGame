@@ -20,25 +20,43 @@ void SniperTank::Update(LevelData &level_data_) {
   ++fire_cooldown_timer_;
 }
 
+SniperTank::MovementOption SniperTank::ChooseMovement() {
+  movement_timer_ = 0;
+  return static_cast<MovementOption>(movement_dis_(gen_));
+}
+
+
 void SniperTank::UpdateShape(float rotation_angle, LevelData &level_data_) {
   turret_shape_.setRotation(rotation_angle * 180 / M_PI + 180);
-  
+
+  // One movement has lasted long enough, choose a new movement.
   if (movement_timer_ > SINGLE_MOVEMENT_DURATION) {
-    current_movement_ = static_cast<MovementOption>(movement_dis_(gen_));
-    movement_timer_ = 0;
+    current_movement_ = ChooseMovement();
   }
   
-  if (current_movement_ == MovementOption::TurnLeft){
-    Tank::TurnLeft(1, level_data_);
+  if (current_movement_ == MovementOption::TurnLeft) {
+    if (!Tank::TurnLeft(1, level_data_)) {
+      // If we can't turn left, choose a new movement.
+      current_movement_ = ChooseMovement();
+    }
   }
-  else if (current_movement_ == MovementOption::TurnRight){
-    Tank::TurnRight(1, level_data_);
+  if (current_movement_ == MovementOption::TurnRight) {
+    if (!Tank::TurnRight(1, level_data_)) {
+      // If we can't turn right, choose a new movement.
+      current_movement_ = ChooseMovement();
+    }
   }
-  else if (current_movement_ == MovementOption::GoBack){
-    Tank::GoBack(2, level_data_);
+  if (current_movement_ == MovementOption::GoBack) {
+    if (!Tank::GoBack(1, level_data_)) {
+      // If we can't go back, choose a new movement.
+      current_movement_ = ChooseMovement();
+    }
   }
-  else {
-    Tank::GoForward(2, level_data_);
+  if (current_movement_ == MovementOption::GoForward) {
+    if (!Tank::GoForward(1, level_data_)) {
+      // If we can't go forward, choose a new movement.
+      current_movement_ = ChooseMovement();
+    }
   }
   ++movement_timer_;
 }

@@ -18,9 +18,7 @@ class BurstTank : public EnemyTank {
     enum MovementOption {
       TurnLeft = 0,
       TurnRight,
-      GoForward1,
-      GoForward2, // Extra value for GoForward
-      GoForward3, // Extra value for GoForward
+      GoForward,
       GoBack,
       MovementCount // count of the enum values
     };
@@ -33,4 +31,6 @@ class BurstTank : public EnemyTank {
     int movement_timer_ = 0;
 
     float GetRandomAngle();
+
+    MovementOption ChooseMovement();
 };
