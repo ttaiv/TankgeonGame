@@ -52,7 +52,7 @@ void SniperTank::UpdateShape(float rotation_angle, LevelData &level_data_) {
       current_movement_ = ChooseMovement();
     }
   }
-  if (current_movement_ == MovementOption::GoForward) {
+  if (current_movement_ == MovementOption::GoForward1 || current_movement_ == MovementOption::GoForward2) {
     if (!Tank::GoForward(1, level_data_)) {
       // If we can't go forward, choose a new movement.
       current_movement_ = ChooseMovement();
