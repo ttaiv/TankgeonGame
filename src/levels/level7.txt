@@ -1,9 +1,9 @@
 ################################
 #  p s  w                w     #
-#       w c  h   w       w  r  #
-#       w    w   w       w     #
-#www    w c  w r w       h b b #
+#       w c      w       w  r  #
+#       w        w       w     #
+#www    w c    r w       h b b #
 #       w    wwwww b b b h     #
-#       w  b     w             #
-#b               w  b b b    r #
+#          b     h             #
+#b               h  b b b    r #
 ################################
