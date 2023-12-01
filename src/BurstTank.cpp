@@ -2,9 +2,9 @@
 
 BurstTank::BurstTank(sf::Vector2f initial_pos, PlayerTank &player)
   : EnemyTank(initial_pos, BURST_TANK_SPEED, player, PLAYER_FIRE_COOLDOWN) { // same cooldown as player
-    chassis_texture_.loadFromFile("../src/assets/tanks/BlueTankNoTurret.png");
+    chassis_texture_.loadFromFile("../src/assets/tanks/YellowTankNoTurret.png");
     tank_shape_.setTexture(&chassis_texture_);
-    turret_texture_.loadFromFile("../src/assets/tanks/BlueTankTurret.png");
+    turret_texture_.loadFromFile("../src/assets/tanks/YellowTankTurret.png");
     turret_shape_.setTexture(&turret_texture_);
     points_ = 250;
   }
