@@ -62,22 +62,15 @@ int main()
     } else if (game.gameState_ == Pause){
       game.PauseScreen();
     
-    } else if (game.gameState_ == GameOverWin){
-      game.EndScreenWin();
+    } else if (game.gameState_ == GameOverLose || game.gameState_ == GameOverWin){
+      game.EndScreen();
         if (delayClock_ >= 3*60) {
           delayClock_=0;
           game.StartScreen();
         }
       delayClock_++;
-    
-    } else if (game.gameState_ == GameOverLose){
-      game.EndScreenLose();
-      if (delayClock_ >= 3*60) {
-        delayClock_=0;
-        game.StartScreen();
-      }
-      delayClock_++;
     }
+
     window.draw(sprite);
     window.display();
     

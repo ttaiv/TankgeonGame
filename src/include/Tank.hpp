@@ -64,6 +64,8 @@ class Tank : public sf::Transformable {
      */
     void ScaleShape(sf::Vector2u window_size);
 
+    void ResetCounters();
+
   protected:
     float speed_scaler_;
     int fire_cooldown_;

@@ -26,9 +26,7 @@ class Game {
 
     void PauseScreen();
 
-    void EndScreenWin();
-
-    void EndScreenLose();
+    void EndScreen();
 
     void PauseMusic();
 
@@ -53,9 +51,11 @@ class Game {
 
     bool GetPlayerAnimationStatus();
        
-    int GetPlayerScore() const;
+    int GetPlayerScore();
 
     void UpdateHighScore(int game_score);
+
+    void ResetPlayer();
 
     GameState gameState_ = Start;
 
@@ -70,6 +70,7 @@ class Game {
     bool is_playing_ = false;
     bool new_high_score_ = false;
     int frame_counter_ = 0;
+    int game_score_ = 0;
 
     bool LoadNextLevel();
 };

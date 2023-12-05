@@ -310,7 +310,7 @@ void Level::HandleItemPickUps() {
 
 const LevelData& Level::GetLevelData(){ return level_data_; }
 
-const PlayerTank& Level::GetPlayerTank() const {
+PlayerTank& Level::GetPlayerTank() {
       return player_;
     }
 

@@ -77,5 +77,9 @@ int PlayerTank::GetScore() const {
   return score_;
 }
 
+void PlayerTank::ResetScore() {
+  score_ = 0;
+}
+
 
 
