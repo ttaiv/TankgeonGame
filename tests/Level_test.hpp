@@ -18,6 +18,38 @@ namespace LevelTest {
     if (position != expected_position) {
       throw std::runtime_error("Enemy position in test is incorrect");
     }
-
+    // Check that player position is correct
+    // Player tank should be at (15, 3)
+    const PlayerTank &player = level.GetPlayerTank();
+    position = player.GetShape().getPosition();
+    expected_position = sf::Vector2f(15 * x_scale, 3 * y_scale);
+    if (position != expected_position) {
+      throw std::runtime_error("Player position in test is incorrect");
+    }
+    // Check that wall position is correct
+    // Wall should be at (7, 6)
+    // 4th wall is the first non-border wall
+    const Wall &wall = level.GetLevelData().walls[4]; 
+    position = wall.GetShape().getPosition();
+    expected_position = sf::Vector2f(7 * x_scale, 6 * y_scale);
+    if (position != expected_position) {
+      throw std::runtime_error("Wall position in test is incorrect");
+    }
+    // Check that spike position is correct
+    // Spike should be at (27, 5)
+    const Spike &spike = level.GetLevelData().spikes.front();
+    position = spike.GetShape().getPosition();
+    expected_position = sf::Vector2f(27 * x_scale, 5 * y_scale);
+    if (position != expected_position) {
+      throw std::runtime_error("Spike position in test is incorrect");
+    }
+    // Check that shield position is correct
+    // Shield should be at (28, 1)
+    const Shield &shield = level.GetLevelData().shields.front();
+    position = shield.GetShape().getPosition();
+    expected_position = sf::Vector2f(28 * x_scale, 1 * y_scale);
+    if (position != expected_position) {
+      throw std::runtime_error("Shield position in test is incorrect");
+    }
   }
 }

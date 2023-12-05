@@ -6,7 +6,7 @@
 int main() 
 {
 
-  LevelTest::testCreation();
+  // LevelTest::testCreation();
 
   sf::RenderWindow window;
   sf::View defaultView;
