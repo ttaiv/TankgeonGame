@@ -189,3 +189,12 @@ void Tank::ScaleShape(sf::Vector2u window_size){
   tank_shape_.setOrigin((scaler / 23) / 2.0f, (scaler / 23) / 2.0f);
   turret_shape_.setOrigin((scaler / 23) * 0.36, (scaler / 23) / 2.0f );
 }
+
+void Tank::ResetCounters() {
+  fire_cooldown_timer_ = 0;
+  explosion_over_ = false;
+  is_hit_ = false;
+  explosion_frames_ = 1;
+  shots_fired_ = 0;
+  frame_counter_ = 0;
+}

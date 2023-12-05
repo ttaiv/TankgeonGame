@@ -36,6 +36,8 @@ class PlayerTank: public Tank {
 
     int GetScore() const;
 
+    void ResetScore();
+
   private:
     /**
      * @brief Get new rotation angle for tank shape using mouse position

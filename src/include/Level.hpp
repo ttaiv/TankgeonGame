@@ -53,7 +53,9 @@ class Level {
      * 
      * @return const PlayerTank& 
      */
-    const PlayerTank& GetPlayerTank() const;
+    PlayerTank& GetPlayerTank();
+
+    void ResetPlayer();
 
     
   private:
