@@ -57,6 +57,8 @@ class Game {
 
     void ResetPlayer();
 
+    void ResetMenuMusic();
+
     GameState gameState_ = Start;
 
   private:

@@ -213,3 +213,7 @@ void Game::ResetPlayer() {
   current_level_.GetPlayerTank().BreakShield();
   current_level_.GetPlayerTank().ResetCounters();
 }
+
+void Game::ResetMenuMusic() {
+  is_playing_ = false;
+}

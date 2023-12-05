@@ -66,6 +66,7 @@ int main()
       game.EndScreen();
         if (delayClock_ >= 3*60) {
           delayClock_=0;
+          game.ResetMenuMusic();
           game.StartScreen();
         }
       delayClock_++;
