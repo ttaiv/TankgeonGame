@@ -4,7 +4,7 @@
 TankgeonHud::TankgeonHud(const sf::RenderWindow& window, Game& game)
   : sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y / 10)), game_(game) {
         setViewport(sf::FloatRect(0, 0.92f, 1.f, 0.08f));
-        font_.loadFromFile("../src/fonts/arial.ttf");
+        font_.loadFromFile("../src/assets/fonts/arial.ttf");
     }
 
 void TankgeonHud::updateView(const sf::RenderWindow& window) {

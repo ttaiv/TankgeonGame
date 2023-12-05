@@ -4,7 +4,7 @@
 
 Game::Game(sf::RenderWindow &window) : window_(window) {
   current_level_.LoadFromFile(1, window.getSize());
-  font_.loadFromFile("../src/fonts/arial.ttf");
+  font_.loadFromFile("../src/assets/fonts/arial.ttf");
   hype_sound_buffer_.loadFromFile("../src/assets/sounds/Hype.wav");
   start_sound_buffer_.loadFromFile("../src/assets/sounds/StartMusic.wav");
 }
