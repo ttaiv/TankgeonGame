@@ -1,10 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include "include/Game.hpp"
 #include "include/TankgeonHud.hpp"
+#include "tests/Level_test.hpp"
 
 int main() 
 {
 
+  // LevelTest::testCreation();
 
   sf::RenderWindow window;
   sf::View defaultView;
