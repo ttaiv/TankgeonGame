@@ -50,7 +50,7 @@ void Game::StartScreen(){
   window_.draw(background);
   sf::Text title_text_;
   title_text_.setFont(font_);
-  title_text_.setString("Tankgeon! beta");
+  title_text_.setString("Tankgeon!");
   title_text_.setCharacterSize(40);
   title_text_.setFillColor(sf::Color::Black);
   title_text_.setPosition(
