@@ -1,7 +1,7 @@
 #include "include/Level.hpp"
 #include <iostream>
 
-Level::Level(): player_(sf::Vector2f(100, 100), 3) {} // Player position will be updated in LoadFromFile call
+Level::Level(): player_(sf::Vector2f(100, 100), PLAYER_TANK_SPEED) {} // Player position will be updated in LoadFromFile call
 
 void Level::SetBorderWalls(sf::Vector2u window_size) {
   Wall top_wall(sf::Vector2f(0, 0), sf::Vector2f(window_size.x, 30));
