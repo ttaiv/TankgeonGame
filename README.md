@@ -1,6 +1,6 @@
 # Tankgeon!
 
-# Introduction
+## Introduction
 This is a tank fighting game implemented using SFML. It is inspired by minigame Tanks! which was included in Wii Play for Nintendo Wii. Instructions for building, running and playing the game are located in `doc` directory.
 
 # Compatible platforms
